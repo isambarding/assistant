@@ -92,5 +92,5 @@ class Weather10Day:
 country = "france"  # input("Enter country: ")
 city = "paris"  # input("Enter city: ")
 w = Weather10Day(country, city)
-print(w.forecast10DaysLow())
+print(w.data)
 
