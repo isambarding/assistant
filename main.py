@@ -11,6 +11,7 @@ class AssistantApp(App):
         self.title = 'Assistant'
         return Container()
 
+
 if __name__ == "__main__":
     app = AssistantApp()
     app.run()
