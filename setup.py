@@ -2,6 +2,7 @@ import sqlite3
 
 # works, apparently
 # Holds setup methods
+# could be moved to main
 
 
 class Setup:

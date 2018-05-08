@@ -4,10 +4,12 @@ from kivy.uix.label import Label
 from kivy.properties import StringProperty
 import sqlite3
 
+# use screenmanager for screens
 
-class Container(BoxLayout):
+
+class HomeScreen(BoxLayout):
     def __init__(self, **kwargs):
-        super(Container, self).__init__(**kwargs)
+        super(HomeScreen, self).__init__(**kwargs)
         with sqlite3.connect("UserData.db") as db:
             cursor = db.cursor()
             cursor.execute("SELECT name FROM userInfo")
@@ -20,7 +22,7 @@ class Container(BoxLayout):
 class AssistantApp(App):
     def build(self):
         self.title = 'Assistant'
-        return Container()
+        return HomeScreen()
 
 
 if __name__ == "__main__":
