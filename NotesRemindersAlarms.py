@@ -51,4 +51,26 @@ class Notes(NotesRemindersAlarms):
         NotesRemindersAlarms.delete(self, "Notes", noteid)
 
 
+class Reminders(NotesRemindersAlarms):
+    # Notes class
+    def create(self):
+        pass
+
+    def mostRecent(self):
+        pass
+
+    def delete(self, noteid):
+        NotesRemindersAlarms.delete(self, "Reminders", noteid)
+
+
+class Alarms(NotesRemindersAlarms):
+    # Notes class
+    def create(self):
+        pass
+
+    def mostRecent(self):
+        pass
+
+    def delete(self, noteid):
+        NotesRemindersAlarms.delete(self, "Alarms", noteid)
 
