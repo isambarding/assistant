@@ -1,16 +1,30 @@
+MyScreenManager:
+    HomeScreen:
+    WeatherScreen:
+    TwitterScreen:
+    NotesScreen:
+    RemindersScreen:
+    AlarmsScreen:
+    SettingsScreen:
+
 <HomeScreen>
-    namelabel: namelabel
+    name: "home"
+    labelName: labelName
+
     BoxLayout:
+        labelName: labelName
         orientation: "vertical"
         Label:
-            id: namelabel
+            id: labelName
             text: "Welcome, name!"
         Button:
             id: buttonWeather
             text: "Weather"
+            on_press: app.root.current = "weather"
         Button:
             id: buttonTwitter
             text:"Twitter"
+            on_press: app.root.current = "twitter"
         Button:
             id: buttonNotes
             text:"Notes"
@@ -25,13 +39,73 @@
             text:"Settings"
 
 <WeatherScreen>
+    name: "weather"
+
+    BoxLayout:
+        orientation: "vertical"
+        Label:
+            id: locationLabel
+            text: "The weather in location is"
+        Label:
+            id: weatherTextLabel
+            text: "forecast here"
+        Label:
+            id: weatherHighLabel
+            text: "High: xxc"
+        Label:
+            id: weatherLowLabel
+            text: "Low: xxc"
+        Button:
+            id: button10DayForecast
+            text: "Forecast"
+        GridLayout:
+            cols: 2
+            Label:
+                text: "Country:"
+            TextInput:
+                id: inputCountry
+            Label:
+                text: "City:"
+            TextInput:
+                id: inputCity
+        Button:
+            id: buttonUpdateLocation
+            text: "Get weather"
+        Button:
+            id: buttonBack
+            text: "Back"
+            on_press: app.root.current = "home"
 
 <TwitterScreen>
+    name: "twitter"
+    BoxLayout:
+        orientation: "vertical"
+
+        Label:
+            id: labelTwitterUsername
+            text: "Latest tweet by @username:"
+        Label:
+            id: labelTweets
+            text: "Tweet here"
+        Button:
+            id: buttonGetTweets
+            text: "More tweets"
+        Button:
+            id: buttonSearchTweets
+            text: "Search username"
+        Button:
+            id: buttonBack
+            text: "Back"
+            on_press: app.root.current = "home"
 
 <NotesScreen>
+    name: "notes"
 
 <RemindersScreen>
+    name: "reminders"
 
 <AlarmsScreen>
+    name: "alarms"
 
 <SettingsScreen>
+    name: "settings"
