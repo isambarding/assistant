@@ -1,0 +1,3 @@
+title=<Assistant>
+author=<Sam Palmer>
+orientation=<landscape>
