@@ -9,14 +9,14 @@ MyScreenManager:
 
 <HomeScreen>
     name: "home"
-    labelName: labelName
 
     BoxLayout:
         labelName: labelName
         orientation: "vertical"
+
         Label:
             id: labelName
-            text: "Welcome, name!"
+            text: root.labelName
         Button:
             id: buttonWeather
             text: "Weather"
@@ -28,32 +28,38 @@ MyScreenManager:
         Button:
             id: buttonNotes
             text:"Notes"
+            on_press: app.root.current = "notes"
         Button:
             id: buttonReminders
             text:"Reminders"
+            on_press: app.root.current = "reminders"
         Button:
             id: buttonAlarms
             text:"Alarms"
+            on_press: app.root.current = "alarms"
         Button:
             id: buttonSettings
             text:"Settings"
+            on_press: app.root.current = "settings"
 
 <WeatherScreen>
     name: "weather"
 
     BoxLayout:
+        labelWeatherText: labelWeatherText
         orientation: "vertical"
+
         Label:
             id: locationLabel
             text: "The weather in location is"
         Label:
-            id: weatherTextLabel
-            text: "forecast here"
+            id: labelWeatherText
+            text: root.labelWeatherText
         Label:
-            id: weatherHighLabel
+            id: labelWeatherHigh
             text: "High: xxc"
         Label:
-            id: weatherLowLabel
+            id: labelWeatherLow
             text: "Low: xxc"
         Button:
             id: button10DayForecast
@@ -76,8 +82,36 @@ MyScreenManager:
             text: "Back"
             on_press: app.root.current = "home"
 
+<MoreWeatherScreen>
+    name: "moreweather"
+
+    BoxLayout:
+        orientation: "vertical"
+        Label:
+            id: labelDay1Day
+            text: "day1"
+        Label:
+            id: labelDay1Text
+            text: "day1 text forecast"
+        GridLayout:
+            cols: 2
+            Label:
+                text: "High"
+            Label:
+                text: "Low"
+            Label:
+                text: "xxc"
+            Label:
+                text: "xxc"
+
+        Button:
+            id: buttonBack
+            text: "Back"
+            on_press: app.root.current = "weather"
+
 <TwitterScreen>
     name: "twitter"
+
     BoxLayout:
         orientation: "vertical"
 
@@ -90,6 +124,12 @@ MyScreenManager:
         Button:
             id: buttonGetTweets
             text: "More tweets"
+        GridLayout:
+            cols: 2
+            Label:
+                text: "@Username:"
+            TextInput:
+                id: inputTwitterUsername
         Button:
             id: buttonSearchTweets
             text: "Search username"
@@ -101,11 +141,104 @@ MyScreenManager:
 <NotesScreen>
     name: "notes"
 
+    BoxLayout:
+        orientation: "vertical"
+
+        Label:
+            id: labelLastNoteTitle
+            text: "Most recent note title"
+        Label:
+            id: labelLastNoteContent
+            text: "Most recent note content"
+        Button:
+            id: buttonNewReminder
+            text: "New note"
+        Button:
+            id: buttonAllNotes
+            text: "All notes"
+        Button:
+            id: buttonBack
+            text: "Back"
+            on_press: app.root.current = "home"
+
 <RemindersScreen>
     name: "reminders"
+
+    BoxLayout:
+        orientation: "vertical"
+
+        Label:
+            id: labelLastNoteTitle
+            text: "Most recent reminder title"
+        Label:
+            id: labelLastNoteContent
+            text: "Most recent reminder content"
+        Button:
+            id: buttonNewReminder
+            text: "New reminder"
+        Button:
+            id: buttonAllNotes
+            text: "All reminders"
+        Button:
+            id: buttonBack
+            text: "Back"
+            on_press: app.root.current = "home"
 
 <AlarmsScreen>
     name: "alarms"
 
+    BoxLayout:
+        orientation: "vertical"
+
+        Label:
+            id: labelLastAlarmTitle
+            text: "Most recent alarm title"
+        Label:
+            id: labelLastAlarmTime
+            text: "Most recent alarm time"
+        Button:
+            id: buttonNewAlarm
+            text: "New alarm"
+        Button:
+            id: buttonAllAlarms
+            text: "All alarms"
+        Button:
+            id: buttonBack
+            text: "Back"
+            on_press: app.root.current = "home"
+
 <SettingsScreen>
     name: "settings"
+
+    BoxLayout:
+        orientation: "vertical"
+
+        GridLayout:
+            cols: 2
+            Label:
+                text: "Name:"
+            TextInput:
+                id: inputNewName
+        Button:
+            id: buttonChangeName
+            text: "Change name"
+        GridLayout:
+            cols: 2
+            Label:
+                text: "Country:"
+            TextInput:
+                id: inputNewCountry
+            Label:
+                text: "City:"
+            TextInput:
+                id: inputNewCity
+        Button:
+            id: buttonSearchTweets
+            text: "Change location"
+        Button:
+            id: buttonRestartSetup
+            text: "Restart setup"
+        Button:
+            id: buttonBack
+            text: "Back"
+            on_press: app.root.current = "home"

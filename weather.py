@@ -91,8 +91,8 @@ class Weather10Day:
 
 
 # testing
-country = input("Enter country: ")
-city = input("Enter city: ")
-w = Weather10Day(country, city)
-print(w.data)
+#country = input("Enter country: ")
+#city = input("Enter city: ")
+w = Weather4Day("france", "paris")
+print(w.forecastTodayText())
 

@@ -3,24 +3,50 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.properties import StringProperty
 from kivy.lang import Builder
-from kivy.uix.screenmanager import ScreenManager, Screen, FadeTransition
+from kivy.uix.screenmanager import ScreenManager, Screen
+from weather import Weather4Day, Weather10Day
 import sqlite3
 
-# TODO fix name label: figure out how to access child widgets
 
 class HomeScreen(Screen):
+    labelName = StringProperty()
+
     def __init__(self, **kwargs):
         super(HomeScreen, self).__init__(**kwargs)
+        self.updateName()
+
+    def updateName(self, *args):
         with sqlite3.connect("UserData.db") as db:
             cursor = db.cursor()
             cursor.execute("SELECT name FROM userInfo")
-            self.username = cursor.fetchone()
-        self.username = self.username[0]
-        # NOW BROKEN: commented for demo
-        #self.children.labelName.text = "Welcome, " + self.username + "!"
+            username = cursor.fetchone()
+        self.labelName = "Welcome, " + username[0] + "!"
 
 
 class WeatherScreen(Screen):
+    labelWeatherText = StringProperty()
+
+    def __init__(self, **kwargs):
+        super(WeatherScreen, self).__init__(**kwargs)
+        self.getCurrentWeather()
+
+    # works in theory
+    def getCurrentWeather(self, *args):
+        with sqlite3.connect("UserData.db") as db:
+            cursor = db.cursor()
+            cursor.execute("SELECT city FROM userInfo")
+            city = cursor.fetchone()
+        city = city[0]
+        with sqlite3.connect("UserData.db") as db:
+            cursor = db.cursor()
+            cursor.execute("SELECT country FROM userInfo")
+            country = cursor.fetchone()
+        country = country[0]
+        w = Weather4Day(country, city)
+        self.labelWeatherText = w.forecastTodayText()
+
+
+class MoreWeatherScreen(Screen):
     pass
 
 
