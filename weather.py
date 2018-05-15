@@ -8,6 +8,7 @@ class Weather4Day:
     # Uses 4 day request
     def __init__(self, country, city):
         url = "http://api.wunderground.com/api/034fa2c65c35e441/forecast/q/" + country + "/" + city + ".json"
+        print(url)
         response = requests.get(url)
         self.data = response.json()
 
@@ -93,6 +94,6 @@ class Weather10Day:
 # testing
 #country = input("Enter country: ")
 #city = input("Enter city: ")
-#w = Weather4Day("france", "paris")
-#print(w.forecastTodayText())
+w = Weather4Day("france", "paris")
+print(w.forecastTodayText())
 

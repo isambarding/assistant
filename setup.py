@@ -22,12 +22,13 @@ class Setup:
                  (Name text,
                   Country text,
                   City text,
+                  LastTwitterSearch text,
                   primary key(Name))"""
         self.createTable(dbName, sql)
 
         with sqlite3.connect("UserData.db") as db:
             cursor = db.cursor()
-            sql = """INSERT INTO userInfo (Name, Country, City) VALUES ('""" + name + """', '""" + country + """', '""" + city + """')"""
+            sql = """INSERT INTO userInfo (Name, Country, City, LastTwitterSearch) VALUES ('""" + name + """', '""" + country + """', '""" + city + """', 'kedst')"""
             cursor.execute(sql)
             db.commit
 

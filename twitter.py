@@ -37,4 +37,4 @@ class Twitter:
 # Testing
 #t = Twitter()
 #un = input("Enter an @username: ")
-#print(t.user10(un))
+#print(t.userLatest(un))

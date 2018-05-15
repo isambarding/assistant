@@ -113,14 +113,16 @@ MyScreenManager:
     name: "twitter"
 
     BoxLayout:
+        labelRecentTweet: labelRecentTweet
         orientation: "vertical"
 
         Label:
             id: labelTwitterUsername
             text: "Latest tweet by @username:"
         Label:
-            id: labelTweets
-            text: "Tweet here"
+            id: labelRecentTweet
+            text_size: self.size
+            text: root.labelRecentTweet
         Button:
             id: buttonGetTweets
             text: "More tweets"

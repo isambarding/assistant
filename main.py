@@ -5,7 +5,8 @@ from kivy.lang import Builder
 from kivy.properties import StringProperty
 from kivy.uix.screenmanager import ScreenManager, Screen
 
-from classes.weather import Weather4Day
+from weather import Weather4Day
+from twitter import Twitter
 
 
 class HomeScreen(Screen):
@@ -30,7 +31,6 @@ class WeatherScreen(Screen):
         super(WeatherScreen, self).__init__(**kwargs)
         self.getCurrentWeather()
 
-    # works in theory
     def getCurrentWeather(self, *args):
         with sqlite3.connect("UserData.db") as db:
             cursor = db.cursor()
@@ -51,7 +51,20 @@ class MoreWeatherScreen(Screen):
 
 
 class TwitterScreen(Screen):
-    pass
+    labelRecentTweet = StringProperty()
+
+    def __init__(self, **kwargs):
+        super(TwitterScreen, self).__init__(**kwargs)
+        self.getLastTweet()
+
+    def getLastTweet(self, *args):
+        with sqlite3.connect("UserData.db") as db:
+            cursor = db.cursor()
+            cursor.execute("SELECT LastTwitterSearch FROM userInfo")
+            username = cursor.fetchone()
+        username = username[0]
+        t = Twitter()
+        self.labelRecentTweet = t.userLatest(username)
 
 
 class NotesScreen(Screen):
