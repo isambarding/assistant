@@ -35,6 +35,6 @@ class Twitter:
 
 
 # Testing
-t = Twitter()
-un = input("Enter an @username: ")
-print(t.user10(un))
+#t = Twitter()
+#un = input("Enter an @username: ")
+#print(t.user10(un))
