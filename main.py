@@ -1,11 +1,11 @@
-from kivy.app import App
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.label import Label
-from kivy.properties import StringProperty
-from kivy.lang import Builder
-from kivy.uix.screenmanager import ScreenManager, Screen
-from weather import Weather4Day, Weather10Day
 import sqlite3
+
+from kivy.app import App
+from kivy.lang import Builder
+from kivy.properties import StringProperty
+from kivy.uix.screenmanager import ScreenManager, Screen
+
+from classes.weather import Weather4Day
 
 
 class HomeScreen(Screen):
@@ -86,3 +86,4 @@ class AssistantApp(App):
 if __name__ == "__main__":
     app = AssistantApp()
     app.run()
+
