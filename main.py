@@ -10,40 +10,56 @@ from twitter import Twitter
 
 
 class HomeScreen(Screen):
-    labelName = StringProperty()
 
     def __init__(self, **kwargs):
         super(HomeScreen, self).__init__(**kwargs)
         self.updateName()
 
     def updateName(self, *args):
+        #labelName = StringProperty()
         with sqlite3.connect("UserData.db") as db:
             cursor = db.cursor()
             cursor.execute("SELECT name FROM userInfo")
             username = cursor.fetchone()
+
         self.labelName = "Welcome, " + username[0] + "!"
 
 
 class WeatherScreen(Screen):
-    labelWeatherText = StringProperty()
+    #labelWeatherText = StringProperty()
 
     def __init__(self, **kwargs):
         super(WeatherScreen, self).__init__(**kwargs)
-        self.getCurrentWeather()
 
-    def getCurrentWeather(self, *args):
         with sqlite3.connect("UserData.db") as db:
             cursor = db.cursor()
             cursor.execute("SELECT city FROM userInfo")
             city = cursor.fetchone()
         city = city[0]
+
         with sqlite3.connect("UserData.db") as db:
             cursor = db.cursor()
             cursor.execute("SELECT country FROM userInfo")
             country = cursor.fetchone()
         country = country[0]
-        w = Weather4Day(country, city)
-        self.labelWeatherText = w.forecastTodayText()
+
+        self.w = Weather4Day(country, city)
+        self.getCurrentWeather()
+        self.getCurrentHigh()
+        self.getCurrentLow()
+        self.getLocation(city, country)
+
+    def getLocation(self, city, country, *args):
+        self.labelLocation = "The weather in " + city + ", " + country + " is:"
+
+    def getCurrentWeather(self, *args):
+        self.labelWeatherText = self.w.forecastTodayText()
+
+    def getCurrentHigh(self, *args):
+        self.labelWeatherHigh = self.w.forecastTodayHigh() + "°C"
+
+    def getCurrentLow(self, *args):
+        self.labelWeatherLow = self.w.forecastTodayLow() + "°C"
 
 
 class MoreWeatherScreen(Screen):
@@ -51,7 +67,7 @@ class MoreWeatherScreen(Screen):
 
 
 class TwitterScreen(Screen):
-    labelRecentTweet = StringProperty()
+    #labelRecentTweet = StringProperty()
 
     def __init__(self, **kwargs):
         super(TwitterScreen, self).__init__(**kwargs)

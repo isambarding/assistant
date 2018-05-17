@@ -1,6 +1,7 @@
 MyScreenManager:
     HomeScreen:
     WeatherScreen:
+    MoreWeatherScreen:
     TwitterScreen:
     NotesScreen:
     RemindersScreen:
@@ -12,7 +13,6 @@ MyScreenManager:
 
     BoxLayout:
         labelName: labelName
-        orientation: "vertical"
 
         Label:
             id: labelName
@@ -47,20 +47,35 @@ MyScreenManager:
 
     BoxLayout:
         labelWeatherText: labelWeatherText
-        orientation: "vertical"
+        labelWeatherHigh: labelWeatherHigh
+        labelWeatherLow: labelWeatherLow
+        labelLocation: labelLocation
 
         Label:
             id: labelLocation
-            text: "The weather in location is"
+            text: root.labelLocation
         Label:
             id: labelWeatherText
+            text_size: self.size
             text: root.labelWeatherText
-        Label:
-            id: labelWeatherHigh
-            text: "High: xxc"
-        Label:
-            id: labelWeatherLow
-            text: "Low: xxc"
+
+        GridLayout:
+            cols: 2
+            Label:
+                text: "High:"
+                halign: "right"
+            Label:
+                id: labelWeatherHigh
+                halign: "left"
+                text: root.labelWeatherHigh
+            Label:
+                text: "Low:"
+                halign: "right"
+            Label:
+                id: labelWeatherLow
+                halign: "left"
+                text: root.labelWeatherLow
+
         Button:
             id: button10DayForecast
             text: "Forecast"
@@ -79,6 +94,7 @@ MyScreenManager:
         Button:
             id: buttonUpdateLocation
             text: "Get weather"
+            on_press: app.root.current = "moreweather"
         Button:
             id: buttonBack
             text: "Back"
@@ -87,44 +103,192 @@ MyScreenManager:
 <MoreWeatherScreen>
     name: "moreweather"
 
-    BoxLayout:
-        orientation: "vertical"
-        Label:
-            id: labelDay1Day
-            text: "day1"
-        Label:
-            id: labelDay1Text
-            text: "day1 text forecast"
+    ScrollView:
+        do_scroll_y: True
+        do_scroll_x: False
 
-        GridLayout:
-            cols: 2
+        BoxLayout:
+            size_hint_y: None
+            height: "1000dp"
             Label:
-                text: "High"
+                id: labelDay1Day
+                text: "day1 day"
             Label:
-                text: "Low"
-            Label:
-                text: "xxc"
-            Label:
-                text: "xxc"
+                id: labelDay1Text
+                text_size: self.size
+                text: "day1 text forecast"
 
-        Button:
-            id: buttonBack
-            text: "Back"
-            on_press: app.root.current = "weather"
+            GridLayout:
+                cols: 2
+                Label:
+                    text: "High:"
+                Label:
+                    text: "xxc"
+                Label:
+                    text: "Low:"
+                Label:
+                    text: "xxc"
+
+            Label:
+                id: labelDay2Day
+                text: "day2 day"
+            Label:
+                id: labelDay2Text
+                text: "day2 text forecast"
+
+            GridLayout:
+                cols: 2
+                Label:
+                    text: "High:"
+                Label:
+                    text: "xxc"
+                Label:
+                    text: "Low:"
+                Label:
+                    text: "xxc"
+
+            Label:
+                id: labelDay3Day
+                text: "day3 day"
+            Label:
+                id: labelDay3Text
+                text: "day3 text forecast"
+
+            GridLayout:
+                cols: 2
+                Label:
+                    text: "High:"
+                Label:
+                    text: "xxc"
+                Label:
+                    text: "Low:"
+                Label:
+                    text: "xxc"
+
+            Label:
+                id: labelDay4Day
+                text: "day4 day"
+            Label:
+                id: labelDay4Text
+                text: "day4 text forecast"
+
+            GridLayout:
+                cols: 2
+                Label:
+                    text: "High:"
+                Label:
+                    text: "xxc"
+                Label:
+                    text: "Low:"
+                Label:
+                    text: "xxc"
+
+            Label:
+                id: labelDay5Day
+                text: "day5 day"
+            Label:
+                id: labelDay5Text
+                text: "day5 text forecast"
+
+            GridLayout:
+                cols: 2
+                Label:
+                    text: "High:"
+                Label:
+                    text: "xxc"
+                Label:
+                    text: "Low:"
+                Label:
+                    text: "xxc"
+
+            Label:
+                id: labelDay6Day
+                text: "day6 day"
+            Label:
+                id: labelDay6Text
+                text: "day6 text forecast"
+
+            GridLayout:
+                cols: 2
+                Label:
+                    text: "High:"
+                Label:
+                    text: "xxc"
+                Label:
+                    text: "Low:"
+                Label:
+                    text: "xxc"
+
+            Label:
+                id: labelDay7Day
+                text: "day7 day"
+            Label:
+                id: labelDay7Text
+                text: "day7 text forecast"
+
+            GridLayout:
+                cols: 2
+                Label:
+                    text: "High:"
+                Label:
+                    text: "xxc"
+                Label:
+                    text: "Low:"
+                Label:
+                    text: "xxc"
+
+            Label:
+                id: labelDay8Day
+                text: "day8 day"
+            Label:
+                id: labelDay8Text
+                text: "day8 text forecast"
+
+            GridLayout:
+                cols: 2
+                Label:
+                    text: "High:"
+                Label:
+                    text: "xxc"
+                Label:
+                    text: "Low:"
+                Label:
+                    text: "xxc"
+
+            Label:
+                id: labelDay9Day
+                text: "day9 day"
+            Label:
+                id: labelDay9Text
+                text: "day9 text forecast"
+
+            GridLayout:
+                cols: 2
+                Label:
+                    text: "High:"
+                Label:
+                    text: "xxc"
+                Label:
+                    text: "Low:"
+                Label:
+                    text: "xxc"
+
+            Button:
+                id: buttonBack
+                text: "Back"
+                on_press: app.root.current = "weather"
 
 <TwitterScreen>
     name: "twitter"
 
     BoxLayout:
         labelRecentTweet: labelRecentTweet
-        orientation: "vertical"
 
         Label:
             id: labelTwitterUsername
             text: "Latest tweet by @username:"
         Label:
             id: labelRecentTweet
-            text_size: self.size
             text: root.labelRecentTweet
         Button:
             id: buttonGetTweets
@@ -149,7 +313,6 @@ MyScreenManager:
     name: "notes"
 
     BoxLayout:
-        orientation: "vertical"
 
         Label:
             id: labelLastNoteTitle
@@ -172,7 +335,6 @@ MyScreenManager:
     name: "reminders"
 
     BoxLayout:
-        orientation: "vertical"
 
         Label:
             id: labelLastNoteTitle
@@ -195,7 +357,6 @@ MyScreenManager:
     name: "alarms"
 
     BoxLayout:
-        orientation: "vertical"
 
         Label:
             id: labelLastAlarmTitle
@@ -218,7 +379,6 @@ MyScreenManager:
     name: "settings"
 
     BoxLayout:
-        orientation: "vertical"
 
         GridLayout:
             cols: 2
@@ -252,3 +412,14 @@ MyScreenManager:
             id: buttonBack
             text: "Back"
             on_press: app.root.current = "home"
+
+<Label>
+    text_size: self.size
+    padding_x: "20dp"
+    padding_y: "10dp"
+    halign: "center"
+    valign: "center"
+    font_size: "15dp"
+
+<BoxLayout>
+    orientation: "vertical"
