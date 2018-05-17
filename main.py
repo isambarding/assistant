@@ -5,7 +5,7 @@ from kivy.lang import Builder
 from kivy.properties import StringProperty
 from kivy.uix.screenmanager import ScreenManager, Screen
 
-from weather import Weather4Day
+from weather import Weather4Day, Weather10Day
 from twitter import Twitter
 
 
@@ -63,7 +63,24 @@ class WeatherScreen(Screen):
 
 
 class MoreWeatherScreen(Screen):
-    pass
+    def __init__(self, **kwargs):
+        super(MoreWeatherScreen, self).__init__(**kwargs)
+        with sqlite3.connect("UserData.db") as db:
+            cursor = db.cursor()
+            cursor.execute("SELECT city FROM userInfo")
+            city = cursor.fetchone()
+        city = city[0]
+
+        with sqlite3.connect("UserData.db") as db:
+            cursor = db.cursor()
+            cursor.execute("SELECT country FROM userInfo")
+            country = cursor.fetchone()
+        country = country[0]
+        self.getForecast(city, country)
+        self.w = Weather10Day(country, city)
+
+    def getForecast(self, city, country, *args):
+        pass
 
 
 class TwitterScreen(Screen):
