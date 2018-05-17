@@ -71,6 +71,7 @@ class Weather10Day:
     def forecast10DaysText(self):
         s = []
         for day in self.data["forecast"]["txt_forecast"]["forecastday"]:
+            # Only days, not nights
             if day["period"] % 2 == 0:
                 s.append(day["fcttext_metric"])
         return s
@@ -89,10 +90,17 @@ class Weather10Day:
             s.append(day["low"]["celsius"])
         return s
 
+    def dayList(self):
+        s = []
+        for day in self.data["forecast"]["txt_forecast"]["forecastday"]:
+            # only days, no nights
+            if day["period"] % 2 == 0:
+                s.append(day["title"])
+        return s
 
 # testing
 #country = input("Enter country: ")
 #city = input("Enter city: ")
-#w = Weather4Day("france", "paris")
-#print(w.forecastTodayText())
+w = Weather10Day("france", "paris")
+print(w.dayList())
 

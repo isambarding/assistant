@@ -2,15 +2,20 @@ import sqlite3
 
 from kivy.app import App
 from kivy.lang import Builder
-from kivy.properties import StringProperty
 from kivy.uix.screenmanager import ScreenManager, Screen
 
 from weather import Weather4Day, Weather10Day
 from twitter import Twitter
 
+# Make label height scale with number of lines
+# Finish moreweather
+# do moretwitter layout
+# do nra layouts
+# do nra functions
+# clean up text = first letter caps on names and locations
+
 
 class HomeScreen(Screen):
-
     def __init__(self, **kwargs):
         super(HomeScreen, self).__init__(**kwargs)
         self.updateName()
@@ -26,8 +31,6 @@ class HomeScreen(Screen):
 
 
 class WeatherScreen(Screen):
-    #labelWeatherText = StringProperty()
-
     def __init__(self, **kwargs):
         super(WeatherScreen, self).__init__(**kwargs)
 
@@ -76,16 +79,39 @@ class MoreWeatherScreen(Screen):
             cursor.execute("SELECT country FROM userInfo")
             country = cursor.fetchone()
         country = country[0]
-        self.getForecast(city, country)
         self.w = Weather10Day(country, city)
+        self.getTextForecast()
+        #self.getHighForecast()
 
-    def getForecast(self, city, country, *args):
-        pass
+    def getTextForecast(self, *args):
+        data = self.w.forecast10DaysText()
+        self.labelDay1Text = data[0]
+        self.labelDay2Text = data[1]
+        self.labelDay3Text = data[2]
+        self.labelDay4Text = data[3]
+        self.labelDay5Text = data[4]
+        self.labelDay6Text = data[5]
+        self.labelDay7Text = data[6]
+        self.labelDay8Text = data[7]
+        self.labelDay9Text = data[8]
+        self.labelDay10Text = data[9]
+
+    # FIX THIS
+    def getHighForecast(self, *args):
+        data = self.w.forecast10DaysHigh()
+        self.labelDay1Text = data[0]
+        self.labelDay2Text = data[1]
+        self.labelDay3Text = data[2]
+        self.labelDay4Text = data[3]
+        self.labelDay5Text = data[4]
+        self.labelDay6Text = data[5]
+        self.labelDay7Text = data[6]
+        self.labelDay8Text = data[7]
+        self.labelDay9Text = data[8]
+        self.labelDay10Text = data[9]
 
 
 class TwitterScreen(Screen):
-    #labelRecentTweet = StringProperty()
-
     def __init__(self, **kwargs):
         super(TwitterScreen, self).__init__(**kwargs)
         self.getLastTweet()
