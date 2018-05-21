@@ -99,16 +99,16 @@ class MoreWeatherScreen(Screen):
     # FIX THIS
     def getHighForecast(self, *args):
         data = self.w.forecast10DaysHigh()
-        self.labelDay1Text = data[0]
-        self.labelDay2Text = data[1]
-        self.labelDay3Text = data[2]
-        self.labelDay4Text = data[3]
-        self.labelDay5Text = data[4]
-        self.labelDay6Text = data[5]
-        self.labelDay7Text = data[6]
-        self.labelDay8Text = data[7]
-        self.labelDay9Text = data[8]
-        self.labelDay10Text = data[9]
+        self.labelDay1High = data[0] + "°C"
+        self.labelDay2High = data[1] + "°C"
+        self.labelDay3High = data[2] + "°C"
+        self.labelDay4High = data[3] + "°C"
+        self.labelDay5High = data[4] + "°C"
+        self.labelDay6High = data[5] + "°C"
+        self.labelDay7High = data[6] + "°C"
+        self.labelDay8High = data[7] + "°C"
+        self.labelDay9High = data[8] + "°C"
+        self.labelDay10High = data[9] + "°C"
 
 
 class TwitterScreen(Screen):

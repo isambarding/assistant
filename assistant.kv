@@ -12,8 +12,6 @@ MyScreenManager:
     name: "home"
 
     BoxLayout:
-        labelName: labelName
-
         Label:
             id: labelName
             text: root.labelName
@@ -46,11 +44,6 @@ MyScreenManager:
     name: "weather"
 
     BoxLayout:
-        labelWeatherText: labelWeatherText
-        labelWeatherHigh: labelWeatherHigh
-        labelWeatherLow: labelWeatherLow
-        labelLocation: labelLocation
-
         Label:
             id: labelLocation
             text: root.labelLocation
@@ -104,16 +97,6 @@ MyScreenManager:
     name: "moreweather"
 
     ScrollView:
-        labelDay1Text: labelDay1Text
-        labelDay2Text: labelDay2Text
-        labelDay3Text: labelDay3Text
-        labelDay4Text: labelDay4Text
-        labelDay5Text: labelDay5Text
-        labelDay6Text: labelDay6Text
-        labelDay7Text: labelDay7Text
-        labelDay8Text: labelDay8Text
-        labelDay9Text: labelDay9Text
-        labelDay10Text: labelDay10Text
         do_scroll_y: True
         do_scroll_x: False
 
@@ -133,7 +116,8 @@ MyScreenManager:
                 Label:
                     text: "High:"
                 Label:
-                    text: "xxc"
+                    id: labelDay1High
+                    #text: root.labelDay1High
                 Label:
                     text: "Low:"
                 Label:
@@ -151,7 +135,8 @@ MyScreenManager:
                 Label:
                     text: "High:"
                 Label:
-                    text: "xxc"
+                    id: labelDay2High
+                    #text: root.labelDay2High
                 Label:
                     text: "Low:"
                 Label:
@@ -169,7 +154,8 @@ MyScreenManager:
                 Label:
                     text: "High:"
                 Label:
-                    text: "xxc"
+                    id: labelDay3High
+                    #text: root.labelDay3High
                 Label:
                     text: "Low:"
                 Label:
@@ -187,7 +173,8 @@ MyScreenManager:
                 Label:
                     text: "High:"
                 Label:
-                    text: "xxc"
+                    id: labelDay4High
+                    #text: root.labelDay4High
                 Label:
                     text: "Low:"
                 Label:
@@ -205,7 +192,8 @@ MyScreenManager:
                 Label:
                     text: "High:"
                 Label:
-                    text: "xxc"
+                    id: labelDay5High
+                    #text: root.labelDay5High
                 Label:
                     text: "Low:"
                 Label:
@@ -223,7 +211,8 @@ MyScreenManager:
                 Label:
                     text: "High:"
                 Label:
-                    text: "xxc"
+                    id: labelDay6High
+                    #text: root.labelDay6High
                 Label:
                     text: "Low:"
                 Label:
@@ -241,7 +230,8 @@ MyScreenManager:
                 Label:
                     text: "High:"
                 Label:
-                    text: "xxc"
+                    id: labelDay7High
+                    #text: root.labelDay7High
                 Label:
                     text: "Low:"
                 Label:
@@ -259,7 +249,8 @@ MyScreenManager:
                 Label:
                     text: "High:"
                 Label:
-                    text: "xxc"
+                    id: labelDay8High
+                    #text: root.labelDay8High
                 Label:
                     text: "Low:"
                 Label:
@@ -277,7 +268,8 @@ MyScreenManager:
                 Label:
                     text: "High:"
                 Label:
-                    text: "xxc"
+                    id: labelDay9High
+                    #text: root.labelDay9High
                 Label:
                     text: "Low:"
                 Label:
@@ -295,7 +287,8 @@ MyScreenManager:
                 Label:
                     text: "High:"
                 Label:
-                    text: "xxc"
+                    id: labelDay10High
+                    #text: root.labelDay10High
                 Label:
                     text: "Low:"
                 Label:
@@ -310,8 +303,6 @@ MyScreenManager:
     name: "twitter"
 
     BoxLayout:
-        labelRecentTweet: labelRecentTweet
-
         Label:
             id: labelTwitterUsername
             text: "Latest tweet by @username:"
@@ -341,7 +332,6 @@ MyScreenManager:
     name: "notes"
 
     BoxLayout:
-
         Label:
             id: labelLastNoteTitle
             text: "Most recent note title"
@@ -363,7 +353,6 @@ MyScreenManager:
     name: "reminders"
 
     BoxLayout:
-
         Label:
             id: labelLastNoteTitle
             text: "Most recent reminder title"
@@ -385,7 +374,6 @@ MyScreenManager:
     name: "alarms"
 
     BoxLayout:
-
         Label:
             id: labelLastAlarmTitle
             text: "Most recent alarm title"
@@ -407,7 +395,6 @@ MyScreenManager:
     name: "settings"
 
     BoxLayout:
-
         GridLayout:
             cols: 2
             Label:
