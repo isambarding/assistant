@@ -64,6 +64,8 @@ class WeatherScreen(Screen):
     def getCurrentLow(self, *args):
         self.labelWeatherLow = self.w.forecastTodayLow() + "°C"
 
+    def getCustomLocation(self *args):
+
 
 class MoreWeatherScreen(Screen):
     def __init__(self, **kwargs):

@@ -1,9 +1,14 @@
 import requests
 
-# 03/05/18: tested working
-# add function to retrieve days? easier that way?
+# WEATHER.PY
+# Contains classes for retrieving a 4-day or 10-day forecast.
+# USAGE: Country can be full name ("France") or as 2 letter country code ("FR")
+# Note that the 2 letter country code is NOT the ISO code- Wunderground uses its own system
+# City must be full name ("Paris")
+# 21/05/18: tested working
 
-
+# WEATHER4DAY
+# Retrieves a 4-day forecast, using Wunderground's 4-day request API
 class Weather4Day:
     # Uses 4 day request
     def __init__(self, country, city):
@@ -60,6 +65,8 @@ class Weather4Day:
         return s
 
 
+# WEATHER10DAY
+# Retrieves a 10-day forecast, using Wunderground's 10-day request API
 class Weather10Day:
     # Uses 10 day request
     def __init__(self, country, city):
@@ -101,6 +108,6 @@ class Weather10Day:
 # testing
 #country = input("Enter country: ")
 #city = input("Enter city: ")
-w = Weather10Day("france", "paris")
-print(w.dayList())
+w = Weather4Day("fr", "paris")
+print(w.forecastTodayText())
 
