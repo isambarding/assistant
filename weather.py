@@ -7,8 +7,11 @@ import requests
 # City must be full name ("Paris")
 # 21/05/18: tested working
 
+
 # WEATHER4DAY
 # Retrieves a 4-day forecast, using Wunderground's 4-day request API
+
+
 class Weather4Day:
     # Uses 4 day request
     def __init__(self, country, city):
@@ -106,8 +109,8 @@ class Weather10Day:
         return s
 
 # testing
-#country = input("Enter country: ")
-#city = input("Enter city: ")
-#w = Weather4Day("fr", "paris")
-#print(w.forecastTodayText())
+# country = input("Enter country: ")
+# city = input("Enter city: ")
+# w = Weather4Day("fr", "paris")
+# print(w.forecastTodayText())
 
