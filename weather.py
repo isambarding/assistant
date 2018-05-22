@@ -108,6 +108,6 @@ class Weather10Day:
 # testing
 #country = input("Enter country: ")
 #city = input("Enter city: ")
-w = Weather4Day("fr", "paris")
-print(w.forecastTodayText())
+#w = Weather4Day("fr", "paris")
+#print(w.forecastTodayText())
 

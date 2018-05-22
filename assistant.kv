@@ -108,7 +108,6 @@ MyScreenManager:
                 text: "day1 day"
             Label:
                 id: labelDay1Text
-                text_size: self.size
                 text: root.labelDay1Text
 
             GridLayout:
@@ -117,11 +116,12 @@ MyScreenManager:
                     text: "High:"
                 Label:
                     id: labelDay1High
-                    #text: root.labelDay1High
+                    text: root.labelDay1High
                 Label:
                     text: "Low:"
                 Label:
-                    text: "xxc"
+                    id: labelDay1Low
+                    text: root.labelDay1Low
 
             Label:
                 id: labelDay2Day
@@ -136,11 +136,12 @@ MyScreenManager:
                     text: "High:"
                 Label:
                     id: labelDay2High
-                    #text: root.labelDay2High
+                    text: root.labelDay2High
                 Label:
                     text: "Low:"
                 Label:
-                    text: "xxc"
+                    id: labelDay2Low
+                    text: root.labelDay2Low
 
             Label:
                 id: labelDay3Day
@@ -155,11 +156,12 @@ MyScreenManager:
                     text: "High:"
                 Label:
                     id: labelDay3High
-                    #text: root.labelDay3High
+                    text: root.labelDay3High
                 Label:
                     text: "Low:"
                 Label:
-                    text: "xxc"
+                    id: labelDay3Low
+                    text: root.labelDay3Low
 
             Label:
                 id: labelDay4Day
@@ -174,11 +176,12 @@ MyScreenManager:
                     text: "High:"
                 Label:
                     id: labelDay4High
-                    #text: root.labelDay4High
+                    text: root.labelDay4High
                 Label:
                     text: "Low:"
                 Label:
-                    text: "xxc"
+                    id: labelDay4Low
+                    text: root.labelDay4Low
 
             Label:
                 id: labelDay5Day
@@ -193,11 +196,12 @@ MyScreenManager:
                     text: "High:"
                 Label:
                     id: labelDay5High
-                    #text: root.labelDay5High
+                    text: root.labelDay5High
                 Label:
                     text: "Low:"
                 Label:
-                    text: "xxc"
+                    id: labelDay5Low
+                    text: root.labelDay5Low
 
             Label:
                 id: labelDay6Day
@@ -212,11 +216,12 @@ MyScreenManager:
                     text: "High:"
                 Label:
                     id: labelDay6High
-                    #text: root.labelDay6High
+                    text: root.labelDay6High
                 Label:
                     text: "Low:"
                 Label:
-                    text: "xxc"
+                    id: labelDay6Low
+                    text: root.labelDay6Low
 
             Label:
                 id: labelDay7Day
@@ -231,11 +236,12 @@ MyScreenManager:
                     text: "High:"
                 Label:
                     id: labelDay7High
-                    #text: root.labelDay7High
+                    text: root.labelDay7High
                 Label:
                     text: "Low:"
                 Label:
-                    text: "xxc"
+                    id: labelDay7Low
+                    text: root.labelDay7Low
 
             Label:
                 id: labelDay8Day
@@ -250,11 +256,12 @@ MyScreenManager:
                     text: "High:"
                 Label:
                     id: labelDay8High
-                    #text: root.labelDay8High
+                    text: root.labelDay8High
                 Label:
                     text: "Low:"
                 Label:
-                    text: "xxc"
+                    id: labelDay8Low
+                    text: root.labelDay8Low
 
             Label:
                 id: labelDay9Day
@@ -269,11 +276,12 @@ MyScreenManager:
                     text: "High:"
                 Label:
                     id: labelDay9High
-                    #text: root.labelDay9High
+                    text: root.labelDay9High
                 Label:
                     text: "Low:"
                 Label:
-                    text: "xxc"
+                    id: labelDay9Low
+                    text: root.labelDay9Low
 
             Label:
                 id: labelDay10Day
@@ -288,11 +296,12 @@ MyScreenManager:
                     text: "High:"
                 Label:
                     id: labelDay10High
-                    #text: root.labelDay10High
+                    text: root.labelDay10High
                 Label:
                     text: "Low:"
                 Label:
-                    text: "xxc"
+                    id: labelDay10Low
+                    text: root.labelDay10Low
 
             Button:
                 id: buttonBack
@@ -435,6 +444,7 @@ MyScreenManager:
     halign: "center"
     valign: "center"
     font_size: "15dp"
+    height: self.text_size[1]
 
 <BoxLayout>
     orientation: "vertical"
