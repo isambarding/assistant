@@ -3,6 +3,7 @@ MyScreenManager:
     WeatherScreen:
     MoreWeatherScreen:
     TwitterScreen:
+    MoreTwitterScreen:
     NotesScreen:
     RemindersScreen:
     AlarmsScreen:
@@ -42,6 +43,8 @@ MyScreenManager:
 
 <WeatherScreen>
     name: "weather"
+    inputCityText: inputCity
+    inputCountryText: inputCountry
 
     BoxLayout:
         Label:
@@ -75,17 +78,17 @@ MyScreenManager:
                 text: "Country:"
             TextInput:
                 id: inputCountry
-                text: root.inputCountry
+                text: "country"
             Label:
                 text: "City:"
             TextInput:
                 id: inputCity
-                text: root.inputCity
+                text: "city"
 
         Button:
             id: buttonUpdateLocation
             text: "Get weather"
-            on_press: app.root.current = "moreweather"
+            on_press: root.getLocation()
         Button:
             id: buttonBack
             text: "Back"
@@ -308,7 +311,7 @@ MyScreenManager:
 
 <TwitterScreen>
     name: "twitter"
-
+    unInput: inputTwitterUsername.text
     BoxLayout:
         Label:
             id: labelTwitterUsername
@@ -316,9 +319,6 @@ MyScreenManager:
         Label:
             id: labelRecentTweet
             text: root.labelRecentTweet
-        Button:
-            id: buttonGetTweets
-            text: "More tweets"
 
         GridLayout:
             cols: 2
@@ -326,14 +326,63 @@ MyScreenManager:
                 text: "@Username:"
             TextInput:
                 id: inputTwitterUsername
+                text: root.unInput
 
         Button:
             id: buttonSearchTweets
             text: "Search username"
+            on_press: root.getMoreTweets()
         Button:
             id: buttonBack
             text: "Back"
             on_press: app.root.current = "home"
+
+<MoreTwitterScreen>
+    name: "moretwitter"
+    ScrollView:
+        do_scroll_y: True
+        do_scroll_x: False
+
+        BoxLayout:
+            size_hint_y: None
+            height: "1000dp"
+            Label:
+                id: labelTwitterUsername
+                text: "Tweets by @username:"
+            Label:
+                id: labelTweet1
+                #text: root.labelTweet1
+            Label:
+                id: labelTweet2
+                #text: root.labelTweet2
+            Label:
+                id: labelTweet3
+                #text: root.labelTweet3
+            Label:
+                id: labelTweet4
+                #text: root.labelTweet4
+            Label:
+                id: labelTweet5
+                #text: root.labelTweet5
+            Label:
+                id: labelTweet6
+                #text: root.labelTweet6
+            Label:
+                id: labelTweet7
+                #text: root.labelTweet7
+            Label:
+                id: labelTweet8
+                #text: root.labelTweet8
+            Label:
+                id: labelTweet8
+                #text: root.labelTweet9
+            Label:
+                id: labelTweet10
+                #text: root.labelTweet10
+            Button:
+                id: buttonBack
+                text: "Back"
+                on_press: app.root.current = "twitter"
 
 <NotesScreen>
     name: "notes"
@@ -446,3 +495,6 @@ MyScreenManager:
 
 <BoxLayout>
     orientation: "vertical"
+
+<TextInput>
+    multiline: "false"

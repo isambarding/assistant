@@ -1,6 +1,7 @@
 import sqlite3
 
 from kivy.app import App
+from kivy.properties import ObjectProperty, StringProperty
 from kivy.uix.screenmanager import ScreenManager, Screen
 
 from weather import Weather4Day, Weather10Day
@@ -8,11 +9,16 @@ from twitter import Twitter
 
 # Make label height scale with number of lines
 # moreweather custom forecast
-# do moretwitter layout
+# pass variables between screens
+# do moretwitter layout - dates etc
+# moretwitter username display
+# twitter - username in textinput by default
+# moreweather to same standard as moretwitter - objectproperty etc
 # do nra layouts
 # do nra functions
 # clean up text = first letter caps on names and locations
-
+# clean code
+# error trapping!!!
 
 class HomeScreen(Screen):
     def __init__(self, **kwargs):
@@ -27,7 +33,13 @@ class HomeScreen(Screen):
 
 
 class WeatherScreen(Screen):
+
+    inputCountryText = ObjectProperty()
+    inputCityText = ObjectProperty()
+
     def __init__(self, **kwargs):
+        # FIX THIS
+
         super(WeatherScreen, self).__init__(**kwargs)
 
         with sqlite3.connect("UserData.db") as db:
@@ -36,37 +48,43 @@ class WeatherScreen(Screen):
             city = cursor.fetchone()
             cursor.execute("SELECT country FROM userInfo")
             country = cursor.fetchone()
-        city = city[0]
-        country = country[0]
+        userCity = city[0]
+        userCountry = country[0]
 
-        w = Weather4Day(country, city)
-        self.labelLocation = "The weather in " + city + ", " + country + " is:"
+        w = Weather4Day(userCountry, userCity)
+        self.labelLocation = "The weather in " + userCity + ", " + userCountry + " is:"
         self.labelWeatherText = w.forecastTodayText()
         self.labelWeatherHigh = w.forecastTodayHigh() + "°C"
         self.labelWeatherLow = w.forecastTodayLow() + "°C"
-        self.inputCountry = country
-        self.inputCity = city
+        #self.inputCountryText.text = userCountry
+        #self.inputCityText.text = userCity
 
-        #def change_text(self):
-        #    self.text = "The text you want to set"
-        #    self.manager.current = "MoreWeatherScreen"
+    def getLocation(self):
+        # FIX THIS
+        userCountry = StringProperty('')
+
+        inputCountry = ObjectProperty()
+
+        #self.userCity = self.inputCity.text
+        #self.userCountry = self.inputCountry.text
+
+        self.manager.current = "moreweather"
 
 
 class MoreWeatherScreen(Screen):
     def __init__(self, **kwargs):
         super(MoreWeatherScreen, self).__init__(**kwargs)
+        self.refreshWeather()
 
-        #with sqlite3.connect("UserData.db") as db:
-        #    cursor = db.cursor()
-        #    cursor.execute("SELECT city FROM userInfo")
-        #    city = cursor.fetchone()
-        #    cursor.execute("SELECT country FROM userInfo")
-        #    country = cursor.fetchone()
-        #city = city[0]
-        #country = country[0]
+    def update_text(self, label_text):
+        # print('label_text :', label_text)
+        self.obj_input1_box.text = label_text
 
-        country = WeatherScreen.inputCountry
-        city = WeatherScreen.inputCity
+    def refreshWeather(self):
+        # FIX THIS
+
+        country = "fhgd"
+        city = "effedff"
 
         w = Weather10Day(country, city)
 
@@ -93,7 +111,7 @@ class MoreWeatherScreen(Screen):
         self.labelDay8High = highData[7] + "°C"
         self.labelDay9High = highData[8] + "°C"
         self.labelDay10High = highData[9] + "°C"
-        
+
         lowData = w.forecast10DaysLow()
         self.labelDay1Low = lowData[0] + "°C"
         self.labelDay2Low = lowData[1] + "°C"
@@ -120,6 +138,8 @@ class MoreWeatherScreen(Screen):
 
 
 class TwitterScreen(Screen):
+    unInput = StringProperty()
+
     def __init__(self, **kwargs):
         super(TwitterScreen, self).__init__(**kwargs)
 
@@ -131,6 +151,17 @@ class TwitterScreen(Screen):
         t = Twitter()
 
         self.labelRecentTweet = t.userLatest(username)
+        self.unInput = username
+
+    def getMoreTweets(self):
+        un = self.unInput
+        print(un)
+        self.parent.current = "moretwitter"
+
+
+class MoreTwitterScreen(Screen):
+    def __init__(self, **kwargs):
+        super(MoreTwitterScreen, self).__init__(**kwargs)
 
 
 class NotesScreen(Screen):
