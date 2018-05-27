@@ -20,6 +20,10 @@ from twitter import Twitter
 # clean code
 # error trapping!!!
 
+globalCountry = ""
+globalCity = ""
+globalUsername = "kedst"
+
 class HomeScreen(Screen):
     def __init__(self, **kwargs):
         super(HomeScreen, self).__init__(**kwargs)
@@ -83,8 +87,8 @@ class MoreWeatherScreen(Screen):
     def refreshWeather(self):
         # FIX THIS
 
-        country = "fhgd"
-        city = "effedff"
+        country = "france"
+        city = "paris"
 
         w = Weather10Day(country, city)
 
@@ -155,7 +159,21 @@ class TwitterScreen(Screen):
 
     def getMoreTweets(self):
         un = self.unInput
-        print(un)
+        s2 = self.manager.get_screen("moretwitter")
+        t = Twitter()
+        tweets = t.user10(un)
+        print(tweets)
+        s2.labelTwitterUsername.text = "Latest tweets from @" + un
+        s2.labelTweet1.text = tweets[0]
+        s2.labelTweet2.text = tweets[1]
+        s2.labelTweet3.text = tweets[2]
+        s2.labelTweet4.text = tweets[3]
+        s2.labelTweet5.text = tweets[4]
+        s2.labelTweet6.text = tweets[5]
+        s2.labelTweet7.text = tweets[6]
+        s2.labelTweet8.text = tweets[7]
+        s2.labelTweet9.text = tweets[8]
+        s2.labelTweet10.text = tweets[9]
         self.parent.current = "moretwitter"
 
 
