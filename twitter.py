@@ -15,9 +15,10 @@ class Twitter:
         tokensecret = "pRhsJmMozHLycb7e6rc2wy0Xrk74e2yvVIZkfaGUYCFLU"
         self.auth = OAuth1(appkey, appsecret, token, tokensecret)
 
-    # Gets the lastest tweet from a given username
+    # Gets the latest tweet from a given username
     def userLatest(self, username):
         url = "https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=" + username + "&count=1"
+        print(url)
         response = requests.get(url, auth=self.auth)
         f = response.json()
         q = f[0]

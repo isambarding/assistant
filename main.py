@@ -142,7 +142,7 @@ class MoreWeatherScreen(Screen):
 
 
 class TwitterScreen(Screen):
-    unInput = StringProperty()
+    #inputTwitterUsername = StringProperty()
 
     def __init__(self, **kwargs):
         super(TwitterScreen, self).__init__(**kwargs)
@@ -151,35 +151,50 @@ class TwitterScreen(Screen):
             cursor = db.cursor()
             cursor.execute("SELECT LastTwitterSearch FROM userInfo")
             username = cursor.fetchone()
+
         username = username[0]
         t = Twitter()
 
         self.labelRecentTweet = t.userLatest(username)
-        self.unInput = username
+        self.inputTwitterUsername = username
 
     def getMoreTweets(self):
-        un = self.unInput
-        s2 = self.manager.get_screen("moretwitter")
+        un = self.inputTwitterUsername
+        print(un)
+        moretwitter = self.manager.get_screen("moretwitter")
         t = Twitter()
         tweets = t.user10(un)
-        print(tweets)
-        s2.labelTwitterUsername.text = "Latest tweets from @" + un
-        s2.labelTweet1.text = tweets[0]
-        s2.labelTweet2.text = tweets[1]
-        s2.labelTweet3.text = tweets[2]
-        s2.labelTweet4.text = tweets[3]
-        s2.labelTweet5.text = tweets[4]
-        s2.labelTweet6.text = tweets[5]
-        s2.labelTweet7.text = tweets[6]
-        s2.labelTweet8.text = tweets[7]
-        s2.labelTweet9.text = tweets[8]
-        s2.labelTweet10.text = tweets[9]
+        moretwitter.labelTwitterUsername.text = "Latest tweets from @" + un
+        moretwitter.labelTweet1.text = tweets[0]
+        moretwitter.labelTweet2.text = tweets[1]
+        moretwitter.labelTweet3.text = tweets[2]
+        moretwitter.labelTweet4.text = tweets[3]
+        moretwitter.labelTweet5.text = tweets[4]
+        moretwitter.labelTweet6.text = tweets[5]
+        moretwitter.labelTweet7.text = tweets[6]
+        moretwitter.labelTweet8.text = tweets[7]
+        moretwitter.labelTweet9.text = tweets[8]
+        moretwitter.labelTweet10.text = tweets[9]
         self.parent.current = "moretwitter"
 
 
 class MoreTwitterScreen(Screen):
     def __init__(self, **kwargs):
         super(MoreTwitterScreen, self).__init__(**kwargs)
+
+    def refreshTwitter(self):
+        twitter = self.manager.get_screen("twitter")
+
+        with sqlite3.connect("UserData.db") as db:
+            cursor = db.cursor()
+            cursor.execute("SELECT LastTwitterSearch FROM userInfo")
+            username = cursor.fetchone()
+        username = username[0]
+
+        t = Twitter()
+        twitter.labelRecentTweet = t.userLatest(username)
+        twitter.inputTwitterUsername = username
+        self.parent.current = "twitter"
 
 
 class NotesScreen(Screen):

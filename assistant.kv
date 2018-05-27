@@ -311,7 +311,7 @@ MyScreenManager:
 
 <TwitterScreen>
     name: "twitter"
-    unInput: inputTwitterUsername.text
+    inputTwitterUsername: inputTwitterUsername
     BoxLayout:
         Label:
             id: labelTwitterUsername
@@ -326,7 +326,7 @@ MyScreenManager:
                 text: "@Username:"
             TextInput:
                 id: inputTwitterUsername
-                text: root.unInput
+                #text: root.inputTwitterUsername
 
         Button:
             id: buttonSearchTweets
@@ -393,7 +393,7 @@ MyScreenManager:
             Button:
                 id: buttonBack
                 text: "Back"
-                on_press: app.root.current = "twitter"
+                on_press: root.refreshTwitter()
 
 <NotesScreen>
     name: "notes"
