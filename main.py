@@ -1,16 +1,13 @@
 import sqlite3
 
 from kivy.app import App
-from kivy.properties import ObjectProperty, StringProperty
+from kivy.properties import StringProperty
 from kivy.uix.screenmanager import ScreenManager, Screen
 
 from weather import Weather4Day, Weather10Day
 from twitter import Twitter
 
 # do moretwitter layout - dates etc
-
-# moreweather to same standard as moretwitter
-# moreweather custom forecast
 
 # do nra layouts
 # do nra functions
@@ -20,9 +17,6 @@ from twitter import Twitter
 # clean code
 # error trapping!!!
 
-globalCountry = ""
-globalCity = ""
-globalUsername = "kedst"
 
 class HomeScreen(Screen):
     def __init__(self, **kwargs):
@@ -37,108 +31,96 @@ class HomeScreen(Screen):
 
 
 class WeatherScreen(Screen):
-
-    inputCountryText = ObjectProperty()
-    inputCityText = ObjectProperty()
+    latestWeatherText = StringProperty()
+    latestWeatherHigh = StringProperty()
+    latestWeatherLow = StringProperty()
+    latestLocation = StringProperty()
 
     def __init__(self, **kwargs):
-        # FIX THIS
-
         super(WeatherScreen, self).__init__(**kwargs)
+        self.getWeather()
 
+    def getWeather(self):
         with sqlite3.connect("UserData.db") as db:
             cursor = db.cursor()
             cursor.execute("SELECT city FROM userInfo")
             city = cursor.fetchone()
             cursor.execute("SELECT country FROM userInfo")
             country = cursor.fetchone()
-        userCity = city[0]
-        userCountry = country[0]
+        city = city[0]
+        country = country[0]
 
-        w = Weather4Day(userCountry, userCity)
-        self.labelLocation = "The weather in " + userCity + ", " + userCountry + " is:"
-        self.labelWeatherText = w.forecastTodayText()
-        self.labelWeatherHigh = w.forecastTodayHigh() + "°C"
-        self.labelWeatherLow = w.forecastTodayLow() + "°C"
-        #self.inputCountryText.text = userCountry
-        #self.inputCityText.text = userCity
+        w = Weather4Day(country, city)
+        self.latestLocation = "The weather in " + city + ", " + country + " is:"
+        self.latestWeatherText = w.forecastTodayText()
+        self.latestWeatherHigh = w.forecastTodayHigh() + "°C"
+        self.latestWeatherLow = w.forecastTodayLow() + "°C"
 
-    def getLocation(self):
-        # FIX THIS
-        userCountry = StringProperty('')
+    def getMoreWeather(self):
+        city = self.inputCity.text
+        country = self.inputCountry.text
+        
+        if city == "" or country == "":
+            pass
+        else:
+            moreweather = self.manager.get_screen("moreweather")
 
-        inputCountry = ObjectProperty()
+            w = Weather10Day(country, city)
 
-        #self.userCity = self.inputCity.text
-        #self.userCountry = self.inputCountry.text
+            textData = w.forecast10DaysText()
+            moreweather.labelDay1Text.text = textData[0]
+            moreweather.labelDay2Text.text = textData[1]
+            moreweather.labelDay3Text.text = textData[2]
+            moreweather.labelDay4Text.text = textData[3]
+            moreweather.labelDay5Text.text = textData[4]
+            moreweather.labelDay6Text.text = textData[5]
+            moreweather.labelDay7Text.text = textData[6]
+            moreweather.labelDay8Text.text = textData[7]
+            moreweather.labelDay9Text.text = textData[8]
+            moreweather.labelDay10Text.text = textData[9]
 
-        self.manager.current = "moreweather"
+            highData = w.forecast10DaysHigh()
+            moreweather.labelDay1High.text = highData[0] + "°C"
+            moreweather.labelDay2High.text = highData[1] + "°C"
+            moreweather.labelDay3High.text = highData[2] + "°C"
+            moreweather.labelDay4High.text = highData[3] + "°C"
+            moreweather.labelDay5High.text = highData[4] + "°C"
+            moreweather.labelDay6High.text = highData[5] + "°C"
+            moreweather.labelDay7High.text = highData[6] + "°C"
+            moreweather.labelDay8High.text = highData[7] + "°C"
+            moreweather.labelDay9High.text = highData[8] + "°C"
+            moreweather.labelDay10High.text = highData[9] + "°C"
+
+            lowData = w.forecast10DaysLow()
+            moreweather.labelDay1Low.text = lowData[0] + "°C"
+            moreweather.labelDay2Low.text = lowData[1] + "°C"
+            moreweather.labelDay3Low.text = lowData[2] + "°C"
+            moreweather.labelDay4Low.text = lowData[3] + "°C"
+            moreweather.labelDay5Low.text = lowData[4] + "°C"
+            moreweather.labelDay6Low.text = lowData[5] + "°C"
+            moreweather.labelDay7Low.text = lowData[6] + "°C"
+            moreweather.labelDay8Low.text = lowData[7] + "°C"
+            moreweather.labelDay9Low.text = lowData[8] + "°C"
+            moreweather.labelDay10Low.text = lowData[9] + "°C"
+
+            days = w.dayList()
+            moreweather.labelDay1Day.text = days[0]
+            moreweather.labelDay2Day.text = days[1]
+            moreweather.labelDay3Day.text = days[2]
+            moreweather.labelDay4Day.text = days[3]
+            moreweather.labelDay5Day.text = days[4]
+            moreweather.labelDay6Day.text = days[5]
+            moreweather.labelDay7Day.text = days[6]
+            moreweather.labelDay8Day.text = days[7]
+            moreweather.labelDay9Day.text = days[8]
+            moreweather.labelDay10Day.text = days[9]
+            
+            self.manager.current = "moreweather"
 
 
 class MoreWeatherScreen(Screen):
     def __init__(self, **kwargs):
         super(MoreWeatherScreen, self).__init__(**kwargs)
-        self.refreshWeather()
-
-    def update_text(self, label_text):
-        # print('label_text :', label_text)
-        self.obj_input1_box.text = label_text
-
-    def refreshWeather(self):
-        # FIX THIS
-
-        country = "france"
-        city = "paris"
-
-        w = Weather10Day(country, city)
-
-        textData = w.forecast10DaysText()
-        self.labelDay1Text = textData[0]
-        self.labelDay2Text = textData[1]
-        self.labelDay3Text = textData[2]
-        self.labelDay4Text = textData[3]
-        self.labelDay5Text = textData[4]
-        self.labelDay6Text = textData[5]
-        self.labelDay7Text = textData[6]
-        self.labelDay8Text = textData[7]
-        self.labelDay9Text = textData[8]
-        self.labelDay10Text = textData[9]
-
-        highData = w.forecast10DaysHigh()
-        self.labelDay1High = highData[0] + "°C"
-        self.labelDay2High = highData[1] + "°C"
-        self.labelDay3High = highData[2] + "°C"
-        self.labelDay4High = highData[3] + "°C"
-        self.labelDay5High = highData[4] + "°C"
-        self.labelDay6High = highData[5] + "°C"
-        self.labelDay7High = highData[6] + "°C"
-        self.labelDay8High = highData[7] + "°C"
-        self.labelDay9High = highData[8] + "°C"
-        self.labelDay10High = highData[9] + "°C"
-
-        lowData = w.forecast10DaysLow()
-        self.labelDay1Low = lowData[0] + "°C"
-        self.labelDay2Low = lowData[1] + "°C"
-        self.labelDay3Low = lowData[2] + "°C"
-        self.labelDay4Low = lowData[3] + "°C"
-        self.labelDay5Low = lowData[4] + "°C"
-        self.labelDay6Low = lowData[5] + "°C"
-        self.labelDay7Low = lowData[6] + "°C"
-        self.labelDay8Low = lowData[7] + "°C"
-        self.labelDay9Low = lowData[8] + "°C"
-        self.labelDay10Low = lowData[9] + "°C"
-
-        days = w.dayList()
-        self.labelDay1Day = days[0]
-        self.labelDay2Day = days[1]
-        self.labelDay3Day = days[2]
-        self.labelDay4Day = days[3]
-        self.labelDay5Day = days[4]
-        self.labelDay6Day = days[5]
-        self.labelDay7Day = days[6]
-        self.labelDay8Day = days[7]
-        self.labelDay9Day = days[8]
-        self.labelDay10Day = days[9]
 
 
 class TwitterScreen(Screen):
