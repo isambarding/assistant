@@ -7,16 +7,16 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from weather import Weather4Day, Weather10Day
 from twitter import Twitter
 
-# Make label height scale with number of lines
-# moreweather custom forecast
-# pass variables between screens
 # do moretwitter layout - dates etc
-# moretwitter username display
-# twitter - username in textinput by default
-# moreweather to same standard as moretwitter - objectproperty etc
+
+# moreweather to same standard as moretwitter
+# moreweather custom forecast
+
 # do nra layouts
 # do nra functions
-# clean up text = first letter caps on names and locations
+
+# Make label height scale with number of lines
+# clean up user input = first letter caps on names and locations
 # clean code
 # error trapping!!!
 
@@ -142,11 +142,14 @@ class MoreWeatherScreen(Screen):
 
 
 class TwitterScreen(Screen):
-    #inputTwitterUsername = StringProperty()
+    recentTweet = StringProperty()
+    recentUsername = StringProperty()
 
     def __init__(self, **kwargs):
         super(TwitterScreen, self).__init__(**kwargs)
+        self.latestTweet()
 
+    def latestTweet(self):
         with sqlite3.connect("UserData.db") as db:
             cursor = db.cursor()
             cursor.execute("SELECT LastTwitterSearch FROM userInfo")
@@ -154,46 +157,48 @@ class TwitterScreen(Screen):
 
         username = username[0]
         t = Twitter()
-
-        self.labelRecentTweet = t.userLatest(username)
-        self.inputTwitterUsername = username
+        self.recentTweet = t.userLatest(username)
+        self.recentUsername = "Latest tweet from @" + username
 
     def getMoreTweets(self):
-        un = self.inputTwitterUsername
-        print(un)
-        moretwitter = self.manager.get_screen("moretwitter")
-        t = Twitter()
-        tweets = t.user10(un)
-        moretwitter.labelTwitterUsername.text = "Latest tweets from @" + un
-        moretwitter.labelTweet1.text = tweets[0]
-        moretwitter.labelTweet2.text = tweets[1]
-        moretwitter.labelTweet3.text = tweets[2]
-        moretwitter.labelTweet4.text = tweets[3]
-        moretwitter.labelTweet5.text = tweets[4]
-        moretwitter.labelTweet6.text = tweets[5]
-        moretwitter.labelTweet7.text = tweets[6]
-        moretwitter.labelTweet8.text = tweets[7]
-        moretwitter.labelTweet9.text = tweets[8]
-        moretwitter.labelTweet10.text = tweets[9]
-        self.parent.current = "moretwitter"
+        un = self.inputTwitterUsername.text
+        if un == "":
+            pass
+        else:
+            moretwitter = self.manager.get_screen("moretwitter")
+            t = Twitter()
+            tweets = t.user10(un)
+            moretwitter.labelTwitterUsername.text = "Latest tweets from @" + un
+            moretwitter.labelTweet1.text = tweets[0]
+            moretwitter.labelTweet2.text = tweets[1]
+            moretwitter.labelTweet3.text = tweets[2]
+            moretwitter.labelTweet4.text = tweets[3]
+            moretwitter.labelTweet5.text = tweets[4]
+            moretwitter.labelTweet6.text = tweets[5]
+            moretwitter.labelTweet7.text = tweets[6]
+            moretwitter.labelTweet8.text = tweets[7]
+            moretwitter.labelTweet9.text = tweets[8]
+            moretwitter.labelTweet10.text = tweets[9]
+            self.parent.current = "moretwitter"
 
 
 class MoreTwitterScreen(Screen):
+
     def __init__(self, **kwargs):
         super(MoreTwitterScreen, self).__init__(**kwargs)
 
     def refreshTwitter(self):
         twitter = self.manager.get_screen("twitter")
+        username = twitter.inputTwitterUsername.text
 
         with sqlite3.connect("UserData.db") as db:
             cursor = db.cursor()
-            cursor.execute("SELECT LastTwitterSearch FROM userInfo")
-            username = cursor.fetchone()
-        username = username[0]
+            cursor.execute('UPDATE userInfo SET LastTwitterSearch="' + username + '"')
 
         t = Twitter()
-        twitter.labelRecentTweet = t.userLatest(username)
-        twitter.inputTwitterUsername = username
+        twitter.recentUsername = "Latest tweet from @" + username
+        twitter.recentTweet = t.userLatest(username)
+        print(twitter.recentTweet)
         self.parent.current = "twitter"
 
 

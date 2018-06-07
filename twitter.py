@@ -14,11 +14,11 @@ class Twitter:
         appsecret = "CSdnGZ1ZZkPfMrWF9qTR98sRAFMPiuTf1OSouAHVOd8hCKHzmN"
         tokensecret = "pRhsJmMozHLycb7e6rc2wy0Xrk74e2yvVIZkfaGUYCFLU"
         self.auth = OAuth1(appkey, appsecret, token, tokensecret)
+        self.twurl = "https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name="
 
     # Gets the latest tweet from a given username
     def userLatest(self, username):
-        url = "https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=" + username + "&count=1"
-        print(url)
+        url = self.twurl + username + "&count=1"
         response = requests.get(url, auth=self.auth)
         f = response.json()
         q = f[0]
@@ -26,7 +26,7 @@ class Twitter:
 
     # Gets the previous 10 tweets from a given username.
     def user10(self, username):
-        url = "https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=" + username + "&count=10"
+        url = self.twurl + username + "&count=10"
         response = requests.get(url, auth=self.auth)
         f = response.json()
         s = []

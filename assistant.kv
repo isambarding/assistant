@@ -315,10 +315,10 @@ MyScreenManager:
     BoxLayout:
         Label:
             id: labelTwitterUsername
-            text: "Latest tweet by @username:"
+            text: root.recentUsername
         Label:
             id: labelRecentTweet
-            text: root.labelRecentTweet
+            text: root.recentTweet
 
         GridLayout:
             cols: 2
@@ -326,7 +326,6 @@ MyScreenManager:
                 text: "@Username:"
             TextInput:
                 id: inputTwitterUsername
-                #text: root.inputTwitterUsername
 
         Button:
             id: buttonSearchTweets
@@ -508,4 +507,4 @@ MyScreenManager:
     orientation: "vertical"
 
 <TextInput>
-    multiline: "false"
+    multiline: False
