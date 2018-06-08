@@ -185,6 +185,24 @@ class MoreTwitterScreen(Screen):
 
 
 class NotesScreen(Screen):
+    def __init__(self, **kwargs):
+        super(NotesScreen, self).__init__(**kwargs)
+
+    def newNote(self):
+        self.parent.current = "newnotes"
+
+    def notesByTime(self):
+        self.parent.current = "morenotes"
+
+    def notesByTitle(self):
+        self.parent.current = "morenotes"
+
+
+class NewNotesScreen(Screen):
+    pass
+
+
+class MoreNotesScreen(Screen):
     pass
 
 
@@ -219,6 +237,7 @@ class SettingsScreen(Screen):
 
     def restartSetup(self):
         pass
+
 
 class MyScreenManager(ScreenManager):
     pass

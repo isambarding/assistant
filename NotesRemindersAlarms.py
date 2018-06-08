@@ -1,16 +1,14 @@
 import sqlite3
 
-# complete this
-
 
 class NotesRemindersAlarms:
     def __init__(self):
         pass
 
-    def sort(self):
+    def sortAll(self):
         pass
 
-    def search(self, ntype, value):
+    def searchAll(self, ntype, value):
         with sqlite3.connect("UserData.db") as db:
             cursor = db.cursor()
             cursor.execute("select * from " + ntype + " where title like %" + value + "%")
@@ -20,7 +18,7 @@ class NotesRemindersAlarms:
     def dictate(self):
         pass
 
-    def create(self, ntype, title):
+    def createAll(self, ntype, title):
         with sqlite3.connect("UserData.db") as db:
             cursor = db.cursor()
             sql = "insert into " + ntype + " (Title) values " + title
@@ -30,43 +28,56 @@ class NotesRemindersAlarms:
     def viewAll(self):
         pass
 
-    def edit(self):
+    def editAll(self):
         pass
 
-    def delete(self, ntype, idno):
+    def deleteAll(self, ntype, idno):
         with sqlite3.connect("UserData.db") as db:
             cursor = db.cursor()
             sql = "delete from " + ntype + " where ID=" + idno
-            cursor.execute(sql, idno)
+            cursor.execute(sql)
             db.commit()
+
+# Notes class
 
 
 class Notes(NotesRemindersAlarms):
-    # Notes class
-    def create(self):
-        pass
+    def create(self, title, content):
+        self.createAll("Notes", title)
+        with sqlite3.connect("UserData.db") as db:
+            cursor = db.cursor()
+            sql = "insert into Notes (Content) values (" + content
+            cursor.execute(sql)
+            db.commit
 
     def mostRecent(self):
         pass
 
     def delete(self, noteid):
-        NotesRemindersAlarms.delete(self, "Notes", noteid)
+        self.deleteAll(self, "Notes", noteid)
+
+# Reminders class
 
 
 class Reminders(NotesRemindersAlarms):
-    # Notes class
-    def create(self):
-        pass
+    def create(self, title, content, time):
+        self.createAll("Notes", title)
+        with sqlite3.connect("UserData.db") as db:
+            cursor = db.cursor()
+            sql = "insert into Notes (Content, Time) values (" + content
+            cursor.execute(sql)
+            db.commit
 
     def mostRecent(self):
         pass
 
     def delete(self, noteid):
-        NotesRemindersAlarms.delete(self, "Reminders", noteid)
+        self.deleteAll(self, "Reminders", noteid)
+
+# Alarms class
 
 
 class Alarms(NotesRemindersAlarms):
-    # Notes class
     def create(self):
         pass
 
@@ -74,5 +85,6 @@ class Alarms(NotesRemindersAlarms):
         pass
 
     def delete(self, noteid):
-        NotesRemindersAlarms.delete(self, "Alarms", noteid)
+        #self.deleteAll(self, "Alarms", noteid)
+        pass
 

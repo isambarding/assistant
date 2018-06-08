@@ -5,6 +5,8 @@ MyScreenManager:
     TwitterScreen:
     MoreTwitterScreen:
     NotesScreen:
+    NewNotesScreen:
+    MoreNotesScreen:
     RemindersScreen:
     AlarmsScreen:
     SettingsScreen:
@@ -447,15 +449,59 @@ MyScreenManager:
             id: labelLastNoteContent
             text: "Most recent note content"
         Button:
-            id: buttonNewReminder
+            id: buttonNewNote
             text: "New note"
-        Button:
-            id: buttonAllNotes
-            text: "All notes"
+            on_press: root.newNote()
+        GridLayout:
+            cols: 2
+            Button:
+                id: buttonAllNotes
+                text: "Notes by time"
+                on_press: root.notesByTime()
+            Button:
+                id: buttonAllNotes
+                text: "Notes by title"
+                on_press: root.notesByTitle()
         Button:
             id: buttonBack
             text: "Back"
             on_press: app.root.current = "home"
+
+<NewNotesScreen>
+    name: "newnotes"
+
+    BoxLayout:
+        GridLayout:
+            cols: 2
+            Label:
+                id: labelNewNoteTitle
+                text: "Title:"
+            TextInput:
+                id: inputnewNoteTitle
+
+        Label:
+            id: labelNewNoteTitle
+            text: "Content:"
+        TextInput:
+            id: inputnewNoteContent
+            multiline: True
+        Button:
+            id: buttonBack
+            text: "Back"
+            on_press: app.root.current = "notes"
+
+<MoreNotesScreen>
+    name: "morenotes"
+
+    BoxLayout:
+        Label:
+            id: labelLastNoteTitle
+            text: "more notes"
+
+        Button:
+            id: buttonBack
+            text: "Back"
+            on_press: app.root.current = "notes"
 
 <RemindersScreen>
     name: "reminders"
