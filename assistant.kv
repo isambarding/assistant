@@ -390,6 +390,7 @@ MyScreenManager:
     labelTweet9: labelTweet9
     labelTweet10: labelTweet10
     labelTwitterUsername: labelTwitterUsername
+
     ScrollView:
         do_scroll_y: True
         do_scroll_x: False
@@ -500,8 +501,13 @@ MyScreenManager:
 
 <SettingsScreen>
     name: "settings"
+    inputNewName: inputNewName
+    inputNewCountry: inputNewCountry
+    inputNewCity: inputNewCity
 
     BoxLayout:
+        Label:
+            text: "Changes will take effect after restart"
         GridLayout:
             cols: 2
             Label:
@@ -512,6 +518,7 @@ MyScreenManager:
         Button:
             id: buttonChangeName
             text: "Change name"
+            on_press: root.changeName()
 
         GridLayout:
             cols: 2
@@ -525,8 +532,9 @@ MyScreenManager:
                 id: inputNewCity
 
         Button:
-            id: buttonSearchTweets
+            id: buttonChangeLocation
             text: "Change location"
+            on_press: root.changeLocation()
         Button:
             id: buttonRestartSetup
             text: "Restart setup"

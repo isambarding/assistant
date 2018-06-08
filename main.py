@@ -6,6 +6,7 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 
 from weather import Weather4Day, Weather10Day
 from twitter import Twitter
+from settings import Settings
 
 # do moretwitter layout - dates etc
 
@@ -180,7 +181,6 @@ class MoreTwitterScreen(Screen):
         t = Twitter()
         twitter.recentUsername = "Latest tweet from @" + username
         twitter.recentTweet = t.userLatest(username)
-        print(twitter.recentTweet)
         self.parent.current = "twitter"
 
 
@@ -197,8 +197,28 @@ class AlarmsScreen(Screen):
 
 
 class SettingsScreen(Screen):
-    pass
+    def __init__(self, **kwargs):
+        super(SettingsScreen, self).__init__(**kwargs)
 
+    def changeName(self):
+        name = self.inputNewName.text
+        if name == "":
+            pass
+        else:
+            s = Settings()
+            s.changeName(name)
+
+    def changeLocation(self):
+        city = self.inputNewCity.text
+        country = self.inputNewCountry.text
+        if city == "" or country == "":
+            pass
+        else:
+            s = Settings()
+            s.changeLocation(country, city)
+
+    def restartSetup(self):
+        pass
 
 class MyScreenManager(ScreenManager):
     pass
