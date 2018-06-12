@@ -7,6 +7,7 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from weather import Weather4Day, Weather10Day
 from twitter import Twitter
 from settings import Settings
+from NotesRemindersAlarms import NotesRemindersAlarms, Notes, Reminders, Alarms
 
 # do moretwitter layout - dates etc
 
@@ -166,7 +167,6 @@ class TwitterScreen(Screen):
 
 
 class MoreTwitterScreen(Screen):
-
     def __init__(self, **kwargs):
         super(MoreTwitterScreen, self).__init__(**kwargs)
 
@@ -177,6 +177,7 @@ class MoreTwitterScreen(Screen):
         with sqlite3.connect("UserData.db") as db:
             cursor = db.cursor()
             cursor.execute('UPDATE userInfo SET LastTwitterSearch="' + username + '"')
+            db.commit()
 
         t = Twitter()
         twitter.recentUsername = "Latest tweet from @" + username
@@ -199,7 +200,15 @@ class NotesScreen(Screen):
 
 
 class NewNotesScreen(Screen):
-    pass
+    def __init__(self, **kwargs):
+        super(NewNotesScreen, self).__init__(**kwargs)
+
+    def newNote(self):
+        title = self.inputNewNoteTitle.text
+        content = self.inputNewNoteContent.text
+        n = Notes()
+        n.create(title, content)
+        self.parent.current = "newnotes"
 
 
 class MoreNotesScreen(Screen):

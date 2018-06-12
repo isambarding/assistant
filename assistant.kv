@@ -152,6 +152,7 @@ MyScreenManager:
                 #text: root.labelDay1Day
             Label:
                 id: labelDay1Text
+                size: self.texture_size
                 #text: root.labelDay1Text
 
             GridLayout:
@@ -172,6 +173,7 @@ MyScreenManager:
                 #text: root.labelDay2Day
             Label:
                 id: labelDay2Text
+                size: self.texture_size
                 #text: root.labelDay2Text
 
             GridLayout:
@@ -192,6 +194,7 @@ MyScreenManager:
                 #text: root.labelDay3Day
             Label:
                 id: labelDay3Text
+                size: self.texture_size
                 #text: root.labelDay3Text
 
             GridLayout:
@@ -212,6 +215,7 @@ MyScreenManager:
                 #text: root.labelDay4Day
             Label:
                 id: labelDay4Text
+                size: self.texture_size
                 #text: root.labelDay4Text
 
             GridLayout:
@@ -232,6 +236,7 @@ MyScreenManager:
                 #text: root.labelDay5Day
             Label:
                 id: labelDay5Text
+                size: self.texture_size
                 #text: root.labelDay5Text
 
             GridLayout:
@@ -252,6 +257,7 @@ MyScreenManager:
                 #text: root.labelDay6Day
             Label:
                 id: labelDay6Text
+                size: self.texture_size
                 #text: root.labelDay6Text
 
             GridLayout:
@@ -272,6 +278,7 @@ MyScreenManager:
                 #text: root.labelDay7Day
             Label:
                 id: labelDay7Text
+                size: self.texture_size
                 #text: root.labelDay6Text
 
             GridLayout:
@@ -292,6 +299,7 @@ MyScreenManager:
                 #text: root.labelDay8Day
             Label:
                 id: labelDay8Text
+                size: self.texture_size
                 #text: root.labelDay8Text
 
             GridLayout:
@@ -312,6 +320,7 @@ MyScreenManager:
                 #text: root.labelDay9Day
             Label:
                 id: labelDay9Text
+                size: self.texture_size
                 #text: root.labelDay9Text
 
             GridLayout:
@@ -332,6 +341,7 @@ MyScreenManager:
                 #text: root.labelDay10Day
             Label:
                 id: labelDay10Text
+                size: self.texture_size
                 #text: root.labelDay10Text
 
             GridLayout:
@@ -477,14 +487,18 @@ MyScreenManager:
                 id: labelNewNoteTitle
                 text: "Title:"
             TextInput:
-                id: inputnewNoteTitle
+                id: inputNewNoteTitle
 
         Label:
             id: labelNewNoteTitle
             text: "Content:"
         TextInput:
-            id: inputnewNoteContent
+            id: inputNewNoteContent
             multiline: True
+        Button:
+            id: buttonCreateNote
+            text: "Back"
+            on_press: root.createNote()
         Button:
             id: buttonBack
             text: "Back"
@@ -494,9 +508,11 @@ MyScreenManager:
     name: "morenotes"
 
     BoxLayout:
-        Label:
-            id: labelLastNoteTitle
-            text: "more notes"
+        GridLayout:
+            cols: 2
+            Label:
+                id: labelLastNoteTitle1
+                text: "more notes"
 
         Button:
             id: buttonBack
