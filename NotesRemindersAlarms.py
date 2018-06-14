@@ -7,7 +7,8 @@ class NotesRemindersAlarms:
         self.cursor = self.db.cursor()
 
     def searchAll(self, ntype, value):
-        self.cursor.execute("select * from " + ntype + " where Title like %" + value + "%")
+        sql = """select * from {} where Title like '%{}%'""".format(ntype, value)
+        self.cursor.execute(sql)
         results = self.cursor.fetchall()
         return results
 
@@ -82,8 +83,8 @@ class Alarms(NotesRemindersAlarms):
         # self.deleteAll(self, "Alarms", noteid)
         pass
 
-
-n = Notes()
-t = input("Enter title")
-c = input("Enter content")
-n.create(t, c)
+# testing
+# n = Notes()
+# t = input("Enter title")
+# c = input("Enter content")
+# n.create(t, c)

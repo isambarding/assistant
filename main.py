@@ -203,7 +203,7 @@ class NewNotesScreen(Screen):
     def __init__(self, **kwargs):
         super(NewNotesScreen, self).__init__(**kwargs)
 
-    def newNote(self):
+    def createNote(self):
         title = self.inputNewNoteTitle.text
         content = self.inputNewNoteContent.text
         n = Notes()
