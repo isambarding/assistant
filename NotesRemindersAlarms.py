@@ -1,4 +1,5 @@
 import sqlite3
+import time
 
 
 class NotesRemindersAlarms:
@@ -7,7 +8,7 @@ class NotesRemindersAlarms:
         self.cursor = self.db.cursor()
 
     def searchAll(self, ntype, value):
-        sql = """select * from {} where Title like '%{}%'""".format(ntype, value)
+        sql = """SELECT * FROM {} WHERE Title LIKE '%{}%'""".format(ntype, value)
         self.cursor.execute(sql)
         results = self.cursor.fetchall()
         return results
@@ -16,12 +17,14 @@ class NotesRemindersAlarms:
         pass
 
     def createAll(self, ntype, title):
-        sql = """insert into {} (Title) values ('{}');""".format(ntype, title)
-        self.cursor.execute(sql)
-        self.db.commit()
+        pass
+        # sql = """insert into {} (Title) values ('{}');""".format(ntype, title)
+        # self.cursor.execute(sql)
+        # self.db.commit()
 
     def viewAllChrono(self, ntype):
-        self.cursor.execute("select Title from " + ntype + " order by dDate desc")
+        sql = "SELECT Title FROM {} ORDER BY Date desc".format(ntype)
+        self.cursor.execute(sql)
         results = self.cursor.fetchall()
         return results
 
@@ -41,11 +44,12 @@ class NotesRemindersAlarms:
 
 class Notes(NotesRemindersAlarms):
     def create(self, title, content):
-        self.createAll("Notes", title)
-        sql = """insert into Notes (Content) values ('{}');""".format(content)
+        date = time.time()
+        print(date)
+        sql = """insert into Notes (Title, Content, Date) values ('{}', '{}', {});""".format(title, content, date)
         self.cursor.execute(sql)
         self.db.commit()
-        print("note created")
+        print("Note created")
 
     def mostRecent(self):
         pass
@@ -58,10 +62,10 @@ class Notes(NotesRemindersAlarms):
 
 class Reminders(NotesRemindersAlarms):
     def create(self, title, content, time):
-        self.createAll("Notes", title)
-        sql = """insert into Reminders (Content, Time) values ('{}', '{}')""".format(content, time)
+        sql = """insert into Reminders (Title, Content, Time) values ('{}', '{}', '{}');""".format(title, content, time)
         self.cursor.execute(sql)
         self.db.commit()
+        print("Reminder created")
 
     def mostRecent(self):
         pass

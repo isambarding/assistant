@@ -8,6 +8,9 @@ from weather import Weather4Day, Weather10Day
 from twitter import Twitter
 from settings import Settings
 from NotesRemindersAlarms import NotesRemindersAlarms, Notes, Reminders, Alarms
+from kivy.core.window import Window
+from kivy.uix.label import Label
+from kivy.uix.button import Button
 
 # do moretwitter layout - dates etc
 
@@ -53,7 +56,7 @@ class WeatherScreen(Screen):
         country = country[0]
 
         w = Weather4Day(country, city)
-        self.latestLocation = "The weather in " + city + ", " + country + " is:"
+        self.latestLocation = "The weather in {}, {} is:".format(city, country)
         self.latestWeatherText = w.forecastTodayText()
         self.latestWeatherHigh = w.forecastTodayHigh() + "°C"
         self.latestWeatherLow = w.forecastTodayLow() + "°C"
@@ -176,7 +179,8 @@ class MoreTwitterScreen(Screen):
 
         with sqlite3.connect("UserData.db") as db:
             cursor = db.cursor()
-            cursor.execute('UPDATE userInfo SET LastTwitterSearch="' + username + '"')
+            sql = """UPDATE userInfo SET LastTwitterSearch='{}'""".format(username)
+            cursor.execute(sql)
             db.commit()
 
         t = Twitter()
@@ -193,6 +197,24 @@ class NotesScreen(Screen):
         self.parent.current = "newnotes"
 
     def notesByTime(self):
+        morenotes = self.manager.get_screen("morenotes")
+
+        with sqlite3.connect("UserData.db") as db:
+            cursor = db.cursor()
+            sql = """SELECT NoteID, Title, Content FROM Notes ORDER BY Date"""
+            cursor.execute(sql)
+            data = cursor.fetchall()
+            sql = """SELECT Count(NoteID) FROM Notes"""
+            cursor.execute(sql)
+            count = cursor.fetchall()
+            count = count[0][0]
+            print(data)
+
+        for i in range(count):
+            titlelabel = Label(text="gfgd")
+            contentlabel = Label(text="ghhhfh")
+            morenotes.layoutMoreNotes.add_widget(titlelabel)
+
         self.parent.current = "morenotes"
 
     def notesByTitle(self):
@@ -206,9 +228,20 @@ class NewNotesScreen(Screen):
     def createNote(self):
         title = self.inputNewNoteTitle.text
         content = self.inputNewNoteContent.text
-        n = Notes()
-        n.create(title, content)
-        self.parent.current = "newnotes"
+
+        with sqlite3.connect("UserData.db") as db:
+            cursor = db.cursor()
+            sql = """SELECT Count(NoteID) FROM Notes"""
+            cursor.execute(sql)
+            count = cursor.fetchall()
+            count = count[0][0]
+
+        if title == "" or content == "" or count >= 10:
+            pass
+        elif count < 10:
+            n = Notes()
+            n.create(title, content)
+            self.parent.current = "notes"
 
 
 class MoreNotesScreen(Screen):
@@ -259,4 +292,5 @@ class AssistantApp(App):
 
 if __name__ == "__main__":
     app = AssistantApp()
+    Window.size = (360, 640)
     app.run()

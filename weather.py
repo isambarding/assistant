@@ -10,12 +10,11 @@ import requests
 
 # WEATHER4DAY
 # Retrieves a 4-day forecast, using Wunderground's 4-day request API
-
-
 class Weather4Day:
     # Uses 4 day request
     def __init__(self, country, city):
-        url = "http://api.wunderground.com/api/034fa2c65c35e441/forecast/q/" + country + "/" + city + ".json"
+        url = "http://api.wunderground.com/api/034fa2c65c35e441/forecast/q/{}/{}.json".format(country, city)
+        print(url)
         response = requests.get(url)
         self.data = response.json()
 
@@ -73,7 +72,7 @@ class Weather4Day:
 class Weather10Day:
     # Uses 10 day request
     def __init__(self, country, city):
-        url = "http://api.wunderground.com/api/034fa2c65c35e441/forecast10day/q/" + country + "/" + city + ".json"
+        url = "http://api.wunderground.com/api/034fa2c65c35e441/forecast10day/q/{}/{}.json".format(country, city)
         response = requests.get(url)
         self.data = response.json()
 

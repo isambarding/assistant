@@ -429,6 +429,8 @@ MyScreenManager:
 
 <NewNotesScreen>
     name: "newnotes"
+    inputNewNoteTitle: inputNewNoteTitle
+    inputNewNoteContent: inputNewNoteContent
 
     BoxLayout:
         GridLayout:
@@ -447,171 +449,179 @@ MyScreenManager:
             multiline: True
         Button:
             id: buttonCreateNote
-            text: "Back"
+            text: "Create"
             on_press: root.createNote()
         Button:
             id: buttonBack
-            text: "Back"
+            text: "Discard"
             on_press: app.root.current = "notes"
 
 <MoreNotesScreen>
     name: "morenotes"
+    layoutMoreNotes: layoutMoreNotes
+    ScrollView:
+        do_scroll_y: True
+        do_scroll_x: False
 
-    BoxLayout:
-        Label:
-            id: labelLastNoteTitle1
-            text: "note 1 title"
-        Label:
-            id: labelLastNoteContent1
-            text: "note 1 content"
-        GridLayout:
-            cols: 2
+        BoxLayout:
+            id: layoutMoreNotes
+            size_hint_y: None
+            height: "1000dp"
+
+            Label:
+                id: labelLastNoteTitle1
+                text: "note 1 title"
+            Label:
+                id: labelLastNoteContent1
+                text: "note 1 content"
+            GridLayout:
+                cols: 2
+                Button:
+                    id: buttonEditNote1
+                    text: "Edit"
+                Button:
+                    id: buttonDeleteNote1
+                    text: "Delete"
+
+            Label:
+                id: labelLastNoteTitle2
+                text: "note 2 title"
+            Label:
+                id: labelLastNoteContent2
+                text: "note 2 content"
+            GridLayout:
+                cols: 2
+                Button:
+                    id: buttonEditNote2
+                    text: "Edit"
+                Button:
+                    id: buttonDeleteNote2
+                    text: "Delete"
+
+            Label:
+                id: labelLastNoteTitle3
+                text: "note 3 title"
+            Label:
+                id: labelLastNoteContent3
+                text: "note 3 content"
+            GridLayout:
+                cols: 2
+                Button:
+                    id: buttonEditNote3
+                    text: "Edit"
+                Button:
+                    id: buttonDeleteNote3
+                    text: "Delete"
+
+            Label:
+                id: labelLastNoteTitle4
+                text: "note 4 title"
+            Label:
+                id: labelLastNoteContent4
+                text: "note 4 content"
+            GridLayout:
+                cols: 2
+                Button:
+                    id: buttonEditNote4
+                    text: "Edit"
+                Button:
+                    id: buttonDeleteNote4
+                    text: "Delete"
+
+            Label:
+                id: labelLastNoteTitle5
+                text: "note 5 title"
+            Label:
+                id: labelLastNoteContent5
+                text: "note 5 content"
+            GridLayout:
+                cols: 2
+                Button:
+                    id: buttonEditNote5
+                    text: "Edit"
+                Button:
+                    id: buttonDeleteNote5
+                    text: "Delete"
+
+            Label:
+                id: labelLastNoteTitle6
+                text: "note 6 title"
+            Label:
+                id: labelLastNoteContent6
+                text: "note 6 content"
+            GridLayout:
+                cols: 2
+                Button:
+                    id: buttonEditNote6
+                    text: "Edit"
+                Button:
+                    id: buttonDeleteNote6
+                    text: "Delete"
+
+            Label:
+                id: labelLastNoteTitle7
+                text: "note 7 title"
+            Label:
+                id: labelLastNoteContent7
+                text: "note 7 content"
+            GridLayout:
+                cols: 2
+                Button:
+                    id: buttonEditNote7
+                    text: "Edit"
+                Button:
+                    id: buttonDeleteNote7
+                    text: "Delete"
+
+            Label:
+                id: labelLastNoteTitle8
+                text: "note 8 title"
+            Label:
+                id: labelLastNoteContent8
+                text: "note 8 content"
+            GridLayout:
+                cols: 2
+                Button:
+                    id: buttonEditNote8
+                    text: "Edit"
+                Button:
+                    id: buttonDeleteNote8
+                    text: "Delete"
+
+            Label:
+                id: labelLastNoteTitle9
+                text: "note 9 title"
+            Label:
+                id: labelLastNoteContent9
+                text: "note 9 content"
+            GridLayout:
+                cols: 2
+                Button:
+                    id: buttonEditNote9
+                    text: "Edit"
+                Button:
+                    id: buttonDeleteNote9
+                    text: "Delete"
+
+            Label:
+                id: labelLastNoteTitle10
+                text: "note 10 title"
+            Label:
+                id: labelLastNoteContent10
+                text: "note 10 content"
+            GridLayout:
+                cols: 2
+                Button:
+                    id: buttonEditNote10
+                    text: "Edit"
+                Button:
+                    id: buttonDeleteNote10
+                    text: "Delete"
+
             Button:
-                id: buttonEditNote1
-                text: "Edit"
-            Button:
-                id: buttonDeleteNote1
-                text: "Delete"
-        
-        Label:
-            id: labelLastNoteTitle2
-            text: "note 2 title"
-        Label:
-            id: labelLastNoteContent2
-            text: "note 2 content"
-        GridLayout:
-            cols: 2
-            Button:
-                id: buttonEditNote2
-                text: "Edit"
-            Button:
-                id: buttonDeleteNote2
-                text: "Delete"
-                
-        Label:
-            id: labelLastNoteTitle3
-            text: "note 3 title"
-        Label:
-            id: labelLastNoteContent3
-            text: "note 3 content"
-        GridLayout:
-            cols: 2
-            Button:
-                id: buttonEditNote3
-                text: "Edit"
-            Button:
-                id: buttonDeleteNote3
-                text: "Delete"
-                
-        Label:
-            id: labelLastNoteTitle4
-            text: "note 4 title"
-        Label:
-            id: labelLastNoteContent4
-            text: "note 4 content"
-        GridLayout:
-            cols: 2
-            Button:
-                id: buttonEditNote4
-                text: "Edit"
-            Button:
-                id: buttonDeleteNote4
-                text: "Delete"
-                
-        Label:
-            id: labelLastNoteTitle5
-            text: "note 5 title"
-        Label:
-            id: labelLastNoteContent5
-            text: "note 5 content"
-        GridLayout:
-            cols: 2
-            Button:
-                id: buttonEditNote5
-                text: "Edit"
-            Button:
-                id: buttonDeleteNote5
-                text: "Delete"
-                
-        Label:
-            id: labelLastNoteTitle6
-            text: "note 6 title"
-        Label:
-            id: labelLastNoteContent6
-            text: "note 6 content"
-        GridLayout:
-            cols: 2
-            Button:
-                id: buttonEditNote6
-                text: "Edit"
-            Button:
-                id: buttonDeleteNote6
-                text: "Delete"
-                
-        Label:
-            id: labelLastNoteTitle7
-            text: "note 7 title"
-        Label:
-            id: labelLastNoteContent7
-            text: "note 7 content"
-        GridLayout:
-            cols: 2
-            Button:
-                id: buttonEditNote7
-                text: "Edit"
-            Button:
-                id: buttonDeleteNote7
-                text: "Delete"
-                
-        Label:
-            id: labelLastNoteTitle8
-            text: "note 8 title"
-        Label:
-            id: labelLastNoteContent8
-            text: "note 8 content"
-        GridLayout:
-            cols: 2
-            Button:
-                id: buttonEditNote8
-                text: "Edit"
-            Button:
-                id: buttonDeleteNote8
-                text: "Delete"
-                
-        Label:
-            id: labelLastNoteTitle9
-            text: "note 9 title"
-        Label:
-            id: labelLastNoteContent9
-            text: "note 9 content"
-        GridLayout:
-            cols: 2
-            Button:
-                id: buttonEditNote9
-                text: "Edit"
-            Button:
-                id: buttonDeleteNote9
-                text: "Delete"
-                
-        Label:
-            id: labelLastNoteTitle10
-            text: "note 10 title"
-        Label:
-            id: labelLastNoteContent10
-            text: "note 10 content"
-        GridLayout:
-            cols: 2
-            Button:
-                id: buttonEditNote10
-                text: "Edit"
-            Button:
-                id: buttonDeleteNote10
-                text: "Delete"
-                
-        Button:
-            id: buttonBack
-            text: "Back"
-            on_press: app.root.current = "notes"
+                id: buttonBack
+                text: "Back"
+                on_press: app.root.current = "notes"
 
 <RemindersScreen>
     name: "reminders"

@@ -38,7 +38,7 @@ class Setup:
                     Title text,
                     Days text,
                     Time time,
-                    CreationDate datetime,
+                    Date float,
                     Repeats boolean,
                     primary key(AlarmID))"""
         self.createTable(dbName, sql)
@@ -48,7 +48,7 @@ class Setup:
                     (NoteID integer,
                     Title text,
                     Content text,
-                    Date datetime,
+                    Date float,
                     primary key(NoteID))"""
         self.createTable(dbName, sql)
 
@@ -59,7 +59,7 @@ class Setup:
                     Content text,
                     Days text,
                     Time time,
-                    CreationDate datetime,
+                    Date float,
                     Repeats boolean,
                     primary key(ReminderID))"""
         self.createTable(dbName, sql)
