@@ -16,30 +16,30 @@ MyScreenManager:
 
     BoxLayout:
         Label:
-            id: labelName
-            text: root.labelName
+            id: lblName
+            text: root.lblName
         Button:
-            id: buttonWeather
+            id: btnWeather
             text: "Weather"
             on_press: app.root.current = "weather"
         Button:
-            id: buttonTwitter
+            id: btnTwitter
             text:"Twitter"
             on_press: app.root.current = "twitter"
         Button:
-            id: buttonNotes
+            id: btnNotes
             text:"Notes"
             on_press: app.root.current = "notes"
         Button:
-            id: buttonReminders
+            id: btnReminders
             text:"Reminders"
             on_press: app.root.current = "reminders"
         Button:
-            id: buttonAlarms
+            id: btnAlarms
             text:"Alarms"
             on_press: app.root.current = "alarms"
         Button:
-            id: buttonSettings
+            id: btnSettings
             text:"Settings"
             on_press: app.root.current = "settings"
 
@@ -50,10 +50,10 @@ MyScreenManager:
 
     BoxLayout:
         Label:
-            id: labelLocation
+            id: lblLocation
             text: root.latestLocation
         Label:
-            id: labelWeatherText
+            id: lblWeatherText
             text_size: self.size
             text: root.latestWeatherText
 
@@ -63,14 +63,14 @@ MyScreenManager:
                 text: "High:"
                 halign: "right"
             Label:
-                id: labelWeatherHigh
+                id: lblWeatherHigh
                 halign: "left"
                 text: root.latestWeatherHigh
             Label:
                 text: "Low:"
                 halign: "right"
             Label:
-                id: labelWeatherLow
+                id: lblWeatherLow
                 halign: "left"
                 text: root.latestWeatherLow
 
@@ -86,59 +86,59 @@ MyScreenManager:
                 id: inputCity
 
         Button:
-            id: buttonUpdateLocation
+            id: btnUpdateLocation
             text: "Get weather"
             on_press: root.getMoreWeather()
         Button:
-            id: buttonBack
+            id: btnBack
             text: "Back"
             on_press: app.root.current = "home"
 
 <MoreWeatherScreen>
     name: "moreweather"
-    labelDay1Day: labelDay1Day
-    labelDay2Day: labelDay2Day
-    labelDay3Day: labelDay3Day
-    labelDay4Day: labelDay4Day
-    labelDay5Day: labelDay5Day
-    labelDay6Day: labelDay6Day
-    labelDay7Day: labelDay7Day
-    labelDay8Day: labelDay8Day
-    labelDay9Day: labelDay9Day
-    labelDay10Day: labelDay10Day
+    lblDay1Day: lblDay1Day
+    lblDay2Day: lblDay2Day
+    lblDay3Day: lblDay3Day
+    lblDay4Day: lblDay4Day
+    lblDay5Day: lblDay5Day
+    lblDay6Day: lblDay6Day
+    lblDay7Day: lblDay7Day
+    lblDay8Day: lblDay8Day
+    lblDay9Day: lblDay9Day
+    lblDay10Day: lblDay10Day
     
-    labelDay1Text: labelDay1Text
-    labelDay2Text: labelDay2Text
-    labelDay3Text: labelDay3Text
-    labelDay4Text: labelDay4Text
-    labelDay5Text: labelDay5Text
-    labelDay6Text: labelDay6Text
-    labelDay7Text: labelDay7Text
-    labelDay8Text: labelDay8Text
-    labelDay9Text: labelDay9Text
-    labelDay10Text: labelDay10Text
+    lblDay1Text: lblDay1Text
+    lblDay2Text: lblDay2Text
+    lblDay3Text: lblDay3Text
+    lblDay4Text: lblDay4Text
+    lblDay5Text: lblDay5Text
+    lblDay6Text: lblDay6Text
+    lblDay7Text: lblDay7Text
+    lblDay8Text: lblDay8Text
+    lblDay9Text: lblDay9Text
+    lblDay10Text: lblDay10Text
     
-    labelDay1High: labelDay1High
-    labelDay2High: labelDay2High
-    labelDay3High: labelDay3High
-    labelDay4High: labelDay4High
-    labelDay5High: labelDay5High
-    labelDay6High: labelDay6High
-    labelDay7High: labelDay7High
-    labelDay8High: labelDay8High
-    labelDay9High: labelDay9High
-    labelDay10High: labelDay10High
+    lblDay1High: lblDay1High
+    lblDay2High: lblDay2High
+    lblDay3High: lblDay3High
+    lblDay4High: lblDay4High
+    lblDay5High: lblDay5High
+    lblDay6High: lblDay6High
+    lblDay7High: lblDay7High
+    lblDay8High: lblDay8High
+    lblDay9High: lblDay9High
+    lblDay10High: lblDay10High
     
-    labelDay1Low: labelDay1Low
-    labelDay2Low: labelDay2Low
-    labelDay3Low: labelDay3Low
-    labelDay4Low: labelDay4Low
-    labelDay5Low: labelDay5Low
-    labelDay6Low: labelDay6Low
-    labelDay7Low: labelDay7Low
-    labelDay8Low: labelDay8Low
-    labelDay9Low: labelDay9Low
-    labelDay10Low: labelDay10Low
+    lblDay1Low: lblDay1Low
+    lblDay2Low: lblDay2Low
+    lblDay3Low: lblDay3Low
+    lblDay4Low: lblDay4Low
+    lblDay5Low: lblDay5Low
+    lblDay6Low: lblDay6Low
+    lblDay7Low: lblDay7Low
+    lblDay8Low: lblDay8Low
+    lblDay9Low: lblDay9Low
+    lblDay10Low: lblDay10Low
     
     ScrollView:
         do_scroll_y: True
@@ -148,9 +148,9 @@ MyScreenManager:
             size_hint_y: None
             height: "1000dp"
             Label:
-                id: labelDay1Day
+                id: lblDay1Day
             Label:
-                id: labelDay1Text
+                id: lblDay1Text
                 size: self.texture_size
 
             GridLayout:
@@ -158,16 +158,16 @@ MyScreenManager:
                 Label:
                     text: "High:"
                 Label:
-                    id: labelDay1High
+                    id: lblDay1High
                 Label:
                     text: "Low:"
                 Label:
-                    id: labelDay1Low
+                    id: lblDay1Low
 
             Label:
-                id: labelDay2Day
+                id: lblDay2Day
             Label:
-                id: labelDay2Text
+                id: lblDay2Text
                 size: self.texture_size
 
             GridLayout:
@@ -175,16 +175,16 @@ MyScreenManager:
                 Label:
                     text: "High:"
                 Label:
-                    id: labelDay2High
+                    id: lblDay2High
                 Label:
                     text: "Low:"
                 Label:
-                    id: labelDay2Low
+                    id: lblDay2Low
 
             Label:
-                id: labelDay3Day
+                id: lblDay3Day
             Label:
-                id: labelDay3Text
+                id: lblDay3Text
                 size: self.texture_size
 
             GridLayout:
@@ -192,16 +192,16 @@ MyScreenManager:
                 Label:
                     text: "High:"
                 Label:
-                    id: labelDay3High
+                    id: lblDay3High
                 Label:
                     text: "Low:"
                 Label:
-                    id: labelDay3Low
+                    id: lblDay3Low
 
             Label:
-                id: labelDay4Day
+                id: lblDay4Day
             Label:
-                id: labelDay4Text
+                id: lblDay4Text
                 size: self.texture_size
 
             GridLayout:
@@ -209,16 +209,16 @@ MyScreenManager:
                 Label:
                     text: "High:"
                 Label:
-                    id: labelDay4High
+                    id: lblDay4High
                 Label:
                     text: "Low:"
                 Label:
-                    id: labelDay4Low
+                    id: lblDay4Low
 
             Label:
-                id: labelDay5Day
+                id: lblDay5Day
             Label:
-                id: labelDay5Text
+                id: lblDay5Text
                 size: self.texture_size
 
             GridLayout:
@@ -226,16 +226,16 @@ MyScreenManager:
                 Label:
                     text: "High:"
                 Label:
-                    id: labelDay5High
+                    id: lblDay5High
                 Label:
                     text: "Low:"
                 Label:
-                    id: labelDay5Low
+                    id: lblDay5Low
 
             Label:
-                id: labelDay6Day
+                id: lblDay6Day
             Label:
-                id: labelDay6Text
+                id: lblDay6Text
                 size: self.texture_size
 
             GridLayout:
@@ -243,16 +243,16 @@ MyScreenManager:
                 Label:
                     text: "High:"
                 Label:
-                    id: labelDay6High
+                    id: lblDay6High
                 Label:
                     text: "Low:"
                 Label:
-                    id: labelDay6Low
+                    id: lblDay6Low
 
             Label:
-                id: labelDay7Day
+                id: lblDay7Day
             Label:
-                id: labelDay7Text
+                id: lblDay7Text
                 size: self.texture_size
 
             GridLayout:
@@ -260,16 +260,16 @@ MyScreenManager:
                 Label:
                     text: "High:"
                 Label:
-                    id: labelDay7High
+                    id: lblDay7High
                 Label:
                     text: "Low:"
                 Label:
-                    id: labelDay7Low
+                    id: lblDay7Low
 
             Label:
-                id: labelDay8Day
+                id: lblDay8Day
             Label:
-                id: labelDay8Text
+                id: lblDay8Text
                 size: self.texture_size
 
             GridLayout:
@@ -277,16 +277,16 @@ MyScreenManager:
                 Label:
                     text: "High:"
                 Label:
-                    id: labelDay8High
+                    id: lblDay8High
                 Label:
                     text: "Low:"
                 Label:
-                    id: labelDay8Low
+                    id: lblDay8Low
 
             Label:
-                id: labelDay9Day
+                id: lblDay9Day
             Label:
-                id: labelDay9Text
+                id: lblDay9Text
                 size: self.texture_size
 
             GridLayout:
@@ -294,16 +294,16 @@ MyScreenManager:
                 Label:
                     text: "High:"
                 Label:
-                    id: labelDay9High
+                    id: lblDay9High
                 Label:
                     text: "Low:"
                 Label:
-                    id: labelDay9Low
+                    id: lblDay9Low
 
             Label:
-                id: labelDay10Day
+                id: lblDay10Day
             Label:
-                id: labelDay10Text
+                id: lblDay10Text
                 size: self.texture_size
 
             GridLayout:
@@ -311,14 +311,14 @@ MyScreenManager:
                 Label:
                     text: "High:"
                 Label:
-                    id: labelDay10High
+                    id: lblDay10High
                 Label:
                     text: "Low:"
                 Label:
-                    id: labelDay10Low
+                    id: lblDay10Low
 
             Button:
-                id: buttonBack
+                id: btnBack
                 text: "Back"
                 on_press: app.root.current = "weather"
 
@@ -327,10 +327,10 @@ MyScreenManager:
     inputTwitterUsername: inputTwitterUsername
     BoxLayout:
         Label:
-            id: labelTwitterUsername
+            id: lblTwitterUsername
             text: root.recentUsername
         Label:
-            id: labelRecentTweet
+            id: lblRecentTweet
             text: root.recentTweet
 
         GridLayout:
@@ -341,27 +341,27 @@ MyScreenManager:
                 id: inputTwitterUsername
 
         Button:
-            id: buttonSearchTweets
+            id: btnSearchTweets
             text: "Search username"
             on_press: root.getMoreTweets()
         Button:
-            id: buttonBack
+            id: btnBack
             text: "Back"
             on_press: app.root.current = "home"
 
 <MoreTwitterScreen>
     name: "moretwitter"
-    labelTweet1: labelTweet1
-    labelTweet2: labelTweet2
-    labelTweet3: labelTweet3
-    labelTweet4: labelTweet4
-    labelTweet5: labelTweet5
-    labelTweet6: labelTweet6
-    labelTweet7: labelTweet7
-    labelTweet8: labelTweet8
-    labelTweet9: labelTweet9
-    labelTweet10: labelTweet10
-    labelTwitterUsername: labelTwitterUsername
+    lblTweet1: lblTweet1
+    lblTweet2: lblTweet2
+    lblTweet3: lblTweet3
+    lblTweet4: lblTweet4
+    lblTweet5: lblTweet5
+    lblTweet6: lblTweet6
+    lblTweet7: lblTweet7
+    lblTweet8: lblTweet8
+    lblTweet9: lblTweet9
+    lblTweet10: lblTweet10
+    lblTwitterUsername: lblTwitterUsername
 
     ScrollView:
         do_scroll_y: True
@@ -371,30 +371,30 @@ MyScreenManager:
             size_hint_y: None
             height: "1000dp"
             Label:
-                id: labelTwitterUsername
+                id: lblTwitterUsername
                 text: "Tweets by @username:"
             Label:
-                id: labelTweet1
+                id: lblTweet1
             Label:
-                id: labelTweet2
+                id: lblTweet2
             Label:
-                id: labelTweet3
+                id: lblTweet3
             Label:
-                id: labelTweet4
+                id: lblTweet4
             Label:
-                id: labelTweet5
+                id: lblTweet5
             Label:
-                id: labelTweet6
+                id: lblTweet6
             Label:
-                id: labelTweet7
+                id: lblTweet7
             Label:
-                id: labelTweet8
+                id: lblTweet8
             Label:
-                id: labelTweet9
+                id: lblTweet9
             Label:
-                id: labelTweet10
+                id: lblTweet10
             Button:
-                id: buttonBack
+                id: btnBack
                 text: "Back"
                 on_press: root.refreshTwitter()
 
@@ -403,27 +403,27 @@ MyScreenManager:
 
     BoxLayout:
         Label:
-            id: labelLastNoteTitle
+            id: lblLastNoteTitle
             text: "Most recent note title"
         Label:
-            id: labelLastNoteContent
+            id: lblLastNoteContent
             text: "Most recent note content"
         Button:
-            id: buttonNewNote
+            id: btnNewNote
             text: "New note"
             on_press: root.newNote()
         GridLayout:
             cols: 2
             Button:
-                id: buttonAllNotes
+                id: btnAllNotes
                 text: "Notes by time"
                 on_press: root.notesByTime()
             Button:
-                id: buttonAllNotes
+                id: btnAllNotes
                 text: "Notes by title"
                 on_press: root.notesByTitle()
         Button:
-            id: buttonBack
+            id: btnBack
             text: "Back"
             on_press: app.root.current = "home"
 
@@ -436,29 +436,30 @@ MyScreenManager:
         GridLayout:
             cols: 2
             Label:
-                id: labelNewNoteTitle
+                id: lblNewNoteTitle
                 text: "Title:"
             TextInput:
                 id: inputNewNoteTitle
 
         Label:
-            id: labelNewNoteTitle
+            id: lblNewNoteTitle
             text: "Content:"
         TextInput:
             id: inputNewNoteContent
             multiline: True
         Button:
-            id: buttonCreateNote
+            id: btnCreateNote
             text: "Create"
             on_press: root.createNote()
         Button:
-            id: buttonBack
+            id: btnBack
             text: "Discard"
             on_press: app.root.current = "notes"
 
 <MoreNotesScreen>
     name: "morenotes"
     layoutMoreNotes: layoutMoreNotes
+    accordionNotes: accordionNotes
     ScrollView:
         do_scroll_y: True
         do_scroll_x: False
@@ -466,181 +467,36 @@ MyScreenManager:
         BoxLayout:
             id: layoutMoreNotes
             size_hint_y: None
-            height: "1000dp"
+            #height: self.height
 
-            Label:
-                id: labelLastNoteTitle1
-                text: "note 1 title"
-            Label:
-                id: labelLastNoteContent1
-                text: "note 1 content"
-            GridLayout:
-                cols: 2
-                Button:
-                    id: buttonEditNote1
-                    text: "Edit"
-                Button:
-                    id: buttonDeleteNote1
-                    text: "Delete"
+            Accordion:
+                id: accordionNotes
+                orientation: "vertical"
 
-            Label:
-                id: labelLastNoteTitle2
-                text: "note 2 title"
-            Label:
-                id: labelLastNoteContent2
-                text: "note 2 content"
-            GridLayout:
-                cols: 2
-                Button:
-                    id: buttonEditNote2
-                    text: "Edit"
-                Button:
-                    id: buttonDeleteNote2
-                    text: "Delete"
-
-            Label:
-                id: labelLastNoteTitle3
-                text: "note 3 title"
-            Label:
-                id: labelLastNoteContent3
-                text: "note 3 content"
-            GridLayout:
-                cols: 2
-                Button:
-                    id: buttonEditNote3
-                    text: "Edit"
-                Button:
-                    id: buttonDeleteNote3
-                    text: "Delete"
-
-            Label:
-                id: labelLastNoteTitle4
-                text: "note 4 title"
-            Label:
-                id: labelLastNoteContent4
-                text: "note 4 content"
-            GridLayout:
-                cols: 2
-                Button:
-                    id: buttonEditNote4
-                    text: "Edit"
-                Button:
-                    id: buttonDeleteNote4
-                    text: "Delete"
-
-            Label:
-                id: labelLastNoteTitle5
-                text: "note 5 title"
-            Label:
-                id: labelLastNoteContent5
-                text: "note 5 content"
-            GridLayout:
-                cols: 2
-                Button:
-                    id: buttonEditNote5
-                    text: "Edit"
-                Button:
-                    id: buttonDeleteNote5
-                    text: "Delete"
-
-            Label:
-                id: labelLastNoteTitle6
-                text: "note 6 title"
-            Label:
-                id: labelLastNoteContent6
-                text: "note 6 content"
-            GridLayout:
-                cols: 2
-                Button:
-                    id: buttonEditNote6
-                    text: "Edit"
-                Button:
-                    id: buttonDeleteNote6
-                    text: "Delete"
-
-            Label:
-                id: labelLastNoteTitle7
-                text: "note 7 title"
-            Label:
-                id: labelLastNoteContent7
-                text: "note 7 content"
-            GridLayout:
-                cols: 2
-                Button:
-                    id: buttonEditNote7
-                    text: "Edit"
-                Button:
-                    id: buttonDeleteNote7
-                    text: "Delete"
-
-            Label:
-                id: labelLastNoteTitle8
-                text: "note 8 title"
-            Label:
-                id: labelLastNoteContent8
-                text: "note 8 content"
-            GridLayout:
-                cols: 2
-                Button:
-                    id: buttonEditNote8
-                    text: "Edit"
-                Button:
-                    id: buttonDeleteNote8
-                    text: "Delete"
-
-            Label:
-                id: labelLastNoteTitle9
-                text: "note 9 title"
-            Label:
-                id: labelLastNoteContent9
-                text: "note 9 content"
-            GridLayout:
-                cols: 2
-                Button:
-                    id: buttonEditNote9
-                    text: "Edit"
-                Button:
-                    id: buttonDeleteNote9
-                    text: "Delete"
-
-            Label:
-                id: labelLastNoteTitle10
-                text: "note 10 title"
-            Label:
-                id: labelLastNoteContent10
-                text: "note 10 content"
-            GridLayout:
-                cols: 2
-                Button:
-                    id: buttonEditNote10
-                    text: "Edit"
-                Button:
-                    id: buttonDeleteNote10
-                    text: "Delete"
-
-            Button:
-                id: buttonBack
-                text: "Back"
-                on_press: app.root.current = "notes"
+            #Button:
+            #    id: btnBack
+            #    text: "Back"
+            #    height: "44dp"
+            #    on_press: app.root.current = "notes"
 
 <RemindersScreen>
     name: "reminders"
 
     BoxLayout:
         Label:
-            id: labelLastNoteTitle
+            id: lblLastNoteTitle
             text: "Most recent reminder title"
         Label:
-            id: labelLastNoteContent
+            id: lblLastNoteContent
             text: "Most recent reminder content"
         Button:
-            id: buttonNewReminder
+            id: btnNewReminder
             text: "New reminder"
         Button:
-            id: buttonAllNotes
+            id: btnAllNotes
             text: "All reminders"
         Button:
-            id: buttonBack
+            id: btnBack
             text: "Back"
             on_press: app.root.current = "home"
 
@@ -649,19 +505,19 @@ MyScreenManager:
 
     BoxLayout:
         Label:
-            id: labelLastAlarmTitle
+            id: lblLastAlarmTitle
             text: "Most recent alarm title"
         Label:
-            id: labelLastAlarmTime
+            id: lblLastAlarmTime
             text: "Most recent alarm time"
         Button:
-            id: buttonNewAlarm
+            id: btnNewAlarm
             text: "New alarm"
         Button:
-            id: buttonAllAlarms
+            id: btnAllAlarms
             text: "All alarms"
         Button:
-            id: buttonBack
+            id: btnBack
             text: "Back"
             on_press: app.root.current = "home"
 
@@ -682,7 +538,7 @@ MyScreenManager:
                 id: inputNewName
 
         Button:
-            id: buttonChangeName
+            id: btnChangeName
             text: "Change name"
             on_press: root.changeName()
 
@@ -698,14 +554,14 @@ MyScreenManager:
                 id: inputNewCity
 
         Button:
-            id: buttonChangeLocation
+            id: btnChangeLocation
             text: "Change location"
             on_press: root.changeLocation()
         Button:
-            id: buttonRestartSetup
+            id: btnRestartSetup
             text: "Restart setup"
         Button:
-            id: buttonBack
+            id: btnBack
             text: "Back"
             on_press: app.root.current = "home"
 

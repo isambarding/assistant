@@ -11,13 +11,17 @@ from NotesRemindersAlarms import NotesRemindersAlarms, Notes, Reminders, Alarms
 from kivy.core.window import Window
 from kivy.uix.label import Label
 from kivy.uix.button import Button
+from kivy.uix.gridlayout import GridLayout
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.accordion import Accordion, AccordionItem
+from kivy.metrics import dp
 
 # do moretwitter layout - dates etc
 
 # do nra layouts
 # do nra functions
 
-# Make label height scale with number of lines
+# Make lbl height scale with number of lines
 # clean up user input = first letter caps on names and locations
 # clean code
 # error trapping!!!
@@ -32,7 +36,7 @@ class HomeScreen(Screen):
             cursor.execute("SELECT name FROM userInfo")
             username = cursor.fetchone()
 
-        self.labelName = "Welcome, " + username[0] + "!"
+        self.lblName = "Welcome, " + username[0] + "!"
 
 
 class WeatherScreen(Screen):
@@ -73,52 +77,52 @@ class WeatherScreen(Screen):
             w = Weather10Day(country, city)
 
             textData = w.forecast10DaysText()
-            moreweather.labelDay1Text.text = textData[0]
-            moreweather.labelDay2Text.text = textData[1]
-            moreweather.labelDay3Text.text = textData[2]
-            moreweather.labelDay4Text.text = textData[3]
-            moreweather.labelDay5Text.text = textData[4]
-            moreweather.labelDay6Text.text = textData[5]
-            moreweather.labelDay7Text.text = textData[6]
-            moreweather.labelDay8Text.text = textData[7]
-            moreweather.labelDay9Text.text = textData[8]
-            moreweather.labelDay10Text.text = textData[9]
+            moreweather.lblDay1Text.text = textData[0]
+            moreweather.lblDay2Text.text = textData[1]
+            moreweather.lblDay3Text.text = textData[2]
+            moreweather.lblDay4Text.text = textData[3]
+            moreweather.lblDay5Text.text = textData[4]
+            moreweather.lblDay6Text.text = textData[5]
+            moreweather.lblDay7Text.text = textData[6]
+            moreweather.lblDay8Text.text = textData[7]
+            moreweather.lblDay9Text.text = textData[8]
+            moreweather.lblDay10Text.text = textData[9]
 
             highData = w.forecast10DaysHigh()
-            moreweather.labelDay1High.text = highData[0] + "°C"
-            moreweather.labelDay2High.text = highData[1] + "°C"
-            moreweather.labelDay3High.text = highData[2] + "°C"
-            moreweather.labelDay4High.text = highData[3] + "°C"
-            moreweather.labelDay5High.text = highData[4] + "°C"
-            moreweather.labelDay6High.text = highData[5] + "°C"
-            moreweather.labelDay7High.text = highData[6] + "°C"
-            moreweather.labelDay8High.text = highData[7] + "°C"
-            moreweather.labelDay9High.text = highData[8] + "°C"
-            moreweather.labelDay10High.text = highData[9] + "°C"
+            moreweather.lblDay1High.text = highData[0] + "°C"
+            moreweather.lblDay2High.text = highData[1] + "°C"
+            moreweather.lblDay3High.text = highData[2] + "°C"
+            moreweather.lblDay4High.text = highData[3] + "°C"
+            moreweather.lblDay5High.text = highData[4] + "°C"
+            moreweather.lblDay6High.text = highData[5] + "°C"
+            moreweather.lblDay7High.text = highData[6] + "°C"
+            moreweather.lblDay8High.text = highData[7] + "°C"
+            moreweather.lblDay9High.text = highData[8] + "°C"
+            moreweather.lblDay10High.text = highData[9] + "°C"
 
             lowData = w.forecast10DaysLow()
-            moreweather.labelDay1Low.text = lowData[0] + "°C"
-            moreweather.labelDay2Low.text = lowData[1] + "°C"
-            moreweather.labelDay3Low.text = lowData[2] + "°C"
-            moreweather.labelDay4Low.text = lowData[3] + "°C"
-            moreweather.labelDay5Low.text = lowData[4] + "°C"
-            moreweather.labelDay6Low.text = lowData[5] + "°C"
-            moreweather.labelDay7Low.text = lowData[6] + "°C"
-            moreweather.labelDay8Low.text = lowData[7] + "°C"
-            moreweather.labelDay9Low.text = lowData[8] + "°C"
-            moreweather.labelDay10Low.text = lowData[9] + "°C"
+            moreweather.lblDay1Low.text = lowData[0] + "°C"
+            moreweather.lblDay2Low.text = lowData[1] + "°C"
+            moreweather.lblDay3Low.text = lowData[2] + "°C"
+            moreweather.lblDay4Low.text = lowData[3] + "°C"
+            moreweather.lblDay5Low.text = lowData[4] + "°C"
+            moreweather.lblDay6Low.text = lowData[5] + "°C"
+            moreweather.lblDay7Low.text = lowData[6] + "°C"
+            moreweather.lblDay8Low.text = lowData[7] + "°C"
+            moreweather.lblDay9Low.text = lowData[8] + "°C"
+            moreweather.lblDay10Low.text = lowData[9] + "°C"
 
             days = w.dayList()
-            moreweather.labelDay1Day.text = days[0]
-            moreweather.labelDay2Day.text = days[1]
-            moreweather.labelDay3Day.text = days[2]
-            moreweather.labelDay4Day.text = days[3]
-            moreweather.labelDay5Day.text = days[4]
-            moreweather.labelDay6Day.text = days[5]
-            moreweather.labelDay7Day.text = days[6]
-            moreweather.labelDay8Day.text = days[7]
-            moreweather.labelDay9Day.text = days[8]
-            moreweather.labelDay10Day.text = days[9]
+            moreweather.lblDay1Day.text = days[0]
+            moreweather.lblDay2Day.text = days[1]
+            moreweather.lblDay3Day.text = days[2]
+            moreweather.lblDay4Day.text = days[3]
+            moreweather.lblDay5Day.text = days[4]
+            moreweather.lblDay6Day.text = days[5]
+            moreweather.lblDay7Day.text = days[6]
+            moreweather.lblDay8Day.text = days[7]
+            moreweather.lblDay9Day.text = days[8]
+            moreweather.lblDay10Day.text = days[9]
             
             self.manager.current = "moreweather"
 
@@ -155,17 +159,17 @@ class TwitterScreen(Screen):
             moretwitter = self.manager.get_screen("moretwitter")
             t = Twitter()
             tweets = t.user10(un)
-            moretwitter.labelTwitterUsername.text = "Latest tweets from @" + un
-            moretwitter.labelTweet1.text = tweets[0]
-            moretwitter.labelTweet2.text = tweets[1]
-            moretwitter.labelTweet3.text = tweets[2]
-            moretwitter.labelTweet4.text = tweets[3]
-            moretwitter.labelTweet5.text = tweets[4]
-            moretwitter.labelTweet6.text = tweets[5]
-            moretwitter.labelTweet7.text = tweets[6]
-            moretwitter.labelTweet8.text = tweets[7]
-            moretwitter.labelTweet9.text = tweets[8]
-            moretwitter.labelTweet10.text = tweets[9]
+            moretwitter.lblTwitterUsername.text = "Latest tweets from @" + un
+            moretwitter.lblTweet1.text = tweets[0]
+            moretwitter.lblTweet2.text = tweets[1]
+            moretwitter.lblTweet3.text = tweets[2]
+            moretwitter.lblTweet4.text = tweets[3]
+            moretwitter.lblTweet5.text = tweets[4]
+            moretwitter.lblTweet6.text = tweets[5]
+            moretwitter.lblTweet7.text = tweets[6]
+            moretwitter.lblTweet8.text = tweets[7]
+            moretwitter.lblTweet9.text = tweets[8]
+            moretwitter.lblTweet10.text = tweets[9]
             self.parent.current = "moretwitter"
 
 
@@ -211,9 +215,21 @@ class NotesScreen(Screen):
             print(data)
 
         for i in range(count):
-            titlelabel = Label(text="gfgd")
-            contentlabel = Label(text="ghhhfh")
-            morenotes.layoutMoreNotes.add_widget(titlelabel)
+            noteid = data[i][0]
+            title = data[i][1]
+            content = data[i][2]
+
+            item = AccordionItem(title=title)
+            boxlayout = BoxLayout()
+            gridlayout = GridLayout(cols=2)
+            item.add_widget(boxlayout)
+            boxlayout.add_widget(Label(text=content))
+            boxlayout.add_widget(gridlayout)
+            gridlayout.add_widget(Button(text="Edit"))
+            gridlayout.add_widget(Button(text="Delete"))
+
+            morenotes.accordionNotes.add_widget(item)
+            #morenotes.layoutMoreNotes.height = morenotes.layoutMoreNotes.height + dp(44)
 
         self.parent.current = "morenotes"
 
