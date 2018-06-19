@@ -75,56 +75,31 @@ class WeatherScreen(Screen):
             moreweather = self.manager.get_screen("moreweather")
 
             w = Weather10Day(country, city)
-
             textData = w.forecast10DaysText()
-            moreweather.lblDay1Text.text = textData[0]
-            moreweather.lblDay2Text.text = textData[1]
-            moreweather.lblDay3Text.text = textData[2]
-            moreweather.lblDay4Text.text = textData[3]
-            moreweather.lblDay5Text.text = textData[4]
-            moreweather.lblDay6Text.text = textData[5]
-            moreweather.lblDay7Text.text = textData[6]
-            moreweather.lblDay8Text.text = textData[7]
-            moreweather.lblDay9Text.text = textData[8]
-            moreweather.lblDay10Text.text = textData[9]
-
             highData = w.forecast10DaysHigh()
-            moreweather.lblDay1High.text = highData[0] + "°C"
-            moreweather.lblDay2High.text = highData[1] + "°C"
-            moreweather.lblDay3High.text = highData[2] + "°C"
-            moreweather.lblDay4High.text = highData[3] + "°C"
-            moreweather.lblDay5High.text = highData[4] + "°C"
-            moreweather.lblDay6High.text = highData[5] + "°C"
-            moreweather.lblDay7High.text = highData[6] + "°C"
-            moreweather.lblDay8High.text = highData[7] + "°C"
-            moreweather.lblDay9High.text = highData[8] + "°C"
-            moreweather.lblDay10High.text = highData[9] + "°C"
-
             lowData = w.forecast10DaysLow()
-            moreweather.lblDay1Low.text = lowData[0] + "°C"
-            moreweather.lblDay2Low.text = lowData[1] + "°C"
-            moreweather.lblDay3Low.text = lowData[2] + "°C"
-            moreweather.lblDay4Low.text = lowData[3] + "°C"
-            moreweather.lblDay5Low.text = lowData[4] + "°C"
-            moreweather.lblDay6Low.text = lowData[5] + "°C"
-            moreweather.lblDay7Low.text = lowData[6] + "°C"
-            moreweather.lblDay8Low.text = lowData[7] + "°C"
-            moreweather.lblDay9Low.text = lowData[8] + "°C"
-            moreweather.lblDay10Low.text = lowData[9] + "°C"
-
             days = w.dayList()
-            moreweather.lblDay1Day.text = days[0]
-            moreweather.lblDay2Day.text = days[1]
-            moreweather.lblDay3Day.text = days[2]
-            moreweather.lblDay4Day.text = days[3]
-            moreweather.lblDay5Day.text = days[4]
-            moreweather.lblDay6Day.text = days[5]
-            moreweather.lblDay7Day.text = days[6]
-            moreweather.lblDay8Day.text = days[7]
-            moreweather.lblDay9Day.text = days[8]
-            moreweather.lblDay10Day.text = days[9]
-            
+
+            for i in range(9):
+                day = days[i]
+                forecast = textData[i]
+                high = highData[i]
+                low = lowData[i]
+
+                gridlayout = GridLayout(cols=2)
+                moreweather.layoutMoreWeather.add_widget(Label(text=day))
+                moreweather.layoutMoreWeather.add_widget(Label(text=forecast))
+                moreweather.layoutMoreWeather.add_widget(gridlayout)
+                gridlayout.add_widget(Label(text="High"))
+                gridlayout.add_widget(Label(text=high))
+                gridlayout.add_widget(Label(text="Low"))
+                gridlayout.add_widget(Label(text=low))
+            moreweather.layoutMoreWeather.add_widget(Button(text="Back", on_press=lambda a: self.back()))
+
             self.manager.current = "moreweather"
+
+    def back(self):
+        self.manager.current = "weather"
 
 
 class MoreWeatherScreen(Screen):
@@ -219,22 +194,21 @@ class NotesScreen(Screen):
             title = data[i][1]
             content = data[i][2]
 
-            item = AccordionItem(title=title)
-            boxlayout = BoxLayout()
             gridlayout = GridLayout(cols=2)
-            item.add_widget(boxlayout)
-            boxlayout.add_widget(Label(text=content))
-            boxlayout.add_widget(gridlayout)
+            morenotes.layoutMoreNotes.add_widget(Label(text=title))
+            morenotes.layoutMoreNotes.add_widget(Label(text=content))
+            morenotes.layoutMoreNotes.add_widget(gridlayout)
             gridlayout.add_widget(Button(text="Edit"))
             gridlayout.add_widget(Button(text="Delete"))
-
-            morenotes.accordionNotes.add_widget(item)
-            #morenotes.layoutMoreNotes.height = morenotes.layoutMoreNotes.height + dp(44)
+        morenotes.layoutMoreNotes.add_widget(Button(text="Back", on_press=lambda a: self.back()))
 
         self.parent.current = "morenotes"
 
     def notesByTitle(self):
         self.parent.current = "morenotes"
+
+    def back(self):
+        self.manager.current = "notes"
 
 
 class NewNotesScreen(Screen):

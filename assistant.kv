@@ -96,231 +96,16 @@ MyScreenManager:
 
 <MoreWeatherScreen>
     name: "moreweather"
-    lblDay1Day: lblDay1Day
-    lblDay2Day: lblDay2Day
-    lblDay3Day: lblDay3Day
-    lblDay4Day: lblDay4Day
-    lblDay5Day: lblDay5Day
-    lblDay6Day: lblDay6Day
-    lblDay7Day: lblDay7Day
-    lblDay8Day: lblDay8Day
-    lblDay9Day: lblDay9Day
-    lblDay10Day: lblDay10Day
-    
-    lblDay1Text: lblDay1Text
-    lblDay2Text: lblDay2Text
-    lblDay3Text: lblDay3Text
-    lblDay4Text: lblDay4Text
-    lblDay5Text: lblDay5Text
-    lblDay6Text: lblDay6Text
-    lblDay7Text: lblDay7Text
-    lblDay8Text: lblDay8Text
-    lblDay9Text: lblDay9Text
-    lblDay10Text: lblDay10Text
-    
-    lblDay1High: lblDay1High
-    lblDay2High: lblDay2High
-    lblDay3High: lblDay3High
-    lblDay4High: lblDay4High
-    lblDay5High: lblDay5High
-    lblDay6High: lblDay6High
-    lblDay7High: lblDay7High
-    lblDay8High: lblDay8High
-    lblDay9High: lblDay9High
-    lblDay10High: lblDay10High
-    
-    lblDay1Low: lblDay1Low
-    lblDay2Low: lblDay2Low
-    lblDay3Low: lblDay3Low
-    lblDay4Low: lblDay4Low
-    lblDay5Low: lblDay5Low
-    lblDay6Low: lblDay6Low
-    lblDay7Low: lblDay7Low
-    lblDay8Low: lblDay8Low
-    lblDay9Low: lblDay9Low
-    lblDay10Low: lblDay10Low
+    layoutMoreWeather: layoutMoreWeather
     
     ScrollView:
         do_scroll_y: True
         do_scroll_x: False
 
-        BoxLayout:
-            size_hint_y: None
-            height: "1000dp"
-            Label:
-                id: lblDay1Day
-            Label:
-                id: lblDay1Text
-                size: self.texture_size
-
-            GridLayout:
-                cols: 2
-                Label:
-                    text: "High:"
-                Label:
-                    id: lblDay1High
-                Label:
-                    text: "Low:"
-                Label:
-                    id: lblDay1Low
-
-            Label:
-                id: lblDay2Day
-            Label:
-                id: lblDay2Text
-                size: self.texture_size
-
-            GridLayout:
-                cols: 2
-                Label:
-                    text: "High:"
-                Label:
-                    id: lblDay2High
-                Label:
-                    text: "Low:"
-                Label:
-                    id: lblDay2Low
-
-            Label:
-                id: lblDay3Day
-            Label:
-                id: lblDay3Text
-                size: self.texture_size
-
-            GridLayout:
-                cols: 2
-                Label:
-                    text: "High:"
-                Label:
-                    id: lblDay3High
-                Label:
-                    text: "Low:"
-                Label:
-                    id: lblDay3Low
-
-            Label:
-                id: lblDay4Day
-            Label:
-                id: lblDay4Text
-                size: self.texture_size
-
-            GridLayout:
-                cols: 2
-                Label:
-                    text: "High:"
-                Label:
-                    id: lblDay4High
-                Label:
-                    text: "Low:"
-                Label:
-                    id: lblDay4Low
-
-            Label:
-                id: lblDay5Day
-            Label:
-                id: lblDay5Text
-                size: self.texture_size
-
-            GridLayout:
-                cols: 2
-                Label:
-                    text: "High:"
-                Label:
-                    id: lblDay5High
-                Label:
-                    text: "Low:"
-                Label:
-                    id: lblDay5Low
-
-            Label:
-                id: lblDay6Day
-            Label:
-                id: lblDay6Text
-                size: self.texture_size
-
-            GridLayout:
-                cols: 2
-                Label:
-                    text: "High:"
-                Label:
-                    id: lblDay6High
-                Label:
-                    text: "Low:"
-                Label:
-                    id: lblDay6Low
-
-            Label:
-                id: lblDay7Day
-            Label:
-                id: lblDay7Text
-                size: self.texture_size
-
-            GridLayout:
-                cols: 2
-                Label:
-                    text: "High:"
-                Label:
-                    id: lblDay7High
-                Label:
-                    text: "Low:"
-                Label:
-                    id: lblDay7Low
-
-            Label:
-                id: lblDay8Day
-            Label:
-                id: lblDay8Text
-                size: self.texture_size
-
-            GridLayout:
-                cols: 2
-                Label:
-                    text: "High:"
-                Label:
-                    id: lblDay8High
-                Label:
-                    text: "Low:"
-                Label:
-                    id: lblDay8Low
-
-            Label:
-                id: lblDay9Day
-            Label:
-                id: lblDay9Text
-                size: self.texture_size
-
-            GridLayout:
-                cols: 2
-                Label:
-                    text: "High:"
-                Label:
-                    id: lblDay9High
-                Label:
-                    text: "Low:"
-                Label:
-                    id: lblDay9Low
-
-            Label:
-                id: lblDay10Day
-            Label:
-                id: lblDay10Text
-                size: self.texture_size
-
-            GridLayout:
-                cols: 2
-                Label:
-                    text: "High:"
-                Label:
-                    id: lblDay10High
-                Label:
-                    text: "Low:"
-                Label:
-                    id: lblDay10Low
-
-            Button:
-                id: btnBack
-                text: "Back"
-                on_press: app.root.current = "weather"
+        GridLayout:
+            id: layoutMoreWeather
+            cols: 1
+            height: self.minimum_height
 
 <TwitterScreen>
     name: "twitter"
@@ -459,25 +244,19 @@ MyScreenManager:
 <MoreNotesScreen>
     name: "morenotes"
     layoutMoreNotes: layoutMoreNotes
-    accordionNotes: accordionNotes
+    #accordionNotes: accordionNotes
     ScrollView:
-        do_scroll_y: True
-        do_scroll_x: False
+        #do_scroll_y: True
+        #do_scroll_x: False
 
-        BoxLayout:
+        GridLayout:
             id: layoutMoreNotes
-            size_hint_y: None
+            cols: 1
+            #size_hint_y: None
+            height: self.minimum_height
+
             #height: self.height
 
-            Accordion:
-                id: accordionNotes
-                orientation: "vertical"
-
-            #Button:
-            #    id: btnBack
-            #    text: "Back"
-            #    height: "44dp"
-            #    on_press: app.root.current = "notes"
 
 <RemindersScreen>
     name: "reminders"
@@ -568,11 +347,11 @@ MyScreenManager:
 <Label>
     text_size: self.size
     padding_x: "20dp"
-    padding_y: "10dp"
+    padding_y: "20dp"
     halign: "center"
     valign: "center"
     font_size: "15dp"
-    height: self.text_size[1]
+    #size_hint: None, None
 
 <BoxLayout>
     orientation: "vertical"
