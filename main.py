@@ -80,24 +80,29 @@ class WeatherScreen(Screen):
             lowData = w.forecast10DaysLow()
             days = w.dayList()
 
+            moreweather.layoutMoreWeather.bind(minimum_height=moreweather.layoutMoreWeather.setter('height'))
             for i in range(9):
                 day = days[i]
                 forecast = textData[i]
                 high = highData[i]
                 low = lowData[i]
 
-                moreweather.layoutMoreWeather.bind(minimum_height=moreweather.layoutMoreWeather.setter('height'))
-                gridlayout = GridLayout(cols=2)
-                l = Label(text=forecast, size_hint_y=None)
-                l.height = l.text_size[1]
-                moreweather.layoutMoreWeather.add_widget(Label(text=day, size_hint_y=None))
+                l = Label(text="a")
+                #l.bind(width=lambda s, t: s.setter("text_size")(s, (t, None)))
+                #l.bind(texture_size=l.setter("size"))
+
+                g = GridLayout(cols=2)
+                l.size = l.texture_size
+
+                # moreweather.layoutMoreWeather.add_widget(Label(text=day, size_hint_y=None))
                 moreweather.layoutMoreWeather.add_widget(l)
-                moreweather.layoutMoreWeather.add_widget(gridlayout)
-                gridlayout.add_widget(Label(text="High", size_hint_y=None))
-                gridlayout.add_widget(Label(text=high, size_hint_y=None))
-                gridlayout.add_widget(Label(text="Low", size_hint_y=None))
-                gridlayout.add_widget(Label(text=low, size_hint_y=None))
-            #moreweather.layoutMoreWeather.height = moreweather.layoutMoreWeather.minimum_height
+                # moreweather.layoutMoreWeather.add_widget(gridlayout)
+
+                # gridlayout.add_widget(Label(text="High", size_hint_y=None))
+                # gridlayout.add_widget(Label(text=high, size_hint_y=None))
+                # gridlayout.add_widget(Label(text="Low", size_hint_y=None))
+                # gridlayout.add_widget(Label(text=low, size_hint_y=None))
+
             moreweather.layoutMoreWeather.add_widget(Button(text="Back", on_press=lambda a: self.back()))
 
             self.manager.current = "moreweather"
