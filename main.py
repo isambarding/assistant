@@ -86,14 +86,18 @@ class WeatherScreen(Screen):
                 high = highData[i]
                 low = lowData[i]
 
+                moreweather.layoutMoreWeather.bind(minimum_height=moreweather.layoutMoreWeather.setter('height'))
                 gridlayout = GridLayout(cols=2)
-                moreweather.layoutMoreWeather.add_widget(Label(text=day))
-                moreweather.layoutMoreWeather.add_widget(Label(text=forecast))
+                l = Label(text=forecast, size_hint_y=None)
+                l.height = l.text_size[1]
+                moreweather.layoutMoreWeather.add_widget(Label(text=day, size_hint_y=None))
+                moreweather.layoutMoreWeather.add_widget(l)
                 moreweather.layoutMoreWeather.add_widget(gridlayout)
-                gridlayout.add_widget(Label(text="High"))
-                gridlayout.add_widget(Label(text=high))
-                gridlayout.add_widget(Label(text="Low"))
-                gridlayout.add_widget(Label(text=low))
+                gridlayout.add_widget(Label(text="High", size_hint_y=None))
+                gridlayout.add_widget(Label(text=high, size_hint_y=None))
+                gridlayout.add_widget(Label(text="Low", size_hint_y=None))
+                gridlayout.add_widget(Label(text=low, size_hint_y=None))
+            #moreweather.layoutMoreWeather.height = moreweather.layoutMoreWeather.minimum_height
             moreweather.layoutMoreWeather.add_widget(Button(text="Back", on_press=lambda a: self.back()))
 
             self.manager.current = "moreweather"
