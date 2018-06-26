@@ -87,23 +87,41 @@ class WeatherScreen(Screen):
                 high = highData[i]
                 low = lowData[i]
 
-                l = Label(text="a")
-                #l.bind(width=lambda s, t: s.setter("text_size")(s, (t, None)))
-                #l.bind(texture_size=l.setter("size"))
+                lblday = Label(text=day, size_hint_y=None)
+                lblday.bind(texture_size=lambda instance, value: setattr(instance, 'height', value[1]))
+                lblday.bind(width=lambda instance, value: setattr(instance, 'text_size', (value, None)))
+                print(day)
+
+                moreweather.layoutMoreWeather.add_widget(lblday)
+
+                lbl = Label(text=forecast, size_hint_y=None)
+                lbl.bind(texture_size=lambda instance, value: setattr(instance, 'height', value[1]))
+                lbl.bind(width=lambda instance, value: setattr(instance, 'text_size', (value, None)))
+                print(forecast)
+
+                moreweather.layoutMoreWeather.add_widget(lbl)
 
                 g = GridLayout(cols=2)
-                l.size = l.texture_size
+                moreweather.layoutMoreWeather.add_widget(g)
+                print("g")
 
-                # moreweather.layoutMoreWeather.add_widget(Label(text=day, size_hint_y=None))
-                moreweather.layoutMoreWeather.add_widget(l)
-                # moreweather.layoutMoreWeather.add_widget(gridlayout)
+                lblhigh = Label(text=high, size_hint_y=None)
+                lblhigh.bind(texture_size=lambda instance, value: setattr(instance, 'height', value[1]))
+                lblhigh.bind(width=lambda instance, value: setattr(instance, 'text_size', (value, None)))
 
-                # gridlayout.add_widget(Label(text="High", size_hint_y=None))
-                # gridlayout.add_widget(Label(text=high, size_hint_y=None))
-                # gridlayout.add_widget(Label(text="Low", size_hint_y=None))
-                # gridlayout.add_widget(Label(text=low, size_hint_y=None))
+                g.add_widget(Label(text="High", size_hint_y=None))
+                g.add_widget(lblhigh)
+                print(high)
 
-            moreweather.layoutMoreWeather.add_widget(Button(text="Back", on_press=lambda a: self.back()))
+                lbllow = Label(text=low, size_hint_y=None)
+                lbllow.bind(texture_size=lambda instance, value: setattr(instance, 'height', value[1]))
+                lbllow.bind(width=lambda instance, value: setattr(instance, 'text_size', (value, None)))
+
+                g.add_widget(Label(text="Low", size_hint_y=None))
+                g.add_widget(lbllow)
+                print(low)
+
+            moreweather.layoutMoreWeather.add_widget(Button(text="Back", height=dp(40), size_hint_y=None, on_press=lambda a: self.back()))
 
             self.manager.current = "moreweather"
 

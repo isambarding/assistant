@@ -105,13 +105,8 @@ MyScreenManager:
         GridLayout:
             id: layoutMoreWeather
             cols: 1
-            #height: self.minimum_height
             size_hint_y: None
 
-            Label:
-                id: samplelabel
-                text_size: root.width, None
-                size: self.texture_size
 
 <TwitterScreen>
     name: "twitter"
@@ -351,7 +346,7 @@ MyScreenManager:
             on_press: app.root.current = "home"
 
 <Label>
-    text_size: self.size
+    text_size: self.width, None
     padding_x: "20dp"
     padding_y: "20dp"
     halign: "center"
