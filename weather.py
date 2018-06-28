@@ -14,7 +14,6 @@ class Weather4Day:
     # Uses 4 day request
     def __init__(self, country, city):
         url = "http://api.wunderground.com/api/034fa2c65c35e441/forecast/q/{}/{}.json".format(country, city)
-        print(url)
         response = requests.get(url)
         self.data = response.json()
 

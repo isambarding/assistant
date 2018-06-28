@@ -96,16 +96,275 @@ MyScreenManager:
 
 <MoreWeatherScreen>
     name: "moreweather"
-    layoutMoreWeather: layoutMoreWeather
+    lblDay1Day: lblDay1Day
+    lblDay2Day: lblDay2Day
+    lblDay3Day: lblDay3Day
+    lblDay4Day: lblDay4Day
+    lblDay5Day: lblDay5Day
+    lblDay6Day: lblDay6Day
+    lblDay7Day: lblDay7Day
+    lblDay8Day: lblDay8Day
+    lblDay9Day: lblDay9Day
+    lblDay10Day: lblDay10Day
+
+    lblDay1Text: lblDay1Text
+    lblDay2Text: lblDay2Text
+    lblDay3Text: lblDay3Text
+    lblDay4Text: lblDay4Text
+    lblDay5Text: lblDay5Text
+    lblDay6Text: lblDay6Text
+    lblDay7Text: lblDay7Text
+    lblDay8Text: lblDay8Text
+    lblDay9Text: lblDay9Text
+    lblDay10Text: lblDay10Text
+
+    lblDay1High: lblDay1High
+    lblDay2High: lblDay2High
+    lblDay3High: lblDay3High
+    lblDay4High: lblDay4High
+    lblDay5High: lblDay5High
+    lblDay6High: lblDay6High
+    lblDay7High: lblDay7High
+    lblDay8High: lblDay8High
+    lblDay9High: lblDay9High
+    lblDay10High: lblDay10High
+
+    lblDay1Low: lblDay1Low
+    lblDay2Low: lblDay2Low
+    lblDay3Low: lblDay3Low
+    lblDay4Low: lblDay4Low
+    lblDay5Low: lblDay5Low
+    lblDay6Low: lblDay6Low
+    lblDay7Low: lblDay7Low
+    lblDay8Low: lblDay8Low
+    lblDay9Low: lblDay9Low
+    lblDay10Low: lblDay10Low
     
     ScrollView:
         do_scroll_y: True
         do_scroll_x: False
 
         GridLayout:
-            id: layoutMoreWeather
-            cols: 1
             size_hint_y: None
+            cols: 1
+            height: "1500dp"
+            size_hint_y: None
+
+            Label:
+                id: lblDay1Day
+                height: "40dp"
+            Label:
+                id: lblDay1Text
+
+            GridLayout:
+                cols: 2
+                Label:
+                    text: "High:"
+                    height: "40dp"
+                Label:
+                    id: lblDay1High
+                    height: "40dp"
+                Label:
+                    text: "Low:"
+                    height: "40dp"
+                Label:
+                    id: lblDay1Low
+                    height: "40dp"
+
+            Label:
+                id: lblDay2Day
+                height: "40dp"
+            Label:
+                id: lblDay2Text
+
+            GridLayout:
+                cols: 2
+                Label:
+                    text: "High:"
+                    height: "40dp"
+                Label:
+                    id: lblDay2High
+                    height: "40dp"
+                Label:
+                    text: "Low:"
+                    height: "40dp"
+                Label:
+                    id: lblDay2Low
+                    height: "40dp"
+
+            Label:
+                id: lblDay3Day
+                height: "40dp"
+            Label:
+                id: lblDay3Text
+
+            GridLayout:
+                cols: 2
+                Label:
+                    text: "High:"
+                    height: "40dp"
+                Label:
+                    id: lblDay3High
+                    height: "40dp"
+                Label:
+                    text: "Low:"
+                    height: "40dp"
+                Label:
+                    id: lblDay3Low
+                    height: "40dp"
+
+            Label:
+                id: lblDay4Day
+                height: "40dp"
+            Label:
+                id: lblDay4Text
+
+            GridLayout:
+                cols: 2
+                Label:
+                    text: "High:"
+                    height: "40dp"
+                Label:
+                    id: lblDay4High
+                    height: "40dp"
+                Label:
+                    text: "Low:"
+                    height: "40dp"
+                Label:
+                    id: lblDay4Low
+                    height: "40dp"
+
+            Label:
+                id: lblDay5Day
+                height: "40dp"
+            Label:
+                id: lblDay5Text
+
+            GridLayout:
+                cols: 2
+                Label:
+                    text: "High:"
+                    height: "40dp"
+                Label:
+                    id: lblDay5High
+                    height: "40dp"
+                Label:
+                    text: "Low:"
+                    height: "40dp"
+                Label:
+                    id: lblDay5Low
+                    height: "40dp"
+
+            Label:
+                id: lblDay6Day
+                height: "40dp"
+            Label:
+                id: lblDay6Text
+
+            GridLayout:
+                cols: 2
+                Label:
+                    text: "High:"
+                    height: "40dp"
+                Label:
+                    id: lblDay6High
+                    height: "40dp"
+                Label:
+                    text: "Low:"
+                    height: "40dp"
+                Label:
+                    id: lblDay6Low
+                    height: "40dp"
+
+            Label:
+                id: lblDay7Day
+                height: "40dp"
+            Label:
+                id: lblDay7Text
+
+            GridLayout:
+                cols: 2
+                Label:
+                    text: "High:"
+                    height: "40dp"
+                Label:
+                    id: lblDay7High
+                    height: "40dp"
+                Label:
+                    text: "Low:"
+                    height: "40dp"
+                Label:
+                    id: lblDay7Low
+                    height: "40dp"
+
+            Label:
+                id: lblDay8Day
+                height: "40dp"
+            Label:
+                id: lblDay8Text
+
+            GridLayout:
+                cols: 2
+                Label:
+                    text: "High:"
+                    height: "40dp"
+                Label:
+                    id: lblDay8High
+                    height: "40dp"
+                Label:
+                    text: "Low:"
+                    height: "40dp"
+                Label:
+                    id: lblDay8Low
+                    height: "40dp"
+
+            Label:
+                id: lblDay9Day
+                height: "40dp"
+            Label:
+                id: lblDay9Text
+
+            GridLayout:
+                cols: 2
+                Label:
+                    text: "High:"
+                    height: "40dp"
+                Label:
+                    id: lblDay9High
+                    height: "40dp"
+                Label:
+                    text: "Low:"
+                    height: "40dp"
+                Label:
+                    id: lblDay9Low
+                    height: "40dp"
+
+            Label:
+                id: lblDay10Day
+                height: "40dp"
+            Label:
+                id: lblDay10Text
+
+            GridLayout:
+                cols: 2
+                Label:
+                    text: "High:"
+                    height: "40dp"
+                Label:
+                    id: lblDay10High
+                    height: "40dp"
+                Label:
+                    text: "Low:"
+                    height: "40dp"
+                Label:
+                    id: lblDay10Low
+                    height: "40dp"
+
+            Button:
+                id: btnBack
+                text: "Back"
+                height: "20dp"
+                on_press: app.root.current = "weather"
 
 
 <TwitterScreen>
@@ -182,6 +441,7 @@ MyScreenManager:
             Button:
                 id: btnBack
                 text: "Back"
+                height: "40dp"
                 on_press: root.refreshTwitter()
 
 <NotesScreen>

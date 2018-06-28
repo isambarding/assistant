@@ -75,53 +75,54 @@ class WeatherScreen(Screen):
             moreweather = self.manager.get_screen("moreweather")
 
             w = Weather10Day(country, city)
+
             textData = w.forecast10DaysText()
+            moreweather.lblDay1Text.text = textData[0]
+            moreweather.lblDay2Text.text = textData[1]
+            moreweather.lblDay3Text.text = textData[2]
+            moreweather.lblDay4Text.text = textData[3]
+            moreweather.lblDay5Text.text = textData[4]
+            moreweather.lblDay6Text.text = textData[5]
+            moreweather.lblDay7Text.text = textData[6]
+            moreweather.lblDay8Text.text = textData[7]
+            moreweather.lblDay9Text.text = textData[8]
+            moreweather.lblDay10Text.text = textData[9]
+
             highData = w.forecast10DaysHigh()
+            moreweather.lblDay1High.text = highData[0] + "°C"
+            moreweather.lblDay2High.text = highData[1] + "°C"
+            moreweather.lblDay3High.text = highData[2] + "°C"
+            moreweather.lblDay4High.text = highData[3] + "°C"
+            moreweather.lblDay5High.text = highData[4] + "°C"
+            moreweather.lblDay6High.text = highData[5] + "°C"
+            moreweather.lblDay7High.text = highData[6] + "°C"
+            moreweather.lblDay8High.text = highData[7] + "°C"
+            moreweather.lblDay9High.text = highData[8] + "°C"
+            moreweather.lblDay10High.text = highData[9] + "°C"
+
             lowData = w.forecast10DaysLow()
+            moreweather.lblDay1Low.text = lowData[0] + "°C"
+            moreweather.lblDay2Low.text = lowData[1] + "°C"
+            moreweather.lblDay3Low.text = lowData[2] + "°C"
+            moreweather.lblDay4Low.text = lowData[3] + "°C"
+            moreweather.lblDay5Low.text = lowData[4] + "°C"
+            moreweather.lblDay6Low.text = lowData[5] + "°C"
+            moreweather.lblDay7Low.text = lowData[6] + "°C"
+            moreweather.lblDay8Low.text = lowData[7] + "°C"
+            moreweather.lblDay9Low.text = lowData[8] + "°C"
+            moreweather.lblDay10Low.text = lowData[9] + "°C"
+
             days = w.dayList()
-
-            moreweather.layoutMoreWeather.bind(minimum_height=moreweather.layoutMoreWeather.setter('height'))
-            for i in range(9):
-                day = days[i]
-                forecast = textData[i]
-                high = highData[i]
-                low = lowData[i]
-
-                lblday = Label(text=day, size_hint_y=None)
-                lblday.bind(texture_size=lambda instance, value: setattr(instance, 'height', value[1]))
-                lblday.bind(width=lambda instance, value: setattr(instance, 'text_size', (value, None)))
-                print(day)
-
-                moreweather.layoutMoreWeather.add_widget(lblday)
-
-                lbl = Label(text=forecast, size_hint_y=None)
-                lbl.bind(texture_size=lambda instance, value: setattr(instance, 'height', value[1]))
-                lbl.bind(width=lambda instance, value: setattr(instance, 'text_size', (value, None)))
-                print(forecast)
-
-                moreweather.layoutMoreWeather.add_widget(lbl)
-
-                g = GridLayout(cols=2)
-                moreweather.layoutMoreWeather.add_widget(g)
-                print("g")
-
-                lblhigh = Label(text=high, size_hint_y=None)
-                lblhigh.bind(texture_size=lambda instance, value: setattr(instance, 'height', value[1]))
-                lblhigh.bind(width=lambda instance, value: setattr(instance, 'text_size', (value, None)))
-
-                g.add_widget(Label(text="High", size_hint_y=None))
-                g.add_widget(lblhigh)
-                print(high)
-
-                lbllow = Label(text=low, size_hint_y=None)
-                lbllow.bind(texture_size=lambda instance, value: setattr(instance, 'height', value[1]))
-                lbllow.bind(width=lambda instance, value: setattr(instance, 'text_size', (value, None)))
-
-                g.add_widget(Label(text="Low", size_hint_y=None))
-                g.add_widget(lbllow)
-                print(low)
-
-            moreweather.layoutMoreWeather.add_widget(Button(text="Back", height=dp(40), size_hint_y=None, on_press=lambda a: self.back()))
+            moreweather.lblDay1Day.text = days[0]
+            moreweather.lblDay2Day.text = days[1]
+            moreweather.lblDay3Day.text = days[2]
+            moreweather.lblDay4Day.text = days[3]
+            moreweather.lblDay5Day.text = days[4]
+            moreweather.lblDay6Day.text = days[5]
+            moreweather.lblDay7Day.text = days[6]
+            moreweather.lblDay8Day.text = days[7]
+            moreweather.lblDay9Day.text = days[8]
+            moreweather.lblDay10Day.text = days[9]
 
             self.manager.current = "moreweather"
 
