@@ -61,57 +61,34 @@ class WeatherScreen(Screen):
             pass
         else:
             moreweather = self.manager.get_screen("moreweather")
+            moreweather.layoutMoreWeather.clear_widgets(moreweather.layoutMoreWeather.children)
 
             w = Weather10Day(country, city)
-
             textData = w.forecast10DaysText()
-            moreweather.lblDay1Text.text = textData[0]
-            moreweather.lblDay2Text.text = textData[1]
-            moreweather.lblDay3Text.text = textData[2]
-            moreweather.lblDay4Text.text = textData[3]
-            moreweather.lblDay5Text.text = textData[4]
-            moreweather.lblDay6Text.text = textData[5]
-            moreweather.lblDay7Text.text = textData[6]
-            moreweather.lblDay8Text.text = textData[7]
-            moreweather.lblDay9Text.text = textData[8]
-            moreweather.lblDay10Text.text = textData[9]
-
             highData = w.forecast10DaysHigh()
-            moreweather.lblDay1High.text = highData[0] + "°C"
-            moreweather.lblDay2High.text = highData[1] + "°C"
-            moreweather.lblDay3High.text = highData[2] + "°C"
-            moreweather.lblDay4High.text = highData[3] + "°C"
-            moreweather.lblDay5High.text = highData[4] + "°C"
-            moreweather.lblDay6High.text = highData[5] + "°C"
-            moreweather.lblDay7High.text = highData[6] + "°C"
-            moreweather.lblDay8High.text = highData[7] + "°C"
-            moreweather.lblDay9High.text = highData[8] + "°C"
-            moreweather.lblDay10High.text = highData[9] + "°C"
-
             lowData = w.forecast10DaysLow()
-            moreweather.lblDay1Low.text = lowData[0] + "°C"
-            moreweather.lblDay2Low.text = lowData[1] + "°C"
-            moreweather.lblDay3Low.text = lowData[2] + "°C"
-            moreweather.lblDay4Low.text = lowData[3] + "°C"
-            moreweather.lblDay5Low.text = lowData[4] + "°C"
-            moreweather.lblDay6Low.text = lowData[5] + "°C"
-            moreweather.lblDay7Low.text = lowData[6] + "°C"
-            moreweather.lblDay8Low.text = lowData[7] + "°C"
-            moreweather.lblDay9Low.text = lowData[8] + "°C"
-            moreweather.lblDay10Low.text = lowData[9] + "°C"
-
             days = w.dayList()
-            moreweather.lblDay1Day.text = days[0]
-            moreweather.lblDay2Day.text = days[1]
-            moreweather.lblDay3Day.text = days[2]
-            moreweather.lblDay4Day.text = days[3]
-            moreweather.lblDay5Day.text = days[4]
-            moreweather.lblDay6Day.text = days[5]
-            moreweather.lblDay7Day.text = days[6]
-            moreweather.lblDay8Day.text = days[7]
-            moreweather.lblDay9Day.text = days[8]
-            moreweather.lblDay10Day.text = days[9]
 
+            for i in range(9):
+                lblday = Label(text=days[i], size_hint_y=None)
+                lblday.texture_update()
+                moreweather.layoutMoreWeather.add_widget(lblday)
+
+                lbltext = Label(text=textData[i], size_hint_y=None)
+                lbltext.texture_update()
+                moreweather.layoutMoreWeather.add_widget(lbltext)
+
+                grid = GridLayout(cols=2, size_hint_y=None)
+                lblhigh = Label(text=highData[i], size_hint_y=None)
+                lbllow = Label(text=lowData[i], size_hint_y=None)
+                lblhigh.texture_update()
+                lbllow.texture_update()
+                grid.add_widget(lblhigh)
+                grid.add_widget(lbllow)
+                moreweather.layoutMoreWeather.add_widget(grid)
+
+            btnback = Button(text="Back", height=dp(40), size_hint_y=None, on_press=lambda a: self.back())
+            moreweather.layoutMoreWeather.add_widget(btnback)
             self.manager.current = "moreweather"
 
     def back(self):
@@ -148,6 +125,8 @@ class TwitterScreen(Screen):
             pass
         else:
             moretwitter = self.manager.get_screen("moretwitter")
+            moretwitter.layoutMoreTwitter.clear_widgets(moretwitter.layoutMoreTwitter.children)
+
             t = Twitter()
             tweets = t.user10(un)
             lblun = Label(text=("Latest tweets from @" + un), size_hint_y=None)
@@ -161,6 +140,9 @@ class TwitterScreen(Screen):
             btnback = Button(text="Back", height=dp(40), size_hint_y=None, on_press=lambda a: self.back())
             moretwitter.layoutMoreTwitter.add_widget(btnback)
             self.parent.current = "moretwitter"
+
+    def back(self):
+        self.manager.current = "twitter"
 
 
 class MoreTwitterScreen(Screen):
