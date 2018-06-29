@@ -396,53 +396,17 @@ MyScreenManager:
 
 <MoreTwitterScreen>
     name: "moretwitter"
-    lblTweet1: lblTweet1
-    lblTweet2: lblTweet2
-    lblTweet3: lblTweet3
-    lblTweet4: lblTweet4
-    lblTweet5: lblTweet5
-    lblTweet6: lblTweet6
-    lblTweet7: lblTweet7
-    lblTweet8: lblTweet8
-    lblTweet9: lblTweet9
-    lblTweet10: lblTweet10
-    lblTwitterUsername: lblTwitterUsername
+    layoutMoreTwitter: layoutMoreTwitter
 
     ScrollView:
         do_scroll_y: True
         do_scroll_x: False
 
-        BoxLayout:
+        GridLayout:
             size_hint_y: None
-            height: "1000dp"
-            Label:
-                id: lblTwitterUsername
-                text: "Tweets by @username:"
-            Label:
-                id: lblTweet1
-            Label:
-                id: lblTweet2
-            Label:
-                id: lblTweet3
-            Label:
-                id: lblTweet4
-            Label:
-                id: lblTweet5
-            Label:
-                id: lblTweet6
-            Label:
-                id: lblTweet7
-            Label:
-                id: lblTweet8
-            Label:
-                id: lblTweet9
-            Label:
-                id: lblTweet10
-            Button:
-                id: btnBack
-                text: "Back"
-                height: "40dp"
-                on_press: root.refreshTwitter()
+            height: self.minimum_height
+            id: layoutMoreTwitter
+            cols: 1
 
 <NotesScreen>
     name: "notes"

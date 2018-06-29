@@ -12,19 +12,7 @@ from kivy.core.window import Window
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.gridlayout import GridLayout
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.accordion import Accordion, AccordionItem
 from kivy.metrics import dp
-
-# do moretwitter layout - dates etc
-
-# do nra layouts
-# do nra functions
-
-# Make lbl height scale with number of lines
-# clean up user input = first letter caps on names and locations
-# clean code
-# error trapping!!!
 
 
 class HomeScreen(Screen):
@@ -162,17 +150,16 @@ class TwitterScreen(Screen):
             moretwitter = self.manager.get_screen("moretwitter")
             t = Twitter()
             tweets = t.user10(un)
-            moretwitter.lblTwitterUsername.text = "Latest tweets from @" + un
-            moretwitter.lblTweet1.text = tweets[0]
-            moretwitter.lblTweet2.text = tweets[1]
-            moretwitter.lblTweet3.text = tweets[2]
-            moretwitter.lblTweet4.text = tweets[3]
-            moretwitter.lblTweet5.text = tweets[4]
-            moretwitter.lblTweet6.text = tweets[5]
-            moretwitter.lblTweet7.text = tweets[6]
-            moretwitter.lblTweet8.text = tweets[7]
-            moretwitter.lblTweet9.text = tweets[8]
-            moretwitter.lblTweet10.text = tweets[9]
+            lblun = Label(text=("Latest tweets from @" + un), size_hint_y=None)
+            moretwitter.layoutMoreTwitter.add_widget(lblun)
+
+            for i in range(9):
+                lbltweet = Label(text=tweets[i], size_hint_y=None)
+                lbltweet.texture_update()
+                moretwitter.layoutMoreTwitter.add_widget(lbltweet)
+
+            btnback = Button(text="Back", height=dp(40), size_hint_y=None, on_press=lambda a: self.back())
+            moretwitter.layoutMoreTwitter.add_widget(btnback)
             self.parent.current = "moretwitter"
 
 
