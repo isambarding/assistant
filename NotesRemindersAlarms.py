@@ -35,9 +35,7 @@ class NotesRemindersAlarms:
         pass
 
     def deleteAll(self, ntype, idno):
-        sql = "delete from " + ntype + " where ID=" + idno
-        self.cursor.execute(sql)
-        self.db.commit()
+        pass
 
 # Notes class
 
@@ -55,7 +53,11 @@ class Notes(NotesRemindersAlarms):
         pass
 
     def delete(self, noteid):
-        self.deleteAll("Notes", noteid)
+        sql = """delete from Notes where NoteID='{}'""".format(noteid)
+        self.cursor.execute(sql)
+        self.db.commit()
+
+        # self.deleteAll("Notes", noteid)
 
 # Reminders class
 

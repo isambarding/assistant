@@ -3,15 +3,15 @@ import sqlite3
 
 
 class Settings:
+    def __init__(self):
+        self.db = sqlite3.connect("UserData.db")
+        self.cursor = self.db.cursor()
 
     def changeName(self, name):
-        with sqlite3.connect("UserData.db") as db:
-            cursor = db.cursor()
-            cursor.execute('UPDATE userInfo SET Name="' + name + '"')
-
+        self.cursor.execute("""UPDATE userInfo SET Name='{}'""".format(name))
+        self.db.commit()
 
     def changeLocation(self, country, city):
-        with sqlite3.connect("UserData.db") as db:
-            cursor = db.cursor()
-            cursor.execute('UPDATE userInfo SET Country="' + country + '"')
-            cursor.execute('UPDATE userInfo SET City="' + city + '"')
+        self.cursor.execute("""UPDATE userInfo SET Country='{}'""".format(country))
+        self.cursor.execute("""UPDATE userInfo SET City='{}'""".format(city))
+        self.db.commit()

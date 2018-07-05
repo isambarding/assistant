@@ -7,6 +7,7 @@ MyScreenManager:
     NotesScreen:
     NewNotesScreen:
     MoreNotesScreen:
+    EditNotesScreen:
     RemindersScreen:
     AlarmsScreen:
     SettingsScreen:
@@ -143,6 +144,8 @@ MyScreenManager:
             id: layoutMoreTwitter
             cols: 1
 
+########################################################################################################################
+
 <NotesScreen>
     name: "notes"
 
@@ -204,37 +207,145 @@ MyScreenManager:
 <MoreNotesScreen>
     name: "morenotes"
     layoutMoreNotes: layoutMoreNotes
-    #accordionNotes: accordionNotes
     ScrollView:
         GridLayout:
             id: layoutMoreNotes
             cols: 1
-            #size_hint_y: None
+            size_hint_y: None
             height: self.minimum_height
 
-            #height: self.height
+<EditNotesScreen>
+    name: "editnotes"
+    inputEditNoteTitle: inputEditNoteTitle
+    inputEditNoteContent: inputEditNoteContent
+    layoutEditNotes: layoutEditNotes
 
+    BoxLayout:
+        id: layoutEditNotes
+        GridLayout:
+            cols: 2
+            Label:
+                id: lblEditNoteTitle
+                text: "Title:"
+            TextInput:
+                id: inputEditNoteTitle
+
+        Label:
+            id: lblEditNoteTitle
+            text: "Content:"
+        TextInput:
+            id: inputEditNoteContent
+            multiline: True
+        Button:
+            id: btnEditNote
+            text: "Save"
+            on_press: root.editNote()
+        Button:
+            id: btnBack
+            text: "Discard"
+            on_press: app.root.current = "morenotes"
+
+########################################################################################################################
 
 <RemindersScreen>
     name: "reminders"
 
     BoxLayout:
         Label:
-            id: lblLastNoteTitle
+            id: lblLastReminderTitle
             text: "Most recent reminder title"
         Label:
-            id: lblLastNoteContent
+            id: lblLastReminderContent
             text: "Most recent reminder content"
         Button:
             id: btnNewReminder
             text: "New reminder"
-        Button:
-            id: btnAllNotes
-            text: "All reminders"
+        GridLayout:
+            cols: 2
+            Button:
+                id: btnAllReminders
+                text: "Reminders by time"
+                on_press: root.remindersByTime()
+            Button:
+                id: btnAllReminders
+                text: "Reminders by title"
+                on_press: root.remindersByTitle()
         Button:
             id: btnBack
             text: "Back"
             on_press: app.root.current = "home"
+            
+<NewRemindersScreen>
+    name: "newreminders"
+    inputNewReminderTitle: inputNewReminderTitle
+    inputNewReminderContent: inputNewReminderContent
+
+    BoxLayout:
+        GridLayout:
+            cols: 2
+            Label:
+                id: lblNewReminderTitle
+                text: "Title:"
+            TextInput:
+                id: inputNewReminderTitle
+
+        Label:
+            id: lblNewReminderTitle
+            text: "Content:"
+        TextInput:
+            id: inputNewReminderContent
+            multiline: True
+        Button:
+            id: btnCreateReminder
+            text: "Create"
+            on_press: root.createReminder()
+        Button:
+            id: btnBack
+            text: "Discard"
+            on_press: app.root.current = "reminders"
+
+<MoreRemindersScreen>
+    name: "morereminders"
+    layoutMoreReminders: layoutMoreReminders
+    ScrollView:
+        GridLayout:
+            id: layoutMoreReminders
+            cols: 1
+            size_hint_y: None
+            height: self.minimum_height
+            
+<EditReminderScreen>
+    name: "editreminder"
+    inputEditNoteTitle: inputEditNoteTitle
+    inputEditNoteContent: inputEditNoteContent
+    layoutEditReminder: layoutEditReminder
+
+    BoxLayout:
+        id: layoutEditReminder
+        GridLayout:
+            cols: 2
+            Label:
+                id: lblEditNoteTitle
+                text: "Title:"
+            TextInput:
+                id: inputEditNoteTitle
+
+        Label:
+            id: lblEditNoteTitle
+            text: "Content:"
+        TextInput:
+            id: inputEditNoteContent
+            multiline: True
+        Button:
+            id: btnEditNote
+            text: "Save"
+            on_press: root.editNote()
+        Button:
+            id: btnBack
+            text: "Discard"
+            on_press: app.root.current = "morereminder"
+
+########################################################################################################################
 
 <AlarmsScreen>
     name: "alarms"
@@ -256,6 +367,48 @@ MyScreenManager:
             id: btnBack
             text: "Back"
             on_press: app.root.current = "home"
+
+<NewAlarmsScreen>
+    name: "newalarmss"
+    inputNewAlarmTitle: inputNewAlarmTitle
+    inputNewAlarmContent: inputNewAlarmContent
+
+    BoxLayout:
+        GridLayout:
+            cols: 2
+            Label:
+                id: lblNewAlarmTitle
+                text: "Title:"
+            TextInput:
+                id: inputNewAlarmTitle
+
+        Label:
+            id: lblNewAlarmTitle
+            text: "Content:"
+        TextInput:
+            id: inputNewAlarmContent
+            multiline: True
+        Button:
+            id: btnCreateAlarm
+            text: "Create"
+            on_press: root.createAlarm()
+        Button:
+            id: btnBack
+            text: "Discard"
+            on_press: app.root.current = "alarms"
+
+<MoreAlarmsscreen>
+    name: "morealarmss"
+    layoutMoreAlarms: layoutMoreAlarms
+    ScrollView:
+        GridLayout:
+            id: layoutMoreAlarms
+            cols: 1
+            size_hint_y: None
+            height: self.minimum_height
+
+
+########################################################################################################################
 
 <SettingsScreen>
     name: "settings"

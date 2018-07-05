@@ -64,9 +64,9 @@ class WeatherScreen(Screen):
             moreweather.layoutMoreWeather.clear_widgets(moreweather.layoutMoreWeather.children)
 
             w = Weather10Day(country, city)
-            textData = w.forecast10DaysText()
-            highData = w.forecast10DaysHigh()
-            lowData = w.forecast10DaysLow()
+            textdata = w.forecast10DaysText()
+            highdata = w.forecast10DaysHigh()
+            lowdata = w.forecast10DaysLow()
             days = w.dayList()
 
             for i in range(9):
@@ -74,13 +74,13 @@ class WeatherScreen(Screen):
                 lblday.texture_update()
                 moreweather.layoutMoreWeather.add_widget(lblday)
 
-                lbltext = Label(text=textData[i], size_hint_y=None)
+                lbltext = Label(text=textdata[i], size_hint_y=None)
                 lbltext.texture_update()
                 moreweather.layoutMoreWeather.add_widget(lbltext)
 
                 grid = GridLayout(cols=2, size_hint_y=None)
-                lblhigh = Label(text=highData[i], size_hint_y=None)
-                lbllow = Label(text=lowData[i], size_hint_y=None)
+                lblhigh = Label(text=highdata[i], size_hint_y=None)
+                lbllow = Label(text=lowdata[i], size_hint_y=None)
                 lblhigh.texture_update()
                 lbllow.texture_update()
                 grid.add_widget(lblhigh)
@@ -174,6 +174,7 @@ class NotesScreen(Screen):
 
     def notesByTime(self):
         morenotes = self.manager.get_screen("morenotes")
+        morenotes.layoutMoreNotes.clear_widgets(morenotes.layoutMoreNotes.children)
 
         with sqlite3.connect("UserData.db") as db:
             cursor = db.cursor()
@@ -184,28 +185,46 @@ class NotesScreen(Screen):
             cursor.execute(sql)
             count = cursor.fetchall()
             count = count[0][0]
-            print(data)
 
         for i in range(count):
             noteid = data[i][0]
             title = data[i][1]
             content = data[i][2]
 
-            gridlayout = GridLayout(cols=2)
-            morenotes.layoutMoreNotes.add_widget(Label(text=title))
-            morenotes.layoutMoreNotes.add_widget(Label(text=content))
-            morenotes.layoutMoreNotes.add_widget(gridlayout)
-            gridlayout.add_widget(Button(text="Edit"))
-            gridlayout.add_widget(Button(text="Delete"))
-        morenotes.layoutMoreNotes.add_widget(Button(text="Back", on_press=lambda a: self.back()))
+            lbltitle = Label(text=title, size_hint_y=None)
+            lbltitle.texture_update()
+            morenotes.layoutMoreNotes.add_widget(lbltitle)
 
-        self.parent.current = "morenotes"
+            lbltext = Label(text=content, size_hint_y=None)
+            lbltext.texture_update()
+            morenotes.layoutMoreNotes.add_widget(lbltext)
+
+            grid = GridLayout(cols=2, size_hint_y=None)
+            btnedit = Button(text="Edit", size_hint_y=None, on_press=lambda a: self.edit(noteid))
+            btndelete = Button(text="Delete", size_hint_y=None, on_press=lambda a: self.delete(noteid))
+            btnedit.texture_update()
+            btndelete.texture_update()
+            grid.add_widget(btnedit)
+            grid.add_widget(btndelete)
+            morenotes.layoutMoreNotes.add_widget(grid)
+
+        morenotes.layoutMoreNotes.add_widget(Button(text="Back", height=dp(40), on_press=lambda a: self.back()))
+        self.manager.current = "morenotes"
 
     def notesByTitle(self):
-        self.parent.current = "morenotes"
+        self.manager.current = "morenotes"
 
     def back(self):
         self.manager.current = "notes"
+
+    def delete(self, noteid):
+        n = Notes()
+        n.delete(noteid)
+        self.manager.current = "notes"
+        print("Note deleted")
+
+    def edit(self, noteid):
+        self.manager.current = "editnotes"
 
 
 class NewNotesScreen(Screen):
@@ -223,15 +242,19 @@ class NewNotesScreen(Screen):
             count = cursor.fetchall()
             count = count[0][0]
 
-        if title == "" or content == "" or count >= 10:
+        if title == "" or content == "":
             pass
-        elif count < 10:
+        else:
             n = Notes()
             n.create(title, content)
             self.parent.current = "notes"
 
 
 class MoreNotesScreen(Screen):
+    pass
+
+
+class EditNotesScreen(Screen):
     pass
 
 
