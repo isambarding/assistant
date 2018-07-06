@@ -1,5 +1,6 @@
 import requests
 from requests_oauthlib import OAuth1
+import sqlite3
 
 # 04/05/18: tested working
 
@@ -33,6 +34,17 @@ class Twitter:
         for tweet in f:
             s.append(tweet["text"])
         return s
+
+    def updateUser(self, username):
+        with sqlite3.connect("UserData.db") as db:
+            cursor = db.cursor()
+            sql = """UPDATE userInfo SET LastTwitterSearch='{}'""".format(username)
+            cursor.execute(sql)
+            db.commit()
+        print("Last user search updated")
+
+    def initUserLatest(self, userLatest):
+        pass
 
 
 # Testing

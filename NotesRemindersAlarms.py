@@ -57,7 +57,10 @@ class Notes(NotesRemindersAlarms):
         self.cursor.execute(sql)
         self.db.commit()
 
-        # self.deleteAll("Notes", noteid)
+    def edit(self, noteid, title, content):
+        sql = """UPDATE Notes SET Title='{}', Content='{}' WHERE NoteID='{}';"""
+        self.cursor.execute(sql)
+        self.db.commit()
 
 # Reminders class
 

@@ -1,7 +1,6 @@
 import sqlite3
 
 from kivy.app import App
-from kivy.properties import StringProperty
 from kivy.uix.screenmanager import ScreenManager, Screen
 
 from weather import Weather4Day, Weather10Day
@@ -24,15 +23,12 @@ class HomeScreen(Screen):
             cursor.execute("SELECT name FROM userInfo")
             username = cursor.fetchone()
 
-        self.lblName = "Welcome, " + username[0] + "!"
+        self.lblName = "Welcome, {}!".format(username[0])
+
+########################################################################################################################
 
 
 class WeatherScreen(Screen):
-    latestWeatherText = StringProperty()
-    latestWeatherHigh = StringProperty()
-    latestWeatherLow = StringProperty()
-    latestLocation = StringProperty()
-
     def __init__(self, **kwargs):
         super(WeatherScreen, self).__init__(**kwargs)
         self.getWeather()
@@ -99,10 +95,10 @@ class MoreWeatherScreen(Screen):
     def __init__(self, **kwargs):
         super(MoreWeatherScreen, self).__init__(**kwargs)
 
+########################################################################################################################
+
 
 class TwitterScreen(Screen):
-    recentTweet = StringProperty()
-    recentUsername = StringProperty()
 
     def __init__(self, **kwargs):
         super(TwitterScreen, self).__init__(**kwargs)
@@ -139,9 +135,15 @@ class TwitterScreen(Screen):
 
             btnback = Button(text="Back", height=dp(40), size_hint_y=None, on_press=lambda a: self.back())
             moretwitter.layoutMoreTwitter.add_widget(btnback)
-            self.parent.current = "moretwitter"
+            self.manager.current = "moretwitter"
 
     def back(self):
+        username = self.inputTwitterUsername.text
+
+        t = Twitter()
+        t.updateUser(username)
+        self.recentUsername = "Latest tweet from @{}".format(username)
+        self.recentTweet = t.userLatest(username)
         self.manager.current = "twitter"
 
 
@@ -153,21 +155,19 @@ class MoreTwitterScreen(Screen):
         twitter = self.manager.get_screen("twitter")
         username = twitter.inputTwitterUsername.text
 
-        with sqlite3.connect("UserData.db") as db:
-            cursor = db.cursor()
-            sql = """UPDATE userInfo SET LastTwitterSearch='{}'""".format(username)
-            cursor.execute(sql)
-            db.commit()
-
         t = Twitter()
-        twitter.recentUsername = "Latest tweet from @" + username
+        t.updateUser(username)
+        twitter.recentUsername = "Latest tweet from @{}".format(username)
         twitter.recentTweet = t.userLatest(username)
         self.parent.current = "twitter"
+
+########################################################################################################################
 
 
 class NotesScreen(Screen):
     def __init__(self, **kwargs):
         super(NotesScreen, self).__init__(**kwargs)
+        self.selectednote = ""
 
     def newNote(self):
         self.parent.current = "newnotes"
@@ -224,6 +224,7 @@ class NotesScreen(Screen):
         print("Note deleted")
 
     def edit(self, noteid):
+        self.selectednote = noteid
         self.manager.current = "editnotes"
 
 
@@ -234,13 +235,6 @@ class NewNotesScreen(Screen):
     def createNote(self):
         title = self.inputNewNoteTitle.text
         content = self.inputNewNoteContent.text
-
-        with sqlite3.connect("UserData.db") as db:
-            cursor = db.cursor()
-            sql = """SELECT Count(NoteID) FROM Notes"""
-            cursor.execute(sql)
-            count = cursor.fetchall()
-            count = count[0][0]
 
         if title == "" or content == "":
             pass
@@ -255,15 +249,41 @@ class MoreNotesScreen(Screen):
 
 
 class EditNotesScreen(Screen):
-    pass
+    def editNote(self):
+        notes = self.manager.get_screen("notes")
+        noteid = notes.selectednote
+        title = self.inputEditNoteTitle.text
+        content = self.inputEditNoteContent.text
+
+########################################################################################################################
 
 
 class RemindersScreen(Screen):
     pass
 
 
+class MoreRemindersScreen(Screen):
+    pass
+
+
+class EditRemindersScreen(Screen):
+    pass
+
+########################################################################################################################
+
+
 class AlarmsScreen(Screen):
     pass
+
+
+class MoreAlarmsScreen(Screen):
+    pass
+
+
+class EditAlarmsScreen(Screen):
+    pass
+
+########################################################################################################################
 
 
 class SettingsScreen(Screen):
