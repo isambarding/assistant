@@ -9,9 +9,11 @@ MyScreenManager:
     MoreNotesScreen:
     EditNotesScreen:
     RemindersScreen:
+    NewRemindersScreen:
     MoreRemindersScreen:
     EditRemindersScreen:
     AlarmsScreen:
+    NewAlarmsScreen:
     MoreAlarmsScreen:
     EditAlarmsScreen:
     SettingsScreen:
@@ -93,7 +95,7 @@ MyScreenManager:
         Button:
             id: btnUpdateLocation
             text: "Get weather"
-            on_press: root.getMoreWeather()
+            on_press: root.getmoreweather()
         Button:
             id: btnBack
             text: "Back"
@@ -131,7 +133,7 @@ MyScreenManager:
         Button:
             id: btnSearchTweets
             text: "Search username"
-            on_press: root.getMoreTweets()
+            on_press: root.getmoretweets()
         Button:
             id: btnBack
             text: "Back"
@@ -163,17 +165,17 @@ MyScreenManager:
         Button:
             id: btnNewNote
             text: "New note"
-            on_press: root.newNote()
+            on_press: root.newnote()
         GridLayout:
             cols: 2
             Button:
                 id: btnAllNotes
                 text: "Notes by time"
-                on_press: root.notesByTime()
+                on_press: root.notesbytime()
             Button:
                 id: btnAllNotes
                 text: "Notes by title"
-                on_press: root.notesByTitle()
+                on_press: root.notesbytitle()
         Button:
             id: btnBack
             text: "Back"
@@ -202,7 +204,7 @@ MyScreenManager:
         Button:
             id: btnCreateNote
             text: "Create"
-            on_press: root.createNote()
+            on_press: root.createnote()
         Button:
             id: btnBack
             text: "Discard"
@@ -243,7 +245,7 @@ MyScreenManager:
         Button:
             id: btnEditNote
             text: "Save"
-            on_press: root.editNote()
+            on_press: root.editnote()
         Button:
             id: btnBack
             text: "Discard"
@@ -373,7 +375,7 @@ MyScreenManager:
             on_press: app.root.current = "home"
 
 <NewAlarmsScreen>
-    name: "newalarmss"
+    name: "newalarms"
     inputNewAlarmTitle: inputNewAlarmTitle
     inputNewAlarmContent: inputNewAlarmContent
 
@@ -433,7 +435,7 @@ MyScreenManager:
         Button:
             id: btnChangeName
             text: "Change name"
-            on_press: root.changeName()
+            on_press: root.changename()
 
         GridLayout:
             cols: 2
@@ -449,7 +451,7 @@ MyScreenManager:
         Button:
             id: btnChangeLocation
             text: "Change location"
-            on_press: root.changeLocation()
+            on_press: root.changelocation()
         Button:
             id: btnRestartSetup
             text: "Restart setup"
@@ -465,7 +467,6 @@ MyScreenManager:
     halign: "center"
     valign: "center"
     font_size: "15dp"
-    #size_hint: None, None
 
 <BoxLayout>
     orientation: "vertical"

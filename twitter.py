@@ -42,12 +42,3 @@ class Twitter:
             cursor.execute(sql)
             db.commit()
         print("Last user search updated")
-
-    def initUserLatest(self, userLatest):
-        pass
-
-
-# Testing
-# t = Twitter()
-# un = input("Enter an @username: ")
-# print(t.userLatest(un))

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import sqlite3
 
 from kivy.app import App
@@ -31,9 +33,9 @@ class HomeScreen(Screen):
 class WeatherScreen(Screen):
     def __init__(self, **kwargs):
         super(WeatherScreen, self).__init__(**kwargs)
-        self.getWeather()
+        self.getweather()
 
-    def getWeather(self):
+    def getweather(self):
         with sqlite3.connect("UserData.db") as db:
             cursor = db.cursor()
             cursor.execute("SELECT city FROM userInfo")
@@ -44,12 +46,13 @@ class WeatherScreen(Screen):
         country = country[0]
 
         w = Weather4Day(country, city)
-        self.latestLocation = "The weather in {}, {} is:".format(city, country)
-        self.latestWeatherText = w.forecastTodayText()
-        self.latestWeatherHigh = w.forecastTodayHigh() + "°C"
-        self.latestWeatherLow = w.forecastTodayLow() + "°C"
 
-    def getMoreWeather(self):
+
+        self.latestWeatherText = w.forecastTodayText()
+        self.latestWeatherHigh = w.forecastTodayHigh() + "C"
+        self.latestWeatherLow = w.forecastTodayLow() + "C"
+
+    def getmoreweather(self):
         city = self.inputCity.text
         country = self.inputCountry.text
         
@@ -102,9 +105,9 @@ class TwitterScreen(Screen):
 
     def __init__(self, **kwargs):
         super(TwitterScreen, self).__init__(**kwargs)
-        self.latestTweet()
+        self.latesttweet()
 
-    def latestTweet(self):
+    def latesttweet(self):
         with sqlite3.connect("UserData.db") as db:
             cursor = db.cursor()
             cursor.execute("SELECT LastTwitterSearch FROM userInfo")
@@ -115,7 +118,7 @@ class TwitterScreen(Screen):
         self.recentTweet = t.userLatest(username)
         self.recentUsername = "Latest tweet from @" + username
 
-    def getMoreTweets(self):
+    def getmoretweets(self):
         un = self.inputTwitterUsername.text
         if un == "":
             pass
@@ -151,16 +154,6 @@ class MoreTwitterScreen(Screen):
     def __init__(self, **kwargs):
         super(MoreTwitterScreen, self).__init__(**kwargs)
 
-    def refreshTwitter(self):
-        twitter = self.manager.get_screen("twitter")
-        username = twitter.inputTwitterUsername.text
-
-        t = Twitter()
-        t.updateUser(username)
-        twitter.recentUsername = "Latest tweet from @{}".format(username)
-        twitter.recentTweet = t.userLatest(username)
-        self.parent.current = "twitter"
-
 ########################################################################################################################
 
 
@@ -169,10 +162,10 @@ class NotesScreen(Screen):
         super(NotesScreen, self).__init__(**kwargs)
         self.selectednote = ""
 
-    def newNote(self):
+    def newnote(self):
         self.parent.current = "newnotes"
 
-    def notesByTime(self):
+    def notesbytime(self):
         morenotes = self.manager.get_screen("morenotes")
         morenotes.layoutMoreNotes.clear_widgets(morenotes.layoutMoreNotes.children)
 
@@ -211,7 +204,7 @@ class NotesScreen(Screen):
         morenotes.layoutMoreNotes.add_widget(Button(text="Back", height=dp(40), on_press=lambda a: self.back()))
         self.manager.current = "morenotes"
 
-    def notesByTitle(self):
+    def notesbytitle(self):
         self.manager.current = "morenotes"
 
     def back(self):
@@ -232,7 +225,7 @@ class NewNotesScreen(Screen):
     def __init__(self, **kwargs):
         super(NewNotesScreen, self).__init__(**kwargs)
 
-    def createNote(self):
+    def createnote(self):
         title = self.inputNewNoteTitle.text
         content = self.inputNewNoteContent.text
 
@@ -249,7 +242,7 @@ class MoreNotesScreen(Screen):
 
 
 class EditNotesScreen(Screen):
-    def editNote(self):
+    def editnote(self):
         notes = self.manager.get_screen("notes")
         noteid = notes.selectednote
         title = self.inputEditNoteTitle.text
@@ -259,6 +252,10 @@ class EditNotesScreen(Screen):
 
 
 class RemindersScreen(Screen):
+    pass
+
+
+class NewRemindersScreen(Screen):
     pass
 
 
@@ -276,6 +273,10 @@ class AlarmsScreen(Screen):
     pass
 
 
+class NewAlarmsScreen(Screen):
+    pass
+
+
 class MoreAlarmsScreen(Screen):
     pass
 
@@ -290,7 +291,7 @@ class SettingsScreen(Screen):
     def __init__(self, **kwargs):
         super(SettingsScreen, self).__init__(**kwargs)
 
-    def changeName(self):
+    def changename(self):
         name = self.inputNewName.text
         if name == "":
             pass
@@ -298,7 +299,7 @@ class SettingsScreen(Screen):
             s = Settings()
             s.changeName(name)
 
-    def changeLocation(self):
+    def changelocation(self):
         city = self.inputNewCity.text
         country = self.inputNewCountry.text
         if city == "" or country == "":
@@ -307,7 +308,7 @@ class SettingsScreen(Screen):
             s = Settings()
             s.changeLocation(country, city)
 
-    def restartSetup(self):
+    def restartsetup(self):
         pass
 
 
