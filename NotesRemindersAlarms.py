@@ -43,7 +43,6 @@ class NotesRemindersAlarms:
 class Notes(NotesRemindersAlarms):
     def create(self, title, content):
         date = time.time()
-        print(date)
         sql = """insert into Notes (Title, Content, Date) values ('{}', '{}', {});""".format(title, content, date)
         self.cursor.execute(sql)
         self.db.commit()

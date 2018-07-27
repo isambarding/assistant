@@ -47,7 +47,7 @@ class WeatherScreen(Screen):
 
         w = Weather4Day(country, city)
 
-
+        self.latestLocation = "The weather in {}, {} is".format(city, country)
         self.latestWeatherText = w.forecastTodayText()
         self.latestWeatherHigh = w.forecastTodayHigh() + "C"
         self.latestWeatherLow = w.forecastTodayLow() + "C"
@@ -160,7 +160,6 @@ class MoreTwitterScreen(Screen):
 class NotesScreen(Screen):
     def __init__(self, **kwargs):
         super(NotesScreen, self).__init__(**kwargs)
-        self.selectednote = ""
 
     def newnote(self):
         self.parent.current = "newnotes"
@@ -193,6 +192,7 @@ class NotesScreen(Screen):
             morenotes.layoutMoreNotes.add_widget(lbltext)
 
             grid = GridLayout(cols=2, size_hint_y=None)
+            # FIX THIS
             btnedit = Button(text="Edit", size_hint_y=None, on_press=lambda a: self.edit(noteid))
             btndelete = Button(text="Delete", size_hint_y=None, on_press=lambda a: self.delete(noteid))
             btnedit.texture_update()
@@ -217,7 +217,9 @@ class NotesScreen(Screen):
         print("Note deleted")
 
     def edit(self, noteid):
-        self.selectednote = noteid
+        print(noteid)
+        editnotes = self.manager.get_screen("editnotes")
+        editnotes.currentnoteid = noteid
         self.manager.current = "editnotes"
 
 
@@ -243,10 +245,15 @@ class MoreNotesScreen(Screen):
 
 class EditNotesScreen(Screen):
     def editnote(self):
+        print(self.currentnoteid)
+        noteid = self.currentnoteid
+        print(noteid)
         notes = self.manager.get_screen("notes")
-        noteid = notes.selectednote
         title = self.inputEditNoteTitle.text
         content = self.inputEditNoteContent.text
+
+        n = Notes()
+        n.edit(noteid, title, content)
 
 ########################################################################################################################
 
