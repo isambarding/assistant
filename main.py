@@ -201,10 +201,47 @@ class NotesScreen(Screen):
             grid.add_widget(btndelete)
             morenotes.layoutMoreNotes.add_widget(grid)
 
-        morenotes.layoutMoreNotes.add_widget(Button(text="Back", height=dp(40), on_press=lambda a: self.back()))
+        morenotes.layoutMoreNotes.add_widget(Button(text="Back", height=dp(80), on_press=lambda a: self.back()))
         self.manager.current = "morenotes"
 
     def notesbytitle(self):
+        morenotes = self.manager.get_screen("morenotes")
+        morenotes.layoutMoreNotes.clear_widgets(morenotes.layoutMoreNotes.children)
+
+        with sqlite3.connect("UserData.db") as db:
+            cursor = db.cursor()
+            sql = """SELECT NoteID, Title, Content FROM Notes ORDER BY Title"""
+            cursor.execute(sql)
+            data = cursor.fetchall()
+            sql = """SELECT Count(NoteID) FROM Notes"""
+            cursor.execute(sql)
+            count = cursor.fetchall()
+            count = count[0][0]
+
+        for i in range(count):
+            noteid = data[i][0]
+            title = data[i][1]
+            content = data[i][2]
+
+            lbltitle = Label(text=title, size_hint_y=None)
+            lbltitle.texture_update()
+            morenotes.layoutMoreNotes.add_widget(lbltitle)
+
+            lbltext = Label(text=content, size_hint_y=None)
+            lbltext.texture_update()
+            morenotes.layoutMoreNotes.add_widget(lbltext)
+
+            grid = GridLayout(cols=2, size_hint_y=None)
+            # FIX THIS
+            btnedit = Button(text="Edit", size_hint_y=None, on_press=lambda a: self.edit(noteid))
+            btndelete = Button(text="Delete", size_hint_y=None, on_press=lambda a: self.delete(noteid))
+            btnedit.texture_update()
+            btndelete.texture_update()
+            grid.add_widget(btnedit)
+            grid.add_widget(btndelete)
+            morenotes.layoutMoreNotes.add_widget(grid)
+
+        morenotes.layoutMoreNotes.add_widget(Button(text="Back", height=dp(80), on_press=lambda a: self.back()))
         self.manager.current = "morenotes"
 
     def back(self):
