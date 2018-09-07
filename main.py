@@ -6,6 +6,7 @@ from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager, Screen
 
 from weather import Weather4Day, Weather10Day
+from settings import Setup
 from twitter import Twitter
 from settings import Settings
 from NotesRemindersAlarms import NotesRemindersAlarms, Notes, Reminders, Alarms
@@ -355,6 +356,24 @@ class SettingsScreen(Screen):
     def restartsetup(self):
         pass
 
+
+class SetupScreen(Screen):
+    def __init__(self, **kwargs):
+        super(SetupScreen, self).__init__(**kwargs)
+
+    def completesetup(self):
+        name = self.inputName.text
+        city = self.inputCity.text
+        country = self.inputCountry.text
+
+        if name == "" or city == "" or country == "":
+            pass
+        else:
+            setup = Setup()
+            setup.completesetup(name, country, city)
+            self.parent.current = "home"
+
+########################################################################################################################
 
 class MyScreenManager(ScreenManager):
     pass

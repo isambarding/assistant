@@ -7,41 +7,27 @@ import sqlite3
 
 class Setup:
     # Create table method
-    def createTable(self, dbName, sql):
+    def createTable(self, sql):
         with sqlite3.connect(dbName) as db:
             cursor = db.cursor()
             cursor.execute(sql)
-            db.commit()
 
     # Main setup method
     def startSetup(self, name, country, city):
         dbName = "UserData.db"
 
         # Create userinfo
-        sql = """CREATE TABLE userInfo
-                 (Name text,
-                  Country text,
-                  City text,
-                  LastTwitterSearch text,
-                  primary key(Name))"""
+        sql = "CREATE TABLE userInfo (Name text, Country text, City text, LastTwitterSearch text, primary key(Name))"
         self.createTable(dbName, sql)
 
         with sqlite3.connect("UserData.db") as db:
             cursor = db.cursor()
             sql = """INSERT INTO userInfo (Name, Country, City, LastTwitterSearch) VALUES ('""" + name + """', '""" + country + """', '""" + city + """', 'kedst')"""
             cursor.execute(sql)
-            db.commit
 
         # Alarms table
-        sql = """CREATE TABLE Alarms
-                    (AlarmID integer,
-                    Title text,
-                    Days text,
-                    Time time,
-                    Date float,
-                    Repeats boolean,
-                    primary key(AlarmID))"""
-        self.createTable(dbName, sql)
+        sql = """CREATE TABLE Alarms (AlarmID integer, Title text, Days text, Time time, Date float, Repeats boolean, primary key(AlarmID))"""
+        self.createTable(sql)
 
         # Notes table
         sql = """CREATE TABLE Notes

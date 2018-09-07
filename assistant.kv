@@ -17,6 +17,9 @@ MyScreenManager:
     MoreAlarmsScreen:
     EditAlarmsScreen:
     SettingsScreen:
+    SetupScreen:
+
+########################################################################################################################
 
 <HomeScreen>
     name: "home"
@@ -455,10 +458,41 @@ MyScreenManager:
         Button:
             id: btnRestartSetup
             text: "Restart setup"
+            on_press: app.root.current = "setup"
         Button:
             id: btnBack
             text: "Back"
             on_press: app.root.current = "home"
+
+########################################################################################################################
+
+<SetupScreen>
+    name: "setup"
+    inputName: inputName
+    inputCountry: inputCountry
+    inputCity: inputCity
+
+    BoxLayout:
+        GridLayout:
+            cols: 2
+            Label:
+                text: "Name:"
+            TextInput:
+                id: inputName
+            Label:
+                text: "Country:"
+            TextInput:
+                id: inputCountry
+            Label:
+                text: "City:"
+            TextInput:
+                id: inputCity
+        Button:
+            id: btnConfirm
+            text: "Confirm"
+            on_press: root.completesetup()
+
+########################################################################################################################
 
 <Label>
     text_size: self.width, None
