@@ -22,17 +22,11 @@ class HomeScreen(Screen):
     def __init__(self, **kwargs):
         super(HomeScreen, self).__init__(**kwargs)
 
-        if os.path.exists("UserData.db") is True:
-            print("Userdata.db found")
-            with sqlite3.connect("UserData.db") as db:
-                cursor = db.cursor()
-                cursor.execute("SELECT name FROM userInfo")
-                username = cursor.fetchone()
-                self.lblName = "Welcome, {}!".format(username[0])
-        else:
-            print("Userdata.db not found")
-            self.manager.current = "setup"
-
+        with sqlite3.connect("UserData.db") as db:
+            cursor = db.cursor()
+            cursor.execute("SELECT name FROM userInfo")
+            username = cursor.fetchone()
+            self.lblName = "Welcome, {}!".format(username[0])
 
 ########################################################################################################################
 
@@ -501,13 +495,21 @@ class SetupScreen(Screen):
 
 ########################################################################################################################
 
+
 class MyScreenManager(ScreenManager):
     pass
 
 
 class AssistantApp(App):
-    def b(self):
-        self.title = 'Assistant'
+    title = 'Assistant'
+        
+    def on_start(self):
+        if os.path.exists("UserData.db") is True:
+            print("Userdata.db found")
+            self.root.current = "home"
+        else:
+            print("Userdata.db not found")
+            self.manager.current = "setup"
 
 
 if __name__ == "__main__":
