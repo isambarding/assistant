@@ -4,6 +4,7 @@ import sqlite3
 import os.path
 
 from kivy.app import App
+from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
 
 from weather import Weather4Day, Weather10Day
@@ -11,11 +12,14 @@ from settings import Setup
 from twitter import Twitter
 from settings import Settings
 from NotesRemindersAlarms import NotesRemindersAlarms, Notes, Reminders, Alarms
+
 from kivy.core.window import Window
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.gridlayout import GridLayout
 from kivy.metrics import dp
+
+Builder.load_file("assistant.txt")
 
 
 class HomeScreen(Screen):
@@ -24,9 +28,9 @@ class HomeScreen(Screen):
 
         with sqlite3.connect("UserData.db") as db:
             cursor = db.cursor()
-            cursor.execute("SELECT name FROM userInfo")
+            cursor.execute("SELECT Name FROM userInfo")
             username = cursor.fetchone()
-            self.lblName = "Welcome, {}!".format(username[0])
+            self.lblName.text = "Welcome, {}!".format(username[0])
 
 ########################################################################################################################
 
@@ -48,10 +52,10 @@ class WeatherScreen(Screen):
 
         w = Weather4Day(country, city)
 
-        self.latestLocation = "The weather in {}, {} is".format(city, country)
-        self.latestWeatherText = w.forecastTodayText()
-        self.latestWeatherHigh = w.forecastTodayHigh() + "C"
-        self.latestWeatherLow = w.forecastTodayLow() + "C"
+        self.lblLocation.text = "The weather in {}, {} is".format(city, country)
+        self.lblWeatherText.text = w.forecastTodayText()
+        self.lblWeatherHigh.text = w.forecastTodayHigh() + "C"
+        self.lblWeatherLow.text = w.forecastTodayLow() + "C"
 
     def getmoreweather(self):
         city = self.inputCity.text
@@ -116,8 +120,8 @@ class TwitterScreen(Screen):
 
         username = username[0]
         t = Twitter()
-        self.recentTweet = t.userLatest(username)
-        self.recentUsername = "Latest tweet from @" + username
+        self.lblRecentTweet.text = t.userLatest(username)
+        self.lblRecentUsername.text = "Latest tweet from @" + username
 
     def getmoretweets(self):
         un = self.inputTwitterUsername.text
@@ -146,8 +150,8 @@ class TwitterScreen(Screen):
 
         t = Twitter()
         t.updateUser(username)
-        self.recentUsername = "Latest tweet from @{}".format(username)
-        self.recentTweet = t.userLatest(username)
+        self.lblRecentUsername.text = "Latest tweet from @{}".format(username)
+        self.lblRecentTweet.text = t.userLatest(username)
         self.manager.current = "twitter"
 
 
@@ -463,6 +467,7 @@ class SettingsScreen(Screen):
         else:
             s = Settings()
             s.changeName(name)
+            print("Name changed successfully")
 
     def changelocation(self):
         city = self.inputNewCity.text
@@ -472,6 +477,7 @@ class SettingsScreen(Screen):
         else:
             s = Settings()
             s.changeLocation(country, city)
+            print("Location changed successfully")
 
     def restartsetup(self):
         pass
@@ -490,26 +496,55 @@ class SetupScreen(Screen):
             pass
         else:
             setup = Setup()
-            setup.completesetup(name, country, city)
+            setup.completeSetup(name, country, city)
+            print("Setup complete")
+            sm.add_widget(HomeScreen(name="home"))
+            sm.add_widget(WeatherScreen(name="weather"))
+            sm.add_widget(TwitterScreen(name="twitter"))
             self.parent.current = "home"
 
 ########################################################################################################################
 
 
-class MyScreenManager(ScreenManager):
-    pass
+sm = ScreenManager()
 
 
 class AssistantApp(App):
     title = 'Assistant'
+
+    def addscreens(self):
+        sm.add_widget(MoreWeatherScreen(name="moreweather"))
+        sm.add_widget(MoreTwitterScreen(name="moretwitter"))
+        sm.add_widget(NotesScreen(name="notes"))
+        sm.add_widget(NewNotesScreen(name="newnotes"))
+        sm.add_widget(MoreNotesScreen(name="morenotes"))
+        sm.add_widget(EditNotesScreen(name="editnotes"))
+        sm.add_widget(RemindersScreen(name="reminders"))
+        sm.add_widget(NewRemindersScreen(name="newreminders"))
+        sm.add_widget(MoreRemindersScreen(name="morereminders"))
+        sm.add_widget(EditRemindersScreen(name="editreminders"))
+        sm.add_widget(AlarmsScreen(name="alarms"))
+        sm.add_widget(NewAlarmsScreen(name="newalarms"))
+        sm.add_widget(MoreAlarmsScreen(name="morealarms"))
+        sm.add_widget(EditAlarmsScreen(name="editalarms"))
+        sm.add_widget(SettingsScreen(name="settings"))
+
+    def build(self):
+        return sm
         
     def on_start(self):
         if os.path.exists("UserData.db") is True:
             print("Userdata.db found")
+            sm.add_widget(HomeScreen(name="home"))
+            sm.add_widget(WeatherScreen(name="weather"))
+            sm.add_widget(TwitterScreen(name="twitter"))
+            self.addscreens()
             self.root.current = "home"
         else:
             print("Userdata.db not found")
-            self.manager.current = "setup"
+            sm.add_widget(SetupScreen(name="setup"))
+            self.addscreens()
+            self.root.current = "setup"
 
 
 if __name__ == "__main__":

@@ -1,0 +1,489 @@
+<HomeScreen>
+    lblName: lblName
+    BoxLayout:
+        Label:
+            id: lblName
+            text: "Welcome, name!"
+        Button:
+            id: btnWeather
+            text: "Weather"
+            on_press: app.root.current = "weather"
+        Button:
+            id: btnTwitter
+            text: "Twitter"
+            on_press: app.root.current = "twitter"
+        Button:
+            id: btnNotes
+            text: "Notes"
+            on_press: app.root.current = "notes"
+        Button:
+            id: btnReminders
+            text: "Reminders"
+            on_press: app.root.current = "reminders"
+        Button:
+            id: btnAlarms
+            text: "Alarms"
+            on_press: app.root.current = "alarms"
+        Button:
+            id: btnSettings
+            text: "Settings"
+            on_press: app.root.current = "settings"
+
+<WeatherScreen>
+    name: "weather"
+    lblLocation: lblLocation
+    lblWeatherText: lblWeatherText
+    lblWeatherHigh: lblWeatherHigh
+    lblWeatherLow: lblWeatherLow
+    inputCity: inputCity
+    inputCountry: inputCountry
+
+    BoxLayout:
+        Label:
+            id: lblLocation
+            text: "latestLocation"
+        Label:
+            id: lblWeatherText
+            text_size: self.size
+            text: "latestWeatherText"
+
+        GridLayout:
+            cols: 2
+            Label:
+                text: "High:"
+                halign: "right"
+            Label:
+                id: lblWeatherHigh
+                halign: "left"
+                text: "latestWeatherHigh"
+            Label:
+                text: "Low:"
+                halign: "right"
+            Label:
+                id: lblWeatherLow
+                halign: "left"
+                text: "latestWeatherLow"
+
+        GridLayout:
+            cols: 2
+            Label:
+                text: "Country:"
+            TextInput:
+                id: inputCountry
+            Label:
+                text: "City:"
+            TextInput:
+                id: inputCity
+
+        Button:
+            id: btnUpdateLocation
+            text: "Get weather"
+            on_press: root.getmoreweather()
+        Button:
+            id: btnBack
+            text: "Back"
+            on_press: app.root.current = "home"
+
+<MoreWeatherScreen>
+    name: "moreweather"
+    layoutMoreWeather: layoutMoreWeather
+
+    ScrollView:
+        GridLayout:
+            id: layoutMoreWeather
+            size_hint_y: None
+            height: self.minimum_height
+            cols: 1
+
+<TwitterScreen>
+    name: "twitter"
+    inputTwitterUsername: inputTwitterUsername
+    lblRecentUsername: lblRecentUsername
+    lblRecentTweet: lblRecentTweet
+
+    BoxLayout:
+        Label:
+            id: lblRecentUsername
+            text: "recentUsername"
+        Label:
+            id: lblRecentTweet
+            text: "recentTweet"
+
+        GridLayout:
+            cols: 2
+            Label:
+                text: "@Username:"
+            TextInput:
+                id: inputTwitterUsername
+
+        Button:
+            id: btnSearchTweets
+            text: "Search username"
+            on_press: root.getmoretweets()
+        Button:
+            id: btnBack
+            text: "Back"
+            on_press: app.root.current = "home"
+
+<MoreTwitterScreen>
+    name: "moretwitter"
+    layoutMoreTwitter: layoutMoreTwitter
+
+    ScrollView:
+        GridLayout:
+            size_hint_y: None
+            height: self.minimum_height
+            id: layoutMoreTwitter
+            cols: 1
+
+########################################################################################################################
+
+<NotesScreen>
+    name: "notes"
+
+    BoxLayout:
+        Label:
+            id: lblLastNoteTitle
+            text: "Most recent note title"
+        Label:
+            id: lblLastNoteContent
+            text: "Most recent note content"
+        Button:
+            id: btnNewNote
+            text: "New note"
+            on_press: root.newnote()
+        GridLayout:
+            cols: 2
+            Button:
+                id: btnAllNotes
+                text: "Notes by time"
+                on_press: root.notesbytime()
+            Button:
+                id: btnAllNotes
+                text: "Notes by title"
+                on_press: root.notesbytitle()
+        Button:
+            id: btnBack
+            text: "Back"
+            on_press: app.root.current = "home"
+
+<NewNotesScreen>
+    name: "newnotes"
+    inputNewNoteTitle: inputNewNoteTitle
+    inputNewNoteContent: inputNewNoteContent
+
+    BoxLayout:
+        GridLayout:
+            cols: 2
+            Label:
+                id: lblNewNoteTitle
+                text: "Title:"
+            TextInput:
+                id: inputNewNoteTitle
+
+        Label:
+            id: lblNewNoteTitle
+            text: "Content:"
+        TextInput:
+            id: inputNewNoteContent
+            multiline: True
+        Button:
+            id: btnCreateNote
+            text: "Create"
+            on_press: root.createnote()
+        Button:
+            id: btnBack
+            text: "Discard"
+            on_press: app.root.current = "notes"
+
+<MoreNotesScreen>
+    name: "morenotes"
+    layoutMoreNotes: layoutMoreNotes
+    ScrollView:
+        GridLayout:
+            id: layoutMoreNotes
+            cols: 1
+            size_hint_y: None
+            height: self.minimum_height
+
+<EditNotesScreen>
+    name: "editnotes"
+    inputEditNoteTitle: inputEditNoteTitle
+    inputEditNoteContent: inputEditNoteContent
+    layoutEditNotes: layoutEditNotes
+
+    BoxLayout:
+        id: layoutEditNotes
+        GridLayout:
+            cols: 2
+            Label:
+                id: lblEditNoteTitle
+                text: "Title:"
+            TextInput:
+                id: inputEditNoteTitle
+
+        Label:
+            id: lblEditNoteTitle
+            text: "Content:"
+        TextInput:
+            id: inputEditNoteContent
+            multiline: True
+        Button:
+            id: btnEditNote
+            text: "Save"
+            on_press: root.editnote()
+        Button:
+            id: btnBack
+            text: "Discard"
+            on_press: app.root.current = "morenotes"
+
+########################################################################################################################
+
+<RemindersScreen>
+    name: "reminders"
+
+    BoxLayout:
+        Label:
+            id: lblLastReminderTitle
+            text: "Most recent reminder title"
+        Label:
+            id: lblLastReminderContent
+            text: "Most recent reminder content"
+        Button:
+            id: btnNewReminder
+            text: "New reminder"
+            on_press: root.newreminder()
+        GridLayout:
+            cols: 2
+            Button:
+                id: btnAllReminders
+                text: "Reminders by time"
+                on_press: root.remindersByTime()
+            Button:
+                id: btnAllReminders
+                text: "Reminders by title"
+                on_press: root.remindersByTitle()
+        Button:
+            id: btnBack
+            text: "Back"
+            on_press: app.root.current = "home"
+
+<NewRemindersScreen>
+    name: "newreminders"
+    inputNewReminderTitle: inputNewReminderTitle
+    inputNewReminderContent: inputNewReminderContent
+
+    BoxLayout:
+        GridLayout:
+            cols: 2
+            Label:
+                id: lblNewReminderTitle
+                text: "Title:"
+            TextInput:
+                id: inputNewReminderTitle
+
+        Label:
+            id: lblNewReminderTitle
+            text: "Content:"
+        TextInput:
+            id: inputNewReminderContent
+            multiline: True
+        Button:
+            id: btnCreateReminder
+            text: "Create"
+            on_press: root.createReminder()
+        Button:
+            id: btnBack
+            text: "Discard"
+            on_press: app.root.current = "reminders"
+
+<MoreRemindersScreen>
+    name: "morereminders"
+    layoutMoreReminders: layoutMoreReminders
+    ScrollView:
+        GridLayout:
+            id: layoutMoreReminders
+            cols: 1
+            size_hint_y: None
+            height: self.minimum_height
+
+<EditReminderScreen>
+    name: "editreminder"
+    inputEditNoteTitle: inputEditNoteTitle
+    inputEditNoteContent: inputEditNoteContent
+    layoutEditReminder: layoutEditReminder
+
+    BoxLayout:
+        id: layoutEditReminder
+        GridLayout:
+            cols: 2
+            Label:
+                id: lblEditNoteTitle
+                text: "Title:"
+            TextInput:
+                id: inputEditNoteTitle
+
+        Label:
+            id: lblEditNoteTitle
+            text: "Content:"
+        TextInput:
+            id: inputEditNoteContent
+            multiline: True
+        Button:
+            id: btnEditNote
+            text: "Save"
+            on_press: root.editNote()
+        Button:
+            id: btnBack
+            text: "Discard"
+            on_press: app.root.current = "morereminder"
+
+########################################################################################################################
+
+<AlarmsScreen>
+    name: "alarms"
+
+    BoxLayout:
+        Label:
+            id: lblLastAlarmTitle
+            text: "Most recent alarm title"
+        Label:
+            id: lblLastAlarmTime
+            text: "Most recent alarm time"
+        Button:
+            id: btnNewAlarm
+            text: "New alarm"
+        Button:
+            id: btnAllAlarms
+            text: "All alarms"
+        Button:
+            id: btnBack
+            text: "Back"
+            on_press: app.root.current = "home"
+
+<NewAlarmsScreen>
+    name: "newalarms"
+    inputNewAlarmTitle: inputNewAlarmTitle
+    inputNewAlarmContent: inputNewAlarmContent
+
+    BoxLayout:
+        GridLayout:
+            cols: 2
+            Label:
+                id: lblNewAlarmTitle
+                text: "Title:"
+            TextInput:
+                id: inputNewAlarmTitle
+
+        Label:
+            id: lblNewAlarmTitle
+            text: "Content:"
+        TextInput:
+            id: inputNewAlarmContent
+            multiline: True
+        Button:
+            id: btnCreateAlarm
+            text: "Create"
+            on_press: root.createAlarm()
+        Button:
+            id: btnBack
+            text: "Discard"
+            on_press: app.root.current = "alarms"
+
+<MoreAlarmsscreen>
+    name: "morealarmss"
+    layoutMoreAlarms: layoutMoreAlarms
+    ScrollView:
+        GridLayout:
+            id: layoutMoreAlarms
+            cols: 1
+            size_hint_y: None
+            height: self.minimum_height
+
+
+########################################################################################################################
+
+<SettingsScreen>
+    name: "settings"
+    inputNewName: inputNewName
+    inputNewCountry: inputNewCountry
+    inputNewCity: inputNewCity
+
+    BoxLayout:
+        Label:
+            text: "Changes will take effect after restart"
+        GridLayout:
+            cols: 2
+            Label:
+                text: "Name:"
+            TextInput:
+                id: inputNewName
+
+        Button:
+            id: btnChangeName
+            text: "Change name"
+            on_press: root.changename()
+
+        GridLayout:
+            cols: 2
+            Label:
+                text: "Country:"
+            TextInput:
+                id: inputNewCountry
+            Label:
+                text: "City:"
+            TextInput:
+                id: inputNewCity
+
+        Button:
+            id: btnChangeLocation
+            text: "Change location"
+            on_press: root.changelocation()
+        Button:
+            id: btnBack
+            text: "Back"
+            on_press: app.root.current = "home"
+
+########################################################################################################################
+
+<SetupScreen>
+    name: "setup"
+    inputName: inputName
+    inputCountry: inputCountry
+    inputCity: inputCity
+
+    BoxLayout:
+        GridLayout:
+            cols: 2
+            Label:
+                text: "Name:"
+            TextInput:
+                id: inputName
+            Label:
+                text: "Country:"
+            TextInput:
+                id: inputCountry
+            Label:
+                text: "City:"
+            TextInput:
+                id: inputCity
+        Button:
+            id: btnConfirm
+            text: "Confirm"
+            on_press: root.completesetup()
+
+########################################################################################################################
+
+<Label>
+    text_size: self.width, None
+    padding_x: "20dp"
+    padding_y: "20dp"
+    halign: "center"
+    valign: "center"
+    font_size: "15dp"
+
+<BoxLayout>
+    orientation: "vertical"
+
+<TextInput>
+    multiline: False
