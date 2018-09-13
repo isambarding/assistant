@@ -35,10 +35,3 @@ class Twitter:
             s.append(tweet["text"])
         return s
 
-    def updateUser(self, username):
-        with sqlite3.connect("UserData.db") as db:
-            cursor = db.cursor()
-            sql = """UPDATE userInfo SET LastTwitterSearch='{}'""".format(username)
-            cursor.execute(sql)
-            db.commit()
-        print("Last user search updated")

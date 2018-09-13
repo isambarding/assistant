@@ -8,9 +8,9 @@ from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
 
 from weather import Weather4Day, Weather10Day
-from settings import Setup
+from settings import Setup, Settings
 from twitter import Twitter
-from settings import Settings
+from encryption import Crypto
 from NotesRemindersAlarms import NotesRemindersAlarms, Notes, Reminders, Alarms
 
 from kivy.core.window import Window
@@ -30,7 +30,9 @@ class HomeScreen(Screen):
             cursor = db.cursor()
             cursor.execute("SELECT Name FROM userInfo")
             username = cursor.fetchone()
-            self.lblName.text = "Welcome, {}!".format(username[0])
+        c = Crypto(False, 0)
+        username = c.decrypt(username[0])
+        self.lblName.text = "Welcome, {}!".format(username)
 
 ########################################################################################################################
 
@@ -47,8 +49,9 @@ class WeatherScreen(Screen):
             city = cursor.fetchone()
             cursor.execute("SELECT country FROM userInfo")
             country = cursor.fetchone()
-        city = city[0]
-        country = country[0]
+        c = Crypto(False, 0)
+        city = c.decrypt(city[0])
+        country = c.decrypt(country[0])
 
         w = Weather4Day(country, city)
 
@@ -110,6 +113,8 @@ class TwitterScreen(Screen):
 
     def __init__(self, **kwargs):
         super(TwitterScreen, self).__init__(**kwargs)
+        self.c = Crypto(False, 0)
+        self.t = Twitter()
         self.latesttweet()
 
     def latesttweet(self):
@@ -118,9 +123,8 @@ class TwitterScreen(Screen):
             cursor.execute("SELECT LastTwitterSearch FROM userInfo")
             username = cursor.fetchone()
 
-        username = username[0]
-        t = Twitter()
-        self.lblRecentTweet.text = t.userLatest(username)
+        username = self.c.decrypt(username[0])
+        self.lblRecentTweet.text = self.t.userLatest(username)
         self.lblRecentUsername.text = "Latest tweet from @" + username
 
     def getmoretweets(self):
@@ -131,8 +135,7 @@ class TwitterScreen(Screen):
             moretwitter = self.manager.get_screen("moretwitter")
             moretwitter.layoutMoreTwitter.clear_widgets(moretwitter.layoutMoreTwitter.children)
 
-            t = Twitter()
-            tweets = t.user10(un)
+            tweets = self.t.user10(un)
             lblun = Label(text=("Latest tweets from @" + un), size_hint_y=None)
             moretwitter.layoutMoreTwitter.add_widget(lblun)
 
@@ -147,11 +150,17 @@ class TwitterScreen(Screen):
 
     def back(self):
         username = self.inputTwitterUsername.text
+        secureusername = self.c.encrypt(username)
 
-        t = Twitter()
-        t.updateUser(username)
+        with sqlite3.connect("UserData.db") as db:
+            cursor = db.cursor()
+            sql = """UPDATE userInfo SET LastTwitterSearch='{}'""".format(secureusername)
+            cursor.execute(sql)
+            db.commit()
+        print("Last user search updated")
+
         self.lblRecentUsername.text = "Latest tweet from @{}".format(username)
-        self.lblRecentTweet.text = t.userLatest(username)
+        self.lblRecentTweet.text = self.t.userLatest(username)
         self.manager.current = "twitter"
 
 
@@ -165,6 +174,7 @@ class MoreTwitterScreen(Screen):
 class NotesScreen(Screen):
     def __init__(self, **kwargs):
         super(NotesScreen, self).__init__(**kwargs)
+        self.c = Crypto(False, 0)
 
     def newnote(self):
         self.parent.current = "newnotes"
@@ -225,8 +235,11 @@ class NotesScreen(Screen):
 
         for i in range(count):
             noteid = data[i][0]
+            self.c.decrypt(noteid)
             title = data[i][1]
+            self.c.decrypt(title)
             content = data[i][2]
+            self.c.decrypt(content)
 
             lbltitle = Label(text=title, size_hint_y=None)
             lbltitle.texture_update()
@@ -501,6 +514,9 @@ class SetupScreen(Screen):
             sm.add_widget(HomeScreen(name="home"))
             sm.add_widget(WeatherScreen(name="weather"))
             sm.add_widget(TwitterScreen(name="twitter"))
+            sm.add_widget(NotesScreen(name="notes"))
+            sm.add_widget(RemindersScreen(name="reminders"))
+            sm.add_widget(AlarmsScreen(name="alarms"))
             self.parent.current = "home"
 
 ########################################################################################################################
@@ -515,15 +531,12 @@ class AssistantApp(App):
     def addscreens(self):
         sm.add_widget(MoreWeatherScreen(name="moreweather"))
         sm.add_widget(MoreTwitterScreen(name="moretwitter"))
-        sm.add_widget(NotesScreen(name="notes"))
         sm.add_widget(NewNotesScreen(name="newnotes"))
         sm.add_widget(MoreNotesScreen(name="morenotes"))
         sm.add_widget(EditNotesScreen(name="editnotes"))
-        sm.add_widget(RemindersScreen(name="reminders"))
         sm.add_widget(NewRemindersScreen(name="newreminders"))
         sm.add_widget(MoreRemindersScreen(name="morereminders"))
         sm.add_widget(EditRemindersScreen(name="editreminders"))
-        sm.add_widget(AlarmsScreen(name="alarms"))
         sm.add_widget(NewAlarmsScreen(name="newalarms"))
         sm.add_widget(MoreAlarmsScreen(name="morealarms"))
         sm.add_widget(EditAlarmsScreen(name="editalarms"))
@@ -538,6 +551,9 @@ class AssistantApp(App):
             sm.add_widget(HomeScreen(name="home"))
             sm.add_widget(WeatherScreen(name="weather"))
             sm.add_widget(TwitterScreen(name="twitter"))
+            sm.add_widget(NotesScreen(name="notes"))
+            sm.add_widget(RemindersScreen(name="reminders"))
+            sm.add_widget(AlarmsScreen(name="alarms"))
             self.addscreens()
             self.root.current = "home"
         else:
