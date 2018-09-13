@@ -165,6 +165,8 @@
                 id: btnAllNotes
                 text: "Notes by title"
                 on_press: root.notesbytitle()
+        GridLayout:
+            cols: 2
             TextInput:
                 id: inputSearchNotes
             Button:
