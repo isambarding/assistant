@@ -140,6 +140,9 @@
 
 <NotesScreen>
     name: "notes"
+    inputSearchNotes: inputSearchNotes
+    lblLastNoteContent: lblLastNoteContent
+    lblLastNoteTitle: lblLastNoteTitle
 
     BoxLayout:
         Label:
@@ -162,6 +165,12 @@
                 id: btnAllNotes
                 text: "Notes by title"
                 on_press: root.notesbytitle()
+            TextInput:
+                id: inputSearchNotes
+            Button:
+                id: btnSearchNotes
+                text: "Search Notes"
+                on_press: root.searchnotes()
         Button:
             id: btnBack
             text: "Back"

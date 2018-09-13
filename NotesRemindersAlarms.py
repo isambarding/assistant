@@ -48,8 +48,15 @@ class Notes(NotesRemindersAlarms):
         self.db.commit()
         print("Note created")
 
-    def mostRecent(self):
-        pass
+    def mostrecent(self):
+        sql = """SELECT Max(Date) FROM Notes"""
+        self.cursor.execute(sql)
+        data = self.cursor.fetchall()
+        data = data[0][0]
+        sql = """SELECT Title, Content FROM Notes WHERE Date='{}'""".format(data)
+        self.cursor.execute(sql)
+        data = self.cursor.fetchall()
+        return data[0]
 
     def delete(self, noteid):
         sql = """delete from Notes where NoteID='{}'""".format(noteid)

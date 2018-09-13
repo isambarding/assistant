@@ -175,6 +175,15 @@ class NotesScreen(Screen):
     def __init__(self, **kwargs):
         super(NotesScreen, self).__init__(**kwargs)
         self.c = Crypto(False, 0)
+        self.latestnote()
+
+    def latestnote(self):
+        n = Notes()
+        data = n.mostrecent()
+        recenttitle = data[0]
+        recentcontent = data[1]
+        self.lblLastNoteTitle.text = recenttitle
+        self.lblLastNoteContent.text = recentcontent
 
     def newnote(self):
         self.parent.current = "newnotes"
@@ -262,6 +271,55 @@ class NotesScreen(Screen):
         morenotes.layoutMoreNotes.add_widget(Button(text="Back", height=dp(80), on_press=lambda a: self.back()))
         self.manager.current = "morenotes"
 
+    def searchnotes(self):
+        searchterm = self.inputSearchNotes.text
+        if searchterm == "":
+            pass
+        else:
+            morenotes = self.manager.get_screen("morenotes")
+            morenotes.layoutMoreNotes.clear_widgets(morenotes.layoutMoreNotes.children)
+
+            with sqlite3.connect("UserData.db") as db:
+                cursor = db.cursor()
+                sql = """SELECT NoteID, Title, Content FROM Notes WHERE Content LIKE '%{}%'""".format(searchterm)
+                cursor.execute(sql)
+                data = cursor.fetchall()
+                print(data)
+                sql = """SELECT Count(NoteID) FROM Notes WHERE Title LIKE '&{}&'""".format(searchterm)
+                cursor.execute(sql)
+                count = cursor.fetchall()
+                count = count[0][0]
+                print(count)
+
+            for i in range(count):
+                noteid = data[i][0]
+                self.c.decrypt(noteid)
+                title = data[i][1]
+                self.c.decrypt(title)
+                content = data[i][2]
+                self.c.decrypt(content)
+
+                lbltitle = Label(text=title, size_hint_y=None)
+                lbltitle.texture_update()
+                morenotes.layoutMoreNotes.add_widget(lbltitle)
+
+                lbltext = Label(text=content, size_hint_y=None)
+                lbltext.texture_update()
+                morenotes.layoutMoreNotes.add_widget(lbltext)
+
+                grid = GridLayout(cols=2, size_hint_y=None)
+                # FIX THIS
+                btnedit = Button(text="Edit", size_hint_y=None, on_press=lambda a: self.edit(noteid))
+                btndelete = Button(text="Delete", size_hint_y=None, on_press=lambda a: self.delete(noteid))
+                btnedit.texture_update()
+                btndelete.texture_update()
+                grid.add_widget(btnedit)
+                grid.add_widget(btndelete)
+                morenotes.layoutMoreNotes.add_widget(grid)
+
+            morenotes.layoutMoreNotes.add_widget(Button(text="Back", height=dp(80), on_press=lambda a: self.back()))
+            self.manager.current = "morenotes"
+
     def back(self):
         self.manager.current = "notes"
 
@@ -314,122 +372,11 @@ class EditNotesScreen(Screen):
 
 
 class RemindersScreen(Screen):
-    def __init__(self, **kwargs):
-        super(RemindersScreen, self).__init__(**kwargs)
-
-    def newreminder(self):
-        self.parent.current = "newreminders"
-
-    def remindersbytime(self):
-        morereminders = self.manager.get_screen("morereminders")
-        morereminders.layoutMoreReminders.clear_widgets(morereminders.layoutMoreReminders.children)
-
-        with sqlite3.connect("UserData.db") as db:
-            cursor = db.cursor()
-            sql = """SELECT ReminderID, Title, Content FROM Reminders ORDER BY Date"""
-            cursor.execute(sql)
-            data = cursor.fetchall()
-            sql = """SELECT Count(ReminderID) FROM Reminders"""
-            cursor.execute(sql)
-            count = cursor.fetchall()
-            count = count[0][0]
-
-        for i in range(count):
-            reminderid = data[i][0]
-            title = data[i][1]
-            content = data[i][2]
-
-            lbltitle = Label(text=title, size_hint_y=None)
-            lbltitle.texture_update()
-            morereminders.layoutMoreReminders.add_widget(lbltitle)
-
-            lbltext = Label(text=content, size_hint_y=None)
-            lbltext.texture_update()
-            morereminders.layoutMoreReminders.add_widget(lbltext)
-
-            grid = GridLayout(cols=2, size_hint_y=None)
-            # FIX THIS
-            btnedit = Button(text="Edit", size_hint_y=None, on_press=lambda a: self.edit(reminderid))
-            btndelete = Button(text="Delete", size_hint_y=None, on_press=lambda a: self.delete(reminderid))
-            btnedit.texture_update()
-            btndelete.texture_update()
-            grid.add_widget(btnedit)
-            grid.add_widget(btndelete)
-            morereminders.layoutMoreReminders.add_widget(grid)
-
-        morereminders.layoutMoreReminders.add_widget(Button(text="Back", height=dp(80), on_press=lambda a: self.back()))
-        self.manager.current = "morereminders"
-
-    def remindersbytitle(self):
-        morereminders = self.manager.get_screen("morereminders")
-        morereminders.layoutMoreReminders.clear_widgets(morereminders.layoutMoreReminders.children)
-
-        with sqlite3.connect("UserData.db") as db:
-            cursor = db.cursor()
-            sql = """SELECT ReminderID, Title, Content FROM Reminders ORDER BY Title"""
-            cursor.execute(sql)
-            data = cursor.fetchall()
-            sql = """SELECT Count(ReminderID) FROM Reminders"""
-            cursor.execute(sql)
-            count = cursor.fetchall()
-            count = count[0][0]
-
-        for i in range(count):
-            reminderid = data[i][0]
-            title = data[i][1]
-            content = data[i][2]
-
-            lbltitle = Label(text=title, size_hint_y=None)
-            lbltitle.texture_update()
-            morereminders.layoutMoreReminders.add_widget(lbltitle)
-
-            lbltext = Label(text=content, size_hint_y=None)
-            lbltext.texture_update()
-            morereminders.layoutMoreReminders.add_widget(lbltext)
-
-            grid = GridLayout(cols=2, size_hint_y=None)
-            # FIX THIS
-            btnedit = Button(text="Edit", size_hint_y=None, on_press=lambda a: self.edit(reminderid))
-            btndelete = Button(text="Delete", size_hint_y=None, on_press=lambda a: self.delete(reminderid))
-            btnedit.texture_update()
-            btndelete.texture_update()
-            grid.add_widget(btnedit)
-            grid.add_widget(btndelete)
-            morereminders.layoutMoreReminders.add_widget(grid)
-
-        morereminders.layoutMoreReminders.add_widget(Button(text="Back", height=dp(80), on_press=lambda a: self.back()))
-        self.manager.current = "morereminders"
-
-    def back(self):
-        self.manager.current = "reminders"
-
-    def delete(self, reminderid):
-        n = Reminders()
-        n.delete(reminderid)
-        self.manager.current = "reminders"
-        print("Reminder deleted")
-
-    def edit(self, reminderid):
-        print(reminderid)
-        editreminders = self.manager.get_screen("editreminders")
-        editreminders.currentreminderid = reminderid
-        self.manager.current = "editreminders"
+    pass
 
 
 class NewRemindersScreen(Screen):
-    def __init__(self, **kwargs):
-        super(NewRemindersScreen, self).__init__(**kwargs)
-
-    def createreminder(self):
-        title = self.inputNewReminderTitle.text
-        content = self.inputNewReminderContent.text
-
-        if title == "" or content == "":
-            pass
-        else:
-            n = Reminders()
-            n.create(title, content)
-            self.parent.current = "reminders"
+    pass
 
 
 class MoreRemindersScreen(Screen):
@@ -437,16 +384,7 @@ class MoreRemindersScreen(Screen):
 
 
 class EditRemindersScreen(Screen):
-    def editreminder(self):
-        print(self.currentreminderid)
-        reminderid = self.currentreminderid
-        print(reminderid)
-        reminders = self.manager.get_screen("reminders")
-        title = self.inputEditReminderTitle.text
-        content = self.inputEditReminderContent.text
-
-        n = Reminders()
-        n.edit(reminderid, title, content)
+    pass
 
 ########################################################################################################################
 
