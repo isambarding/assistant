@@ -14,7 +14,7 @@ from encryption import Crypto
 from NotesRemindersAlarms import NotesRemindersAlarms, Notes, Reminders, Alarms
 
 from kivy.core.window import Window
-from kivy.uix.label import Label
+from kivy.uix.label import Label 
 from kivy.uix.button import Button
 from kivy.uix.gridlayout import GridLayout
 from kivy.metrics import dp
@@ -180,12 +180,19 @@ class NotesScreen(Screen):
     def latestnote(self):
         n = Notes()
         data = n.mostrecent()
-        recenttitle = data[0]
-        recentcontent = data[1]
-        self.lblLastNoteTitle.text = recenttitle
-        self.lblLastNoteContent.text = recentcontent
+        if data is False:
+            self.lblLastNoteTitle.text = "No notes found!"
+            self.lblLastNoteContent.text = " "
+        else:
+            recenttitle = data[0]
+            recentcontent = data[1]
+            self.lblLastNoteTitle.text = recenttitle
+            self.lblLastNoteContent.text = recentcontent
 
     def newnote(self):
+        newnotes = self.manager.get_screen("newnotes")
+        newnotes.inputNewNoteTitle.text = ""
+        newnotes.inputNewNoteContent.text = ""
         self.parent.current = "newnotes"
 
     def notesbytime(self):
@@ -205,7 +212,9 @@ class NotesScreen(Screen):
         for i in range(count):
             noteid = data[i][0]
             title = data[i][1]
+            title = self.c.decrypt(title)
             content = data[i][2]
+            content = self.c.decrypt(content)
 
             lbltitle = Label(text=title, size_hint_y=None)
             lbltitle.texture_update()
@@ -244,11 +253,10 @@ class NotesScreen(Screen):
 
         for i in range(count):
             noteid = data[i][0]
-            self.c.decrypt(noteid)
             title = data[i][1]
-            self.c.decrypt(title)
+            title = self.c.decrypt(title)
             content = data[i][2]
-            self.c.decrypt(content)
+            content = self.c.decrypt(content)
 
             lbltitle = Label(text=title, size_hint_y=None)
             lbltitle.texture_update()
@@ -293,11 +301,10 @@ class NotesScreen(Screen):
 
             for i in range(count):
                 noteid = data[i][0]
-                self.c.decrypt(noteid)
                 title = data[i][1]
-                self.c.decrypt(title)
+                title = self.c.decrypt(title)
                 content = data[i][2]
-                self.c.decrypt(content)
+                content = self.c.decrypt(content)
 
                 lbltitle = Label(text=title, size_hint_y=None)
                 lbltitle.texture_update()
@@ -321,16 +328,17 @@ class NotesScreen(Screen):
             self.manager.current = "morenotes"
 
     def back(self):
+        self.latestnote()
         self.manager.current = "notes"
 
     def delete(self, noteid):
         n = Notes()
         n.delete(noteid)
+        self.latestnote()
         self.manager.current = "notes"
         print("Note deleted")
 
     def edit(self, noteid):
-        print(noteid)
         editnotes = self.manager.get_screen("editnotes")
         editnotes.currentnoteid = noteid
         self.manager.current = "editnotes"
@@ -347,9 +355,12 @@ class NewNotesScreen(Screen):
         if title == "" or content == "":
             pass
         else:
+            c = Crypto(False, 0)
+            title = c.encrypt(title)
+            content = c.encrypt(content)
             n = Notes()
             n.create(title, content)
-            self.parent.current = "notes"
+            self.manager.current = "notes"
 
 
 class MoreNotesScreen(Screen):
@@ -358,25 +369,208 @@ class MoreNotesScreen(Screen):
 
 class EditNotesScreen(Screen):
     def editnote(self):
-        print(self.currentnoteid)
         noteid = self.currentnoteid
-        print(noteid)
-        notes = self.manager.get_screen("notes")
         title = self.inputEditNoteTitle.text
         content = self.inputEditNoteContent.text
 
+        c = Crypto(False, 0)
+        title = c.encrypt(title)
+        content = c.encrypt(content)
         n = Notes()
         n.edit(noteid, title, content)
+        notes = self.manager.get_screen("notes")
+        notes.latestnote()
 
 ########################################################################################################################
 
 
 class RemindersScreen(Screen):
-    pass
+    def __init__(self, **kwargs):
+        super(RemindersScreen, self).__init__(**kwargs)
+        self.c = Crypto(False, 0)
+        self.latestreminder()
+
+    def latestreminder(self):
+        n = Reminders()
+        data = n.mostrecent()
+        if data is False:
+            self.lblLastReminderTitle.text = "No reminders found!"
+            self.lblLastReminderContent.text = " "
+        else:
+            recenttitle = data[0]
+            recentcontent = data[1]
+            self.lblLastReminderTitle.text = recenttitle
+            self.lblLastReminderContent.text = recentcontent
+
+    def newreminder(self):
+        newreminders = self.manager.get_screen("newreminders")
+        newreminders.inputNewReminderTitle.text = ""
+        newreminders.inputNewReminderContent.text = ""
+        self.parent.current = "newreminders"
+
+    def remindersbytime(self):
+        morereminders = self.manager.get_screen("morereminders")
+        morereminders.layoutMoreReminders.clear_widgets(morereminders.layoutMoreReminders.children)
+
+        with sqlite3.connect("UserData.db") as db:
+            cursor = db.cursor()
+            sql = """SELECT ReminderID, Title, Content FROM Reminders ORDER BY Date"""
+            cursor.execute(sql)
+            data = cursor.fetchall()
+            sql = """SELECT Count(ReminderID) FROM Reminders"""
+            cursor.execute(sql)
+            count = cursor.fetchall()
+            count = count[0][0]
+
+        for i in range(count):
+            reminderid = data[i][0]
+            title = data[i][1]
+            title = self.c.decrypt(title)
+            content = data[i][2]
+            content = self.c.decrypt(content)
+
+            lbltitle = Label(text=title, size_hint_y=None)
+            lbltitle.texture_update()
+            morereminders.layoutMoreReminders.add_widget(lbltitle)
+
+            lbltext = Label(text=content, size_hint_y=None)
+            lbltext.texture_update()
+            morereminders.layoutMoreReminders.add_widget(lbltext)
+
+            grid = GridLayout(cols=2, size_hint_y=None)
+            btnedit = Button(text="Edit", size_hint_y=None, on_press=lambda a: self.edit(reminderid))
+            btndelete = Button(text="Delete", size_hint_y=None, on_press=lambda a: self.delete(reminderid))
+            btnedit.texture_update()
+            btndelete.texture_update()
+            grid.add_widget(btnedit)
+            grid.add_widget(btndelete)
+            morereminders.layoutMoreReminders.add_widget(grid)
+
+        morereminders.layoutMoreReminders.add_widget(Button(text="Back", height=dp(80), on_press=lambda a: self.back()))
+        self.manager.current = "morereminders"
+
+    def remindersbytitle(self):
+        morereminders = self.manager.get_screen("morereminders")
+        morereminders.layoutMoreReminders.clear_widgets(morereminders.layoutMoreReminders.children)
+
+        with sqlite3.connect("UserData.db") as db:
+            cursor = db.cursor()
+            sql = """SELECT ReminderID, Title, Content FROM Reminders ORDER BY Title"""
+            cursor.execute(sql)
+            data = cursor.fetchall()
+            sql = """SELECT Count(ReminderID) FROM Reminders"""
+            cursor.execute(sql)
+            count = cursor.fetchall()
+            count = count[0][0]
+
+        for i in range(count):
+            reminderid = data[i][0]
+            title = data[i][1]
+            title = self.c.decrypt(title)
+            content = data[i][2]
+            content = self.c.decrypt(content)
+
+            lbltitle = Label(text=title, size_hint_y=None)
+            lbltitle.texture_update()
+            morereminders.layoutMoreReminders.add_widget(lbltitle)
+
+            lbltext = Label(text=content, size_hint_y=None)
+            lbltext.texture_update()
+            morereminders.layoutMoreReminders.add_widget(lbltext)
+
+            grid = GridLayout(cols=2, size_hint_y=None)
+            btnedit = Button(text="Edit", size_hint_y=None, on_press=lambda a: self.edit(reminderid))
+            btndelete = Button(text="Delete", size_hint_y=None, on_press=lambda a: self.delete(reminderid))
+            btnedit.texture_update()
+            btndelete.texture_update()
+            grid.add_widget(btnedit)
+            grid.add_widget(btndelete)
+            morereminders.layoutMoreReminders.add_widget(grid)
+
+        morereminders.layoutMoreReminders.add_widget(Button(text="Back", height=dp(80), on_press=lambda a: self.back()))
+        self.manager.current = "morereminders"
+
+    def searchreminders(self):
+        searchterm = self.inputSearchReminders.text
+        if searchterm == "":
+            pass
+        else:
+            morereminders = self.manager.get_screen("morereminders")
+            morereminders.layoutMoreReminders.clear_widgets(morereminders.layoutMoreReminders.children)
+
+            with sqlite3.connect("UserData.db") as db:
+                cursor = db.cursor()
+                sql = """SELECT ReminderID, Title, Content FROM Reminders WHERE Content LIKE '%{}%'""".format(searchterm)
+                cursor.execute(sql)
+                data = cursor.fetchall()
+                print(data)
+                sql = """SELECT Count(ReminderID) FROM Reminders WHERE Title LIKE '&{}&'""".format(searchterm)
+                cursor.execute(sql)
+                count = cursor.fetchall()
+                count = count[0][0]
+                print(count)
+
+            for i in range(count):
+                reminderid = data[i][0]
+                title = data[i][1]
+                title = self.c.decrypt(title)
+                content = data[i][2]
+                content = self.c.decrypt(content)
+
+                lbltitle = Label(text=title, size_hint_y=None)
+                lbltitle.texture_update()
+                morereminders.layoutMoreReminders.add_widget(lbltitle)
+
+                lbltext = Label(text=content, size_hint_y=None)
+                lbltext.texture_update()
+                morereminders.layoutMoreReminders.add_widget(lbltext)
+
+                grid = GridLayout(cols=2, size_hint_y=None)
+                btnedit = Button(text="Edit", size_hint_y=None, on_press=lambda a: self.edit(reminderid))
+                btndelete = Button(text="Delete", size_hint_y=None, on_press=lambda a: self.delete(reminderid))
+                btnedit.texture_update()
+                btndelete.texture_update()
+                grid.add_widget(btnedit)
+                grid.add_widget(btndelete)
+                morereminders.layoutMoreReminders.add_widget(grid)
+
+            morereminders.layoutMoreReminders.add_widget(Button(text="Back", height=dp(80), on_press=lambda a: self.back()))
+            self.manager.current = "morereminders"
+
+    def back(self):
+        self.latestreminder()
+        self.manager.current = "reminders"
+
+    def delete(self, reminderid):
+        n = Reminders()
+        n.delete(reminderid)
+        self.latestreminder()
+        self.manager.current = "reminders"
+        print("Reminder deleted")
+
+    def edit(self, reminderid):
+        editreminders = self.manager.get_screen("editreminders")
+        editreminders.currentreminderid = reminderid
+        self.manager.current = "editreminders"
 
 
 class NewRemindersScreen(Screen):
-    pass
+    def __init__(self, **kwargs):
+        super(NewRemindersScreen, self).__init__(**kwargs)
+
+    def createreminder(self):
+        title = self.inputNewReminderTitle.text
+        content = self.inputNewReminderContent.text
+
+        if title == "" or content == "":
+            pass
+        else:
+            c = Crypto(False, 0)
+            title = c.encrypt(title)
+            content = c.encrypt(content)
+            n = Reminders()
+            n.create(title, content)
+            self.manager.current = "reminders"
 
 
 class MoreRemindersScreen(Screen):
@@ -384,7 +578,18 @@ class MoreRemindersScreen(Screen):
 
 
 class EditRemindersScreen(Screen):
-    pass
+    def editreminder(self):
+        reminderid = self.currentreminderid
+        title = self.inputEditReminderTitle.text
+        content = self.inputEditReminderContent.text
+
+        c = Crypto(False, 0)
+        title = c.encrypt(title)
+        content = c.encrypt(content)
+        n = Reminders()
+        n.edit(reminderid, title, content)
+        reminders = self.manager.get_screen("reminders")
+        reminders.latestreminder()
 
 ########################################################################################################################
 

@@ -56,7 +56,10 @@ class Notes(NotesRemindersAlarms):
         sql = """SELECT Title, Content FROM Notes WHERE Date='{}'""".format(data)
         self.cursor.execute(sql)
         data = self.cursor.fetchall()
-        return data[0]
+        if data:
+            return data[0]
+        else:
+            return False
 
     def delete(self, noteid):
         sql = """delete from Notes where NoteID='{}'""".format(noteid)
@@ -64,7 +67,7 @@ class Notes(NotesRemindersAlarms):
         self.db.commit()
 
     def edit(self, noteid, title, content):
-        sql = """UPDATE Notes SET Title='{}', Content='{}' WHERE NoteID='{}';"""
+        sql = """UPDATE Notes SET Title='{}', Content='{}' WHERE NoteID='{}';""".format(title, content, noteid)
         self.cursor.execute(sql)
         self.db.commit()
 
@@ -72,17 +75,35 @@ class Notes(NotesRemindersAlarms):
 
 
 class Reminders(NotesRemindersAlarms):
-    def create(self, title, content, time):
-        sql = """insert into Reminders (Title, Content, Time) values ('{}', '{}', '{}');""".format(title, content, time)
+    def create(self, title, content):
+        date = time.time()
+        sql = """insert into Reminders (Title, Content, Date) values ('{}', '{}', {});""".format(title, content, date)
         self.cursor.execute(sql)
         self.db.commit()
         print("Reminder created")
 
-    def mostRecent(self):
-        pass
+    def mostrecent(self):
+        sql = """SELECT Max(Date) FROM Reminders"""
+        self.cursor.execute(sql)
+        data = self.cursor.fetchall()
+        data = data[0][0]
+        sql = """SELECT Title, Content FROM Reminders WHERE Date='{}'""".format(data)
+        self.cursor.execute(sql)
+        data = self.cursor.fetchall()
+        if data:
+            return data[0]
+        else:
+            return False
 
-    def delete(self, noteid):
-        self.deleteAll("Reminders", noteid)
+    def delete(self, reminderid):
+        sql = """delete from Reminders where ReminderID='{}'""".format(reminderid)
+        self.cursor.execute(sql)
+        self.db.commit()
+
+    def edit(self, reminderid, title, content):
+        sql = """UPDATE Reminders SET Title='{}', Content='{}' WHERE ReminderID='{}';""".format(title, content, reminderid)
+        self.cursor.execute(sql)
+        self.db.commit()
 
 # Alarms class
 

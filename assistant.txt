@@ -171,7 +171,7 @@
                 id: inputSearchNotes
             Button:
                 id: btnSearchNotes
-                text: "Search Notes"
+                text: "Search notes"
                 on_press: root.searchnotes()
         Button:
             id: btnBack
@@ -252,6 +252,9 @@
 
 <RemindersScreen>
     name: "reminders"
+    inputSearchReminders: inputSearchReminders
+    lblLastReminderContent: lblLastReminderContent
+    lblLastReminderTitle: lblLastReminderTitle
 
     BoxLayout:
         Label:
@@ -274,6 +277,14 @@
                 id: btnAllReminders
                 text: "Reminders by title"
                 on_press: root.remindersByTitle()
+        GridLayout:
+            cols: 2
+            TextInput:
+                id: inputSearchReminders
+            Button:
+                id: btnSearchReminders
+                text: "Search reminders"
+                on_press: root.searchreminders()
         Button:
             id: btnBack
             text: "Back"
@@ -299,6 +310,42 @@
         TextInput:
             id: inputNewReminderContent
             multiline: True
+        Label:
+            id: lblNewReminderDateTime
+            text: "Content:"
+        GridLayout:
+            cols: 6
+            Label:
+                id: lblNewReminderYear
+                text: "Year"
+            Label:
+                id: lblNewReminderMonth
+                text: "Month"
+            Label:
+                id: lblNewReminderDay
+                text: "Day"
+            Label:
+                id: lblNewReminderHour
+                text: "Hour"
+            Label:
+                id: lblNewReminderMinute
+                text: "Min"
+            Label:
+                id: lblNewReminderSecond
+                text: "Sec"
+            TextInput:
+                id: inputNewReminderYear
+            TextInput:
+                id: inputNewReminderMonth
+            TextInput:
+                id: inputNewReminderDay
+            TextInput:
+                id: inputNewReminderHour
+            TextInput:
+                id: inputNewReminderMinute
+            TextInput:
+                id: inputNewReminderSecond
+
         Button:
             id: btnCreateReminder
             text: "Create"

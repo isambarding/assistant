@@ -16,7 +16,6 @@ class Crypto:
             self.key = len(name)
 
     def encrypt(self, ciphertext):
-        ciphertext = ciphertext.lower()
         text = ""
         for c in ciphertext:
             if c in self.alpha:
@@ -25,11 +24,11 @@ class Crypto:
                 if i > 25:
                     i = i - len(self.alpha)
                 text = text + self.alpha[i]
-        print("Encrypted text")
+            else:
+                text = text + c
         return text
 
     def decrypt(self, ciphertext):
-        ciphertext = ciphertext.lower()
         text = ""
         for c in ciphertext:
             if c in self.alpha:
@@ -38,5 +37,6 @@ class Crypto:
                 if i < 0:
                     i = i + len(self.alpha)
                 text = text + self.alpha[i]
-        print("Decrypted text")
+            else:
+                text = text + c
         return text
