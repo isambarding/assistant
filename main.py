@@ -686,6 +686,7 @@ class AssistantApp(App):
         sm.add_widget(SettingsScreen(name="settings"))
 
     def build(self):
+        self.icon = "icon.png"
         return sm
         
     def on_start(self):

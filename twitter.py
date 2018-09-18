@@ -1,6 +1,5 @@
 import requests
 from requests_oauthlib import OAuth1
-import sqlite3
 
 # 04/05/18: tested working
 
