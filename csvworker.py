@@ -11,14 +11,11 @@ class csvworker:
 
     def importcsv(self):
         pass
-        #open file dialogue
-        #parse file
-        #turn file into notes etc
 
-    def exportcsv(self, type):
+    def exportcsv(self, idtype):
         file = open("output.csv", "w")
         writer = csv.writer(file)
-        sql = """SELECT {}ID, Title, Content, Date FROM {}s ORDER BY Title""".format(type, type)
+        sql = """SELECT {}ID, Title, Content, Date FROM {}s ORDER BY Title""".format(idtype, idtype)
         self.cursor.execute(sql)
         data = self.cursor.fetchall()
         count = len(data)
