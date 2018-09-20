@@ -294,6 +294,12 @@
     name: "newreminders"
     inputNewReminderTitle: inputNewReminderTitle
     inputNewReminderContent: inputNewReminderContent
+    inputNewReminderYear: inputNewReminderYear
+    inputNewReminderMonth: inputNewReminderMonth
+    inputNewReminderDay: inputNewReminderDay
+    inputNewReminderHour: inputNewReminderHour
+    inputNewReminderMinute: inputNewReminderMinute
+    inputNewReminderSecond: inputNewReminderSecond
 
     BoxLayout:
         GridLayout:
@@ -314,7 +320,7 @@
             id: lblNewReminderDateTime
             text: "Content:"
         GridLayout:
-            cols: 6
+            cols: 3
             Label:
                 id: lblNewReminderYear
                 text: "Year"
@@ -324,6 +330,14 @@
             Label:
                 id: lblNewReminderDay
                 text: "Day"
+            TextInput:
+                id: inputNewReminderYear
+            TextInput:
+                id: inputNewReminderMonth
+            TextInput:
+                id: inputNewReminderDay
+        GridLayout:
+            cols: 3
             Label:
                 id: lblNewReminderHour
                 text: "Hour"
@@ -334,12 +348,6 @@
                 id: lblNewReminderSecond
                 text: "Sec"
             TextInput:
-                id: inputNewReminderYear
-            TextInput:
-                id: inputNewReminderMonth
-            TextInput:
-                id: inputNewReminderDay
-            TextInput:
                 id: inputNewReminderHour
             TextInput:
                 id: inputNewReminderMinute
@@ -349,7 +357,7 @@
         Button:
             id: btnCreateReminder
             text: "Create"
-            on_press: root.createReminder()
+            on_press: root.createreminder()
         Button:
             id: btnBack
             text: "Discard"

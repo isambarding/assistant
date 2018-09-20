@@ -406,6 +406,12 @@ class RemindersScreen(Screen):
         newreminders = self.manager.get_screen("newreminders")
         newreminders.inputNewReminderTitle.text = ""
         newreminders.inputNewReminderContent.text = ""
+        newreminders.inputNewReminderYear.text = ""
+        newreminders.inputNewReminderMonth.text = ""
+        newreminders.inputNewReminderDay.text = ""
+        newreminders.inputNewReminderHour.text = ""
+        newreminders.inputNewReminderMinute.text = ""
+        newreminders.inputNewReminderSecond.text = ""
         self.parent.current = "newreminders"
 
     def remindersbytime(self):
@@ -561,16 +567,25 @@ class NewRemindersScreen(Screen):
     def createreminder(self):
         title = self.inputNewReminderTitle.text
         content = self.inputNewReminderContent.text
+        year = self.inputNewReminderYear.text
+        month = self.inputNewReminderMonth.text
+        day = self.inputNewReminderDay.text
+        hour = self.inputNewReminderHour.text
+        minute = self.inputNewReminderMinute.text
+        second = self.inputNewReminderSecond.text
 
-        if title == "" or content == "":
-            pass
+        if title == "" or content == "" or year == "" or month == "" or day == "" or hour == "" or minute == "" or second == "":
+            print("Missing values")
         else:
-            c = Crypto(False, 0)
-            title = c.encrypt(title)
-            content = c.encrypt(content)
-            n = Reminders()
-            n.create(title, content)
-            self.manager.current = "reminders"
+            if year.isnumeric is False or month.isnumeric is False or day.isnumeric is False or hour.isnumeric is False or minute.isnumeric is False or second.isnumeric is False:
+                print("Non-numeric values")
+            else:
+                c = Crypto(False, 0)
+                title = c.encrypt(title)
+                content = c.encrypt(content)
+                r = Reminders()
+                r.create(title, content, int(year), int(month), int(day), int(hour), int(minute), int(second))
+                self.manager.current = "reminders"
 
 
 class MoreRemindersScreen(Screen):

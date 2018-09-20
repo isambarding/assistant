@@ -1,5 +1,6 @@
 import sqlite3
 import time
+import datetime
 
 
 class NotesRemindersAlarms:
@@ -75,8 +76,9 @@ class Notes(NotesRemindersAlarms):
 
 
 class Reminders(NotesRemindersAlarms):
-    def create(self, title, content):
-        date = time.time()
+    def create(self, title, content, year, month, day, hour, minute, second):
+        date = datetime.datetime(year, month, day, hour, minute, second)
+        date = date.timestamp()
         sql = """insert into Reminders (Title, Content, Date) values ('{}', '{}', {});""".format(title, content, date)
         self.cursor.execute(sql)
         self.db.commit()
