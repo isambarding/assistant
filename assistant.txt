@@ -272,11 +272,11 @@
             Button:
                 id: btnAllReminders
                 text: "Reminders by time"
-                on_press: root.remindersByTime()
+                on_press: root.remindersbytime()
             Button:
                 id: btnAllReminders
                 text: "Reminders by title"
-                on_press: root.remindersByTitle()
+                on_press: root.remindersbytitle()
         GridLayout:
             cols: 2
             TextInput:

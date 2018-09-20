@@ -2,6 +2,7 @@
 
 import sqlite3
 import os.path
+import datetime
 
 from kivy.app import App
 from kivy.lang import Builder
@@ -11,7 +12,7 @@ from weather import Weather4Day, Weather10Day
 from settings import Setup, Settings
 from twitter import Twitter
 from encryption import Crypto
-from NotesRemindersAlarms import NotesRemindersAlarms, Notes, Reminders, Alarms
+from NotesRemindersAlarms import Notes, Reminders#, Alarms
 
 from kivy.core.window import Window
 from kivy.uix.label import Label 
@@ -186,6 +187,8 @@ class NotesScreen(Screen):
         else:
             recenttitle = data[0]
             recentcontent = data[1]
+            recenttitle = self.c.decrypt(recenttitle)
+            recentcontent = self.c.decrypt(recentcontent)
             self.lblLastNoteTitle.text = recenttitle
             self.lblLastNoteContent.text = recentcontent
 
@@ -234,7 +237,10 @@ class NotesScreen(Screen):
             grid.add_widget(btndelete)
             morenotes.layoutMoreNotes.add_widget(grid)
 
-        morenotes.layoutMoreNotes.add_widget(Button(text="Back", height=dp(80), on_press=lambda a: self.back()))
+        grid = GridLayout(cols=2, size_hint_y=None)
+        btnback = (Button(text="Back", height=dp(80), on_press=lambda a: self.back()))
+        grid.add_widget(btnback)
+        morenotes.layoutMoreNotes.add_widget(grid)
         self.manager.current = "morenotes"
 
     def notesbytitle(self):
@@ -276,7 +282,10 @@ class NotesScreen(Screen):
             grid.add_widget(btndelete)
             morenotes.layoutMoreNotes.add_widget(grid)
 
-        morenotes.layoutMoreNotes.add_widget(Button(text="Back", height=dp(80), on_press=lambda a: self.back()))
+        grid = GridLayout(cols=2, size_hint_y=None)
+        btnback = (Button(text="Back", height=dp(80), on_press=lambda a: self.back()))
+        grid.add_widget(btnback)
+        morenotes.layoutMoreNotes.add_widget(grid)
         self.manager.current = "morenotes"
 
     def searchnotes(self):
@@ -286,6 +295,7 @@ class NotesScreen(Screen):
         else:
             morenotes = self.manager.get_screen("morenotes")
             morenotes.layoutMoreNotes.clear_widgets(morenotes.layoutMoreNotes.children)
+            searchterm = self.c.encrypt(searchterm)
 
             with sqlite3.connect("UserData.db") as db:
                 cursor = db.cursor()
@@ -293,11 +303,7 @@ class NotesScreen(Screen):
                 cursor.execute(sql)
                 data = cursor.fetchall()
                 print(data)
-                sql = """SELECT Count(NoteID) FROM Notes WHERE Title LIKE '&{}&'""".format(searchterm)
-                cursor.execute(sql)
-                count = cursor.fetchall()
-                count = count[0][0]
-                print(count)
+                count = len(data)
 
             for i in range(count):
                 noteid = data[i][0]
@@ -324,7 +330,10 @@ class NotesScreen(Screen):
                 grid.add_widget(btndelete)
                 morenotes.layoutMoreNotes.add_widget(grid)
 
-            morenotes.layoutMoreNotes.add_widget(Button(text="Back", height=dp(80), on_press=lambda a: self.back()))
+            grid = GridLayout(cols=2, size_hint_y=None)
+            btnback = (Button(text="Back", height=dp(80), on_press=lambda a: self.back()))
+            grid.add_widget(btnback)
+            morenotes.layoutMoreNotes.add_widget(grid)
             self.manager.current = "morenotes"
 
     def back(self):
@@ -391,14 +400,16 @@ class RemindersScreen(Screen):
         self.latestreminder()
 
     def latestreminder(self):
-        n = Reminders()
-        data = n.mostrecent()
+        r = Reminders()
+        data = r.mostrecent()
         if data is False:
             self.lblLastReminderTitle.text = "No reminders found!"
             self.lblLastReminderContent.text = " "
         else:
             recenttitle = data[0]
             recentcontent = data[1]
+            recenttitle = self.c.decrypt(recenttitle)
+            recentcontent = self.c.decrypt(recentcontent)
             self.lblLastReminderTitle.text = recenttitle
             self.lblLastReminderContent.text = recentcontent
 
@@ -420,7 +431,7 @@ class RemindersScreen(Screen):
 
         with sqlite3.connect("UserData.db") as db:
             cursor = db.cursor()
-            sql = """SELECT ReminderID, Title, Content FROM Reminders ORDER BY Date"""
+            sql = """SELECT ReminderID, Title, Content, Date FROM Reminders ORDER BY Date"""
             cursor.execute(sql)
             data = cursor.fetchall()
             sql = """SELECT Count(ReminderID) FROM Reminders"""
@@ -434,6 +445,8 @@ class RemindersScreen(Screen):
             title = self.c.decrypt(title)
             content = data[i][2]
             content = self.c.decrypt(content)
+            date = data[i][3]
+            date = datetime.datetime.fromtimestamp(date)
 
             lbltitle = Label(text=title, size_hint_y=None)
             lbltitle.texture_update()
@@ -442,6 +455,10 @@ class RemindersScreen(Screen):
             lbltext = Label(text=content, size_hint_y=None)
             lbltext.texture_update()
             morereminders.layoutMoreReminders.add_widget(lbltext)
+
+            lbldate = Label(text=str(date), size_hint_y=None)
+            lbldate.texture_update()
+            morereminders.layoutMoreReminders.add_widget(lbldate)
 
             grid = GridLayout(cols=2, size_hint_y=None)
             btnedit = Button(text="Edit", size_hint_y=None, on_press=lambda a: self.edit(reminderid))
@@ -452,7 +469,10 @@ class RemindersScreen(Screen):
             grid.add_widget(btndelete)
             morereminders.layoutMoreReminders.add_widget(grid)
 
-        morereminders.layoutMoreReminders.add_widget(Button(text="Back", height=dp(80), on_press=lambda a: self.back()))
+        grid = GridLayout(cols=2, size_hint_y=None)
+        btnback = (Button(text="Back", height=dp(80), on_press=lambda a: self.back()))
+        grid.add_widget(btnback)
+        morereminders.layoutMoreReminders.add_widget(grid)
         self.manager.current = "morereminders"
 
     def remindersbytitle(self):
@@ -461,7 +481,7 @@ class RemindersScreen(Screen):
 
         with sqlite3.connect("UserData.db") as db:
             cursor = db.cursor()
-            sql = """SELECT ReminderID, Title, Content FROM Reminders ORDER BY Title"""
+            sql = """SELECT ReminderID, Title, Content, Date FROM Reminders ORDER BY Title"""
             cursor.execute(sql)
             data = cursor.fetchall()
             sql = """SELECT Count(ReminderID) FROM Reminders"""
@@ -475,6 +495,8 @@ class RemindersScreen(Screen):
             title = self.c.decrypt(title)
             content = data[i][2]
             content = self.c.decrypt(content)
+            date = data[i][3]
+            date = datetime.datetime.fromtimestamp(date)
 
             lbltitle = Label(text=title, size_hint_y=None)
             lbltitle.texture_update()
@@ -483,6 +505,10 @@ class RemindersScreen(Screen):
             lbltext = Label(text=content, size_hint_y=None)
             lbltext.texture_update()
             morereminders.layoutMoreReminders.add_widget(lbltext)
+
+            lbldate = Label(text=str(date), size_hint_y=None)
+            lbldate.texture_update()
+            morereminders.layoutMoreReminders.add_widget(lbldate)
 
             grid = GridLayout(cols=2, size_hint_y=None)
             btnedit = Button(text="Edit", size_hint_y=None, on_press=lambda a: self.edit(reminderid))
@@ -493,7 +519,10 @@ class RemindersScreen(Screen):
             grid.add_widget(btndelete)
             morereminders.layoutMoreReminders.add_widget(grid)
 
-        morereminders.layoutMoreReminders.add_widget(Button(text="Back", height=dp(80), on_press=lambda a: self.back()))
+        grid = GridLayout(cols=2, size_hint_y=None)
+        btnback = (Button(text="Back", height=dp(80), on_press=lambda a: self.back()))
+        grid.add_widget(btnback)
+        morereminders.layoutMoreReminders.add_widget(grid)
         self.manager.current = "morereminders"
 
     def searchreminders(self):
@@ -503,18 +532,15 @@ class RemindersScreen(Screen):
         else:
             morereminders = self.manager.get_screen("morereminders")
             morereminders.layoutMoreReminders.clear_widgets(morereminders.layoutMoreReminders.children)
+            searchterm = self.c.encrypt(searchterm)
 
             with sqlite3.connect("UserData.db") as db:
                 cursor = db.cursor()
-                sql = """SELECT ReminderID, Title, Content FROM Reminders WHERE Content LIKE '%{}%'""".format(searchterm)
+                sql = """SELECT ReminderID, Title, Content, Date FROM Reminders WHERE Content LIKE '%{}%'""".format(searchterm)
                 cursor.execute(sql)
                 data = cursor.fetchall()
                 print(data)
-                sql = """SELECT Count(ReminderID) FROM Reminders WHERE Title LIKE '&{}&'""".format(searchterm)
-                cursor.execute(sql)
-                count = cursor.fetchall()
-                count = count[0][0]
-                print(count)
+                count = len(data)
 
             for i in range(count):
                 reminderid = data[i][0]
@@ -522,6 +548,8 @@ class RemindersScreen(Screen):
                 title = self.c.decrypt(title)
                 content = data[i][2]
                 content = self.c.decrypt(content)
+                date = data[i][3]
+                date = datetime.datetime.fromtimestamp(date)
 
                 lbltitle = Label(text=title, size_hint_y=None)
                 lbltitle.texture_update()
@@ -530,6 +558,10 @@ class RemindersScreen(Screen):
                 lbltext = Label(text=content, size_hint_y=None)
                 lbltext.texture_update()
                 morereminders.layoutMoreReminders.add_widget(lbltext)
+
+                lbldate = Label(text=str(date), size_hint_y=None)
+                lbldate.texture_update()
+                morereminders.layoutMoreReminders.add_widget(lbldate)
 
                 grid = GridLayout(cols=2, size_hint_y=None)
                 btnedit = Button(text="Edit", size_hint_y=None, on_press=lambda a: self.edit(reminderid))
@@ -540,7 +572,10 @@ class RemindersScreen(Screen):
                 grid.add_widget(btndelete)
                 morereminders.layoutMoreReminders.add_widget(grid)
 
-            morereminders.layoutMoreReminders.add_widget(Button(text="Back", height=dp(80), on_press=lambda a: self.back()))
+            grid = GridLayout(cols=2, size_hint_y=None)
+            btnback = (Button(text="Back", height=dp(80), on_press=lambda a: self.back()))
+            grid.add_widget(btnback)
+            morereminders.layoutMoreReminders.add_widget(grid)
             self.manager.current = "morereminders"
 
     def back(self):
