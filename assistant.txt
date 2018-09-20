@@ -559,7 +559,34 @@
             on_press: root.exportalarms()
         Button:
             id: btnBack
-            text: "Back"
+            text: "Cancel"
+            on_press: app.root.current = "settings"
+
+<EmailScreen>
+    name: "email"
+    BoxLayout:
+        GridLayout:
+            cols: 2
+            Label:
+                text: "Username"
+            TextInput:
+                id: inputEmailUsername
+            Label:
+                text: "Password"
+            TextInput:
+                id: inputEmailPassword
+                password: True
+            Label:
+                text: "Target email"
+            TextInput:
+                id: inputEmailAddress
+        Button:
+            id: btnSendEmail
+            text: "Send"
+            on_press: root.sendemail()
+        Button:
+            id: btnBack
+            text: "Cancel"
             on_press: app.root.current = "settings"
 
 ########################################################################################################################

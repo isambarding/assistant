@@ -709,12 +709,21 @@ class ExportScreen(Screen):
 
     def exportnotes(self):
         self.c.exportcsv("Note")
+        self.parent.current = "email"
 
     def exportreminders(self):
         self.c.exportcsv("Reminder")
+        self.parent.current = "email"
 
     def exportalarms(self):
-        pass
+        self.c.exportcsv("Alarm")
+        self.parent.current = "email"
+
+
+class EmailScreen(Screen):
+    def __init__(self, **kwargs):
+        super(EmailScreen, self).__init__(**kwargs)
+        # work in toggle buttons for different services???
 
 ########################################################################################################################
 
@@ -739,6 +748,7 @@ class AssistantApp(App):
         sm.add_widget(EditAlarmsScreen(name="editalarms"))
         sm.add_widget(SettingsScreen(name="settings"))
         sm.add_widget(ExportScreen(name="export"))
+        sm.add_widget(EmailScreen(name="email"))
 
     def build(self):
         self.icon = "icon.png"
