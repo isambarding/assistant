@@ -506,6 +506,10 @@
             text: "Change location"
             on_press: root.changelocation()
         Button:
+            id: btnExport
+            text: "Export Data"
+            on_press: app.root.current = "export"
+        Button:
             id: btnBack
             text: "Back"
             on_press: app.root.current = "home"
@@ -537,6 +541,26 @@
             id: btnConfirm
             text: "Confirm"
             on_press: root.completesetup()
+
+<ExportScreen>
+    name: "export"
+    BoxLayout:
+        Button:
+            id: btnExportNotes
+            text: "Export Notes"
+            on_press: root.exportnotes()
+        Button:
+            id: btnExportReminders
+            text: "Export Reminders"
+            on_press: root.exportreminders()
+        Button:
+            id: btnExportAlarms
+            text: "Export alarms"
+            on_press: root.exportalarms()
+        Button:
+            id: btnBack
+            text: "Back"
+            on_press: app.root.current = "settings"
 
 ########################################################################################################################
 

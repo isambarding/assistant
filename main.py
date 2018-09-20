@@ -12,6 +12,7 @@ from weather import Weather4Day, Weather10Day
 from settings import Setup, Settings
 from twitter import Twitter
 from encryption import Crypto
+from csvworker import csvworker
 from NotesRemindersAlarms import Notes, Reminders#, Alarms
 
 from kivy.core.window import Window
@@ -207,10 +208,7 @@ class NotesScreen(Screen):
             sql = """SELECT NoteID, Title, Content FROM Notes ORDER BY Date"""
             cursor.execute(sql)
             data = cursor.fetchall()
-            sql = """SELECT Count(NoteID) FROM Notes"""
-            cursor.execute(sql)
-            count = cursor.fetchall()
-            count = count[0][0]
+            count = len(data)
 
         for i in range(count):
             noteid = data[i][0]
@@ -252,10 +250,7 @@ class NotesScreen(Screen):
             sql = """SELECT NoteID, Title, Content FROM Notes ORDER BY Title"""
             cursor.execute(sql)
             data = cursor.fetchall()
-            sql = """SELECT Count(NoteID) FROM Notes"""
-            cursor.execute(sql)
-            count = cursor.fetchall()
-            count = count[0][0]
+            count = len(data)
 
         for i in range(count):
             noteid = data[i][0]
@@ -434,10 +429,7 @@ class RemindersScreen(Screen):
             sql = """SELECT ReminderID, Title, Content, Date FROM Reminders ORDER BY Date"""
             cursor.execute(sql)
             data = cursor.fetchall()
-            sql = """SELECT Count(ReminderID) FROM Reminders"""
-            cursor.execute(sql)
-            count = cursor.fetchall()
-            count = count[0][0]
+            count = len(data)
 
         for i in range(count):
             reminderid = data[i][0]
@@ -484,10 +476,7 @@ class RemindersScreen(Screen):
             sql = """SELECT ReminderID, Title, Content, Date FROM Reminders ORDER BY Title"""
             cursor.execute(sql)
             data = cursor.fetchall()
-            sql = """SELECT Count(ReminderID) FROM Reminders"""
-            cursor.execute(sql)
-            count = cursor.fetchall()
-            count = count[0][0]
+            count = len(data)
 
         for i in range(count):
             reminderid = data[i][0]
@@ -712,6 +701,21 @@ class SetupScreen(Screen):
             sm.add_widget(AlarmsScreen(name="alarms"))
             self.parent.current = "home"
 
+
+class ExportScreen(Screen):
+    def __init__(self, **kwargs):
+        super(ExportScreen, self).__init__(**kwargs)
+        self.c = csvworker()
+
+    def exportnotes(self):
+        self.c.exportcsv("Note")
+
+    def exportreminders(self):
+        self.c.exportcsv("Reminders")
+
+    def exportalarms(self):
+        pass
+
 ########################################################################################################################
 
 
@@ -734,6 +738,7 @@ class AssistantApp(App):
         sm.add_widget(MoreAlarmsScreen(name="morealarms"))
         sm.add_widget(EditAlarmsScreen(name="editalarms"))
         sm.add_widget(SettingsScreen(name="settings"))
+        sm.add_widget(ExportScreen(name="export"))
 
     def build(self):
         self.icon = "icon.png"
