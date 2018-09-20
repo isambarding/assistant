@@ -711,7 +711,7 @@ class ExportScreen(Screen):
         self.c.exportcsv("Note")
 
     def exportreminders(self):
-        self.c.exportcsv("Reminders")
+        self.c.exportcsv("Reminder")
 
     def exportalarms(self):
         pass
