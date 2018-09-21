@@ -1,4 +1,3 @@
-# settings file: user changes name and location details
 import sqlite3
 from encryption import Crypto
 
