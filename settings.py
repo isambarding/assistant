@@ -41,10 +41,6 @@ class Setup:
         sql = """INSERT INTO userInfo (Name, Country, City, LastTwitterSearch) VALUES ('{}', '{}', '{}', '{}')""".format(name, country, city, un)
         self.cursor.execute(sql)
 
-        # Alarms table
-        sql = """CREATE TABLE Alarms (AlarmID integer, Title text, Days text, Time time, Date float, Repeats boolean, primary key(AlarmID))"""
-        self.cursor.execute(sql)
-
         # Notes table
         sql = """CREATE TABLE Notes (NoteID integer, Title text, Content text, Date float, primary key(NoteID))"""
         self.cursor.execute(sql)
@@ -52,5 +48,4 @@ class Setup:
         # Reminders table
         sql = """CREATE TABLE Reminders (ReminderID integer, Title text, Content text, Days text, Time time, Date float, Repeats boolean, primary key(ReminderID))"""
         self.cursor.execute(sql)
-
         self.db.commit()

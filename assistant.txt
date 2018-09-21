@@ -21,10 +21,6 @@
             text: "Reminders"
             on_press: app.root.current = "reminders"
         Button:
-            id: btnAlarms
-            text: "Alarms"
-            on_press: app.root.current = "alarms"
-        Button:
             id: btnSettings
             text: "Settings"
             on_press: app.root.current = "settings"
@@ -406,69 +402,6 @@
 
 ########################################################################################################################
 
-<AlarmsScreen>
-    name: "alarms"
-
-    BoxLayout:
-        Label:
-            id: lblLastAlarmTitle
-            text: "Most recent alarm title"
-        Label:
-            id: lblLastAlarmTime
-            text: "Most recent alarm time"
-        Button:
-            id: btnNewAlarm
-            text: "New alarm"
-        Button:
-            id: btnAllAlarms
-            text: "All alarms"
-        Button:
-            id: btnBack
-            text: "Back"
-            on_press: app.root.current = "home"
-
-<NewAlarmsScreen>
-    name: "newalarms"
-    inputNewAlarmTitle: inputNewAlarmTitle
-    inputNewAlarmContent: inputNewAlarmContent
-
-    BoxLayout:
-        GridLayout:
-            cols: 2
-            Label:
-                id: lblNewAlarmTitle
-                text: "Title:"
-            TextInput:
-                id: inputNewAlarmTitle
-
-        Label:
-            id: lblNewAlarmTitle
-            text: "Content:"
-        TextInput:
-            id: inputNewAlarmContent
-            multiline: True
-        Button:
-            id: btnCreateAlarm
-            text: "Create"
-            on_press: root.createAlarm()
-        Button:
-            id: btnBack
-            text: "Discard"
-            on_press: app.root.current = "alarms"
-
-<MoreAlarmsscreen>
-    name: "morealarmss"
-    layoutMoreAlarms: layoutMoreAlarms
-    ScrollView:
-        GridLayout:
-            id: layoutMoreAlarms
-            cols: 1
-            size_hint_y: None
-            height: self.minimum_height
-
-
-########################################################################################################################
-
 <SettingsScreen>
     name: "settings"
     inputNewName: inputNewName
@@ -554,16 +487,16 @@
             text: "Export Reminders"
             on_press: root.exportreminders()
         Button:
-            id: btnExportAlarms
-            text: "Export alarms"
-            on_press: root.exportalarms()
-        Button:
             id: btnBack
             text: "Cancel"
             on_press: app.root.current = "settings"
 
 <EmailScreen>
     name: "email"
+    inputEmailUsername: inputEmailUsername
+    inputEmailPassword: inputEmailPassword
+    inputEmailTarget: inputEmailTarget
+
     BoxLayout:
         GridLayout:
             cols: 2
@@ -579,7 +512,7 @@
             Label:
                 text: "Target email"
             TextInput:
-                id: inputEmailAddress
+                id: inputEmailTarget
         Button:
             id: btnSendEmail
             text: "Send"

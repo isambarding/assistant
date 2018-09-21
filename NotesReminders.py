@@ -3,7 +3,7 @@ import time
 import datetime
 
 
-class NotesRemindersAlarms:
+class NotesReminders:
     def __init__(self):
         self.db = sqlite3.connect("UserData.db")
         self.cursor = self.db.cursor()
@@ -41,7 +41,7 @@ class NotesRemindersAlarms:
 # Notes class
 
 
-class Notes(NotesRemindersAlarms):
+class Notes(NotesReminders):
     def create(self, title, content):
         date = time.time()
         sql = """insert into Notes (Title, Content, Date) values ('{}', '{}', {});""".format(title, content, date)
@@ -75,7 +75,7 @@ class Notes(NotesRemindersAlarms):
 # Reminders class
 
 
-class Reminders(NotesRemindersAlarms):
+class Reminders(NotesReminders):
     def create(self, title, content, year, month, day, hour, minute, second):
         date = datetime.datetime(year, month, day, hour, minute, second)
         date = date.timestamp()
@@ -106,23 +106,3 @@ class Reminders(NotesRemindersAlarms):
         sql = """UPDATE Reminders SET Title='{}', Content='{}' WHERE ReminderID='{}';""".format(title, content, reminderid)
         self.cursor.execute(sql)
         self.db.commit()
-
-# Alarms class
-
-
-class Alarms(NotesRemindersAlarms):
-    def create(self):
-        pass
-
-    def mostRecent(self):
-        pass
-
-    def delete(self, noteid):
-        # self.deleteAll(self, "Alarms", noteid)
-        pass
-
-# testing
-# n = Notes()
-# t = input("Enter title")
-# c = input("Enter content")
-# n.create(t, c)

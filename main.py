@@ -13,7 +13,7 @@ from settings import Setup, Settings
 from twitter import Twitter
 from encryption import Crypto
 from csvworker import csvworker
-from NotesRemindersAlarms import Notes, Reminders#, Alarms
+from NotesReminders import Notes, Reminders
 
 from kivy.core.window import Window
 from kivy.uix.label import Label 
@@ -633,24 +633,6 @@ class EditRemindersScreen(Screen):
 ########################################################################################################################
 
 
-class AlarmsScreen(Screen):
-    pass
-
-
-class NewAlarmsScreen(Screen):
-    pass
-
-
-class MoreAlarmsScreen(Screen):
-    pass
-
-
-class EditAlarmsScreen(Screen):
-    pass
-
-########################################################################################################################
-
-
 class SettingsScreen(Screen):
     def __init__(self, **kwargs):
         super(SettingsScreen, self).__init__(**kwargs)
@@ -698,7 +680,7 @@ class SetupScreen(Screen):
             sm.add_widget(TwitterScreen(name="twitter"))
             sm.add_widget(NotesScreen(name="notes"))
             sm.add_widget(RemindersScreen(name="reminders"))
-            sm.add_widget(AlarmsScreen(name="alarms"))
+            sm.add_widget(ExportScreen(name="export"))
             self.parent.current = "home"
 
 
@@ -715,15 +697,18 @@ class ExportScreen(Screen):
         self.c.exportcsv("Reminder")
         self.parent.current = "email"
 
-    def exportalarms(self):
-        self.c.exportcsv("Alarm")
-        self.parent.current = "email"
-
 
 class EmailScreen(Screen):
     def __init__(self, **kwargs):
         super(EmailScreen, self).__init__(**kwargs)
         # work in toggle buttons for different services???
+
+    def sendemail(self):
+        c = csvworker()
+        username = self.inputEmailUsername.text
+        password = self.inputEmailPassword.text
+        target = self.inputEmailTarget.text
+        c.email(username, password, target)
 
 ########################################################################################################################
 
@@ -743,11 +728,7 @@ class AssistantApp(App):
         sm.add_widget(NewRemindersScreen(name="newreminders"))
         sm.add_widget(MoreRemindersScreen(name="morereminders"))
         sm.add_widget(EditRemindersScreen(name="editreminders"))
-        sm.add_widget(NewAlarmsScreen(name="newalarms"))
-        sm.add_widget(MoreAlarmsScreen(name="morealarms"))
-        sm.add_widget(EditAlarmsScreen(name="editalarms"))
         sm.add_widget(SettingsScreen(name="settings"))
-        sm.add_widget(ExportScreen(name="export"))
         sm.add_widget(EmailScreen(name="email"))
 
     def build(self):
@@ -762,7 +743,7 @@ class AssistantApp(App):
             sm.add_widget(TwitterScreen(name="twitter"))
             sm.add_widget(NotesScreen(name="notes"))
             sm.add_widget(RemindersScreen(name="reminders"))
-            sm.add_widget(AlarmsScreen(name="alarms"))
+            sm.add_widget(ExportScreen(name="export"))
             self.addscreens()
             self.root.current = "home"
         else:
