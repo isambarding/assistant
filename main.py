@@ -755,5 +755,5 @@ class AssistantApp(App):
 
 if __name__ == "__main__":
     app = AssistantApp()
-    Window.size = (360, 640)
+    #Window.size = (360, 640)
     app.run()
