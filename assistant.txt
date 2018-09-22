@@ -528,7 +528,7 @@
     text_size: self.width, None
     padding_x: "20dp"
     padding_y: "20dp"
-    halign: "middle"
+    halign: "center"
     valign: "middle"
     font_size: "15dp"
 
