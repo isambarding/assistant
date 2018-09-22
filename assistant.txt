@@ -528,8 +528,8 @@
     text_size: self.width, None
     padding_x: "20dp"
     padding_y: "20dp"
-    halign: "center"
-    valign: "center"
+    halign: "middle"
+    valign: "middle"
     font_size: "15dp"
 
 <BoxLayout>
