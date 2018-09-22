@@ -1,4 +1,3 @@
-import csv
 import sqlite3
 import smtplib
 from email.mime.multipart import MIMEMultipart
@@ -14,21 +13,26 @@ class csvworker:
         self.db = sqlite3.connect("UserData.db")
         self.cursor = self.db.cursor()
         self.c = Crypto(False, 0)
+        self.csvfile = ""
 
     def importcsv(self):
         pass
 
     def exportcsv(self, idtype):
-        file = open("output.csv", "w")
-        writer = csv.writer(file)
+        #file = open("output.csv", "w")
+        #writer = csv.writer(file)
         sql = """SELECT {}ID, Title, Content, Date FROM {}s ORDER BY Title""".format(idtype, idtype)
         self.cursor.execute(sql)
         data = self.cursor.fetchall()
         count = len(data)
+        print(data)
 
-        writer.writerow(["ID", "Title", "Content", "Date"])
+        #writer.writerow(["ID", "Title", "Content", "Date"])
         for i in range(count):
-            writer.writerow([data[i][0], self.c.decrypt(data[i][1]), self.c.decrypt(data[i][2]), data[i][3]])
+            for a in data[i]:
+                self.csvfile = self.csvfile + str(a) + ", "
+
+        print(self.csvfile)
 
     def email(self, username, password, target):
 
@@ -38,13 +42,13 @@ class csvworker:
         msg['Subject'] = "Assistant - Data output"
         body = "Attached is the output data in csv format, as created by Assistant"
         msg.attach(MIMEText(body, 'plain'))
-        filename = "output.csv"
-        attachment = open("output.csv", "rb")
-        file = MIMEBase('application', 'octet-stream')
-        file.set_payload(attachment.read())
-        encoders.encode_base64(file)
-        file.add_header('Content-Disposition', "attachment; filename= %s" % filename)
-        msg.attach(file)
+        #filename = "output.csv"
+        #attachment = open("output.csv", "rb")
+        #file = MIMEBase('application', 'octet-stream')
+        #file.set_payload(attachment.read())
+        #encoders.encode_base64(file)
+        #file.add_header('Content-Disposition', "attachment; filename= %s" % filename)
+        #msg.attach(file)
         print(msg)
 
         server = smtplib.SMTP('smtp.gmail.com', 587)
