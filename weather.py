@@ -84,7 +84,10 @@ class Weather10Day:
         response = requests.get(url)
         self.data = response.json()
 
-    # 10 day forecast, text version
+    # Method - forecast10daystext
+    # Parameters - None
+    # Return - s: list of strings
+    # Purpose - Gets the next 10 days of text forecasts
     def forecast10daystext(self):
         s = []
         for day in self.data["forecast"]["txt_forecast"]["forecastday"]:
@@ -93,20 +96,30 @@ class Weather10Day:
                 s.append(day["fcttext_metric"])
         return s
 
-    # Highest forecast temperature of next 10 days, in celsius
+    # Method - forecast10dayshigh
+    # Parameters - None
+    # Return - s: list of strings
+    # Purpose - Gets the next 10 days of highest forecast temperatures
     def forecast10dayshigh(self):
         s = []
         for day in self.data["forecast"]["simpleforecast"]["forecastday"]:
             s.append(day["high"]["celsius"])
         return s
 
-    # Lowest forecast temperature of next 10 days, in celsius
+    # Method - forecast10dayslow
+    # Parameters - None
+    # Return - s: list of strings
+    # Purpose - Gets the next 10 days of lowest forecast temperatures
     def forecast10dayslow(self):
         s = []
         for day in self.data["forecast"]["simpleforecast"]["forecastday"]:
             s.append(day["low"]["celsius"])
         return s
 
+    # Method - daylist
+    # Parameters - None
+    # Return - s: list of strings
+    # Purpose - Gets the names of the 10 days included in the forecast
     def daylist(self):
         s = []
         for day in self.data["forecast"]["txt_forecast"]["forecastday"]:

@@ -162,7 +162,7 @@ class TwitterScreen(Screen):
         self.cursor.execute("SELECT LastTwitterSearch FROM userInfo")
         username = self.cursor.fetchone()
         username = self.c.decrypt(username[0])
-        self.lblRecentTweet.text = self.t.userLatest(username)
+        self.lblRecentTweet.text = self.t.userlatest(username)
         self.lblRecentUsername.text = "Latest tweet from @" + username
 
     # Method - getmoretweets
@@ -203,7 +203,7 @@ class TwitterScreen(Screen):
         self.db.commit()
         print("Last user search updated")
         self.lblRecentUsername.text = "Latest tweet from @{}".format(username)
-        self.lblRecentTweet.text = self.t.userLatest(username)
+        self.lblRecentTweet.text = self.t.userlatest(username)
         self.manager.current = "twitter"
 
 
@@ -524,7 +524,7 @@ class SettingsScreen(Screen):
             pass
         else:
             s = Settings()
-            s.changeName(name)
+            s.changename(name)
             print("Name changed successfully")
 
     def changelocation(self):
@@ -534,7 +534,7 @@ class SettingsScreen(Screen):
             pass
         else:
             s = Settings()
-            s.changeLocation(country, city)
+            s.changelocation(country, city)
             print("Location changed successfully")
 
     def restartsetup(self):
@@ -554,7 +554,7 @@ class SetupScreen(Screen):
             pass
         else:
             setup = Setup()
-            setup.completeSetup(name, country, city)
+            setup.completesetup(name, country, city)
             print("Setup complete")
             sm.add_widget(HomeScreen(name="home"))
             sm.add_widget(WeatherScreen(name="weather"))
