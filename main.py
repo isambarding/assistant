@@ -29,7 +29,7 @@ Builder.load_file("assistant.txt")
 # Return -
 # Purpose -
 
-# Class HomeScreen contains code that will be run from within the "home" screen
+
 class HomeScreen(Screen):
     # Method - HomeScreen init
     # Parameters - username: string

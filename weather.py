@@ -1,69 +1,84 @@
 import requests
 
-# Weather4Day class uses wunderground's 4 day weather API request format, to retrieve the upcoming 4 days of weather
-# forecasts.
+
 class Weather4Day:
-    # Init method makes the api call using the country and city names passed to the class, then parses the data as json
-    # format.
+    # Method - Weather4Day init
+    # Parameters - country: string, city: string
+    # Return - None
+    # Purpose - Makes an api call  for the next 4 days of weather using the country and city arguments, then parses the
+    #           data as json format.
     def __init__(self, country, city):
         url = "http://api.wunderground.com/api/034fa2c65c35e441/forecast/q/{}/{}.json".format(country, city)
         response = requests.get(url)
         self.data = response.json()
 
-    # forecastTodayText gets the text of the current day's forecast by looping through the data given by the API until
-    # the current day is found
+    # Method - forecasttodaytext
+    # Parameters - None
+    # Return - s: string
+    # Purpose - Gets the text forecast for the current day
     def forecasttodaytext(self):
-        s = ""
         for day in self.data["forecast"]["txt_forecast"]["forecastday"]:
             if day["period"] == 0:
                 s = day["fcttext_metric"]
         return s
 
-    # Today's highest forecast temperature, in celsius
+    # Method - forecasttodayhigh
+    # Parameters - None
+    # Return - s: string
+    # Purpose - Gets the highest forecast temperature for the current day
     def forecasttodayhigh(self):
-        s = ""
         for day in self.data["forecast"]["simpleforecast"]["forecastday"]:
             if day["period"] == 1:
                 s = day["high"]["celsius"]
         return s
 
-    # Today's lowest forecast temperature, in celsius
+    # Method - forecasttodaylow
+    # Parameters - None
+    # Return - s: string
+    # Purpose - Gets the highest forecast temperature for the current day
     def forecasttodaylow(self):
-        s = ""
         for day in self.data["forecast"]["simpleforecast"]["forecastday"]:
             if day["period"] == 1:
                 s = day["low"]["celsius"]
         return s
 
-    # Tomorrow's forecast, text form
+    # Method - forecasttomorrowtext
+    # Parameters - None
+    # Return - s: string
+    # Purpose - Gets the text forecast for the following day
     def forecasttomorrowtext(self):
-        s = ""
         for day in self.data["forecast"]["txt_forecast"]["forecastday"]:
             if day["period"] == 2:
                 s = day["fcttext_metric"]
         return s
 
-    # Tomorrow's highest forecast temperature, in celsius
+    # Method - forecasttomorrowhigh
+    # Parameters - None
+    # Return - s: string
+    # Purpose - Gets the highest forecast temperature for the following day
     def forecasttomorrowhigh(self):
-        s = ""
         for day in self.data["forecast"]["simpleforecast"]["forecastday"]:
             if day["period"] == 2:
                 s = day["high"]["celsius"]
         return s
 
-    # Tomorrow's lowest forecast temperature, in celsius
+    # Method - forecasttomorrowlow
+    # Parameters - None
+    # Return - s: string
+    # Purpose - Gets the lowest forecast temperature for the following day
     def forecasttomorrowlow(self):
-        s = ""
         for day in self.data["forecast"]["simpleforecast"]["forecastday"]:
             if day["period"] == 2:
                 s = day["low"]["celsius"]
         return s
 
 
-# WEATHER10DAY
-# Retrieves a 10-day forecast, using Wunderground's 10-day request API
 class Weather10Day:
-    # Uses 10 day request
+    # Method - Weather10Day init
+    # Parameters - country: string, city: string
+    # Return - None
+    # Purpose - Makes an api call  for the next 10 days of weather using the country and city arguments, then parses the
+    #           data as json format.
     def __init__(self, country, city):
         url = "http://api.wunderground.com/api/034fa2c65c35e441/forecast10day/q/{}/{}.json".format(country, city)
         response = requests.get(url)
@@ -100,9 +115,4 @@ class Weather10Day:
                 s.append(day["title"])
         return s
 
-# testing
-# country = input("Enter country: ")
-# city = input("Enter city: ")
-# w = Weather4Day("fr", "paris")
-# print(w.forecastTodayText())
 
