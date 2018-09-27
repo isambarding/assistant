@@ -1,13 +1,12 @@
 import requests
 from requests_oauthlib import OAuth1
 
-# 04/05/18: tested working
-
-# Class hold all methods related to the Twitter section
-# Note that the API does not support Twitter's new 280 character tweets, so they are shortened.
-
 
 class Twitter:
+    # Method - Twitter init
+    # Parameters - token: string, appkey: string, appsecret: string, tokensecret: string
+    # Return - Non
+    # Purpose - Sets up and authorises a Twitter API request, ready to be called
     def __init__(self):
         token = "989416304108064770-HwtBl1mm13xiKBOMqlTjq2roq9SZCh0"
         appkey = "RcuKZbyWJiSXxsb57Pvuprkzr"
@@ -16,15 +15,21 @@ class Twitter:
         self.auth = OAuth1(appkey, appsecret, token, tokensecret)
         self.twurl = "https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name="
 
-    # Gets the latest tweet from a given username
-    def userLatest(self, username):
+    # Method - userlatest
+    # Parameters - username: string
+    # Return - text: string
+    # Purpose - Gets the latest tweet from a given username from the Twitter API
+    def userlatest(self, username):
         url = self.twurl + username + "&count=1"
         response = requests.get(url, auth=self.auth)
         f = response.json()
         q = f[0]
         return q["text"]
 
-    # Gets the previous 10 tweets from a given username.
+    # Method - user10
+    # Parameters - username: string
+    # Return - s: string
+    # Purpose - Gets the previous 10 tweets from a given username from the Twitter API
     def user10(self, username):
         url = self.twurl + username + "&count=10"
         response = requests.get(url, auth=self.auth)

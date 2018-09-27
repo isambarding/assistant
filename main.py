@@ -147,11 +147,11 @@ class TwitterScreen(Screen):
     #           then calls the latesttweet function
     def __init__(self, **kwargs):
         super(TwitterScreen, self).__init__(**kwargs)
+        self.db = sqlite3.connect("UserData.db")
+        self.cursor = self.db.cursor()
         self.c = Crypto(False, 0)
         self.t = Twitter()
         self.latesttweet()
-        self.db = sqlite3.connect("UserData.db")
-        self.cursor = self.db.cursor()
 
     # Method - latesttweet
     # Parameters - username
@@ -192,8 +192,9 @@ class TwitterScreen(Screen):
 
     # Method - back
     # Parameters - username: string, secureusername:s tring
-    # Return -
-    # Purpose -
+    # Return - None
+    # Purpose - Updates the main twitter screen with the latest tweet from the username the user last searched for,
+    #           then displays the twitter screen.
     def back(self):
         username = self.inputTwitterUsername.text
         secureusername = self.c.encrypt(username)
@@ -214,16 +215,20 @@ class MoreTwitterScreen(Screen):
 
 
 class NotesScreen(Screen):
+    # Method - NoteScreen init
+    # Parameters - None
+    # Return - None
+    # Purpose -
     def __init__(self, **kwargs):
         super(NotesScreen, self).__init__(**kwargs)
         self.c = Crypto(False, 0)
         self.latestnote()
         self.db = sqlite3.connect("UserData.db")
         self.cursor = self.db.cursor()
+        self.n = Notes()
 
     def latestnote(self):
-        n = Notes()
-        data = n.mostrecent()
+        data = self.n.mostrecent()
         if data is False:
             self.lblLastNoteTitle.text = "No notes found!"
             self.lblLastNoteContent.text = " "
@@ -242,16 +247,12 @@ class NotesScreen(Screen):
         self.parent.current = "newnotes"
 
     def notesbytime(self):
-        sql = """SELECT NoteID, Title, Content FROM Notes ORDER BY Date"""
-        self.cursor.execute(sql)
-        data = self.cursor.fetchall()
+        data = self.n.sort("Title")
         count = len(data)
         self.setupmorenotes(count, data)
 
     def notesbytitle(self):
-        sql = """SELECT NoteID, Title, Content FROM Notes ORDER BY Title"""
-        self.cursor.execute(sql)
-        data = self.cursor.fetchall()
+        data = self.n.sort("Title")
         count = len(data)
         self.setupmorenotes(count, data)
 
@@ -261,10 +262,7 @@ class NotesScreen(Screen):
             pass
         else:
             searchterm = self.c.encrypt(searchterm)
-            sql = """SELECT NoteID, Title, Content FROM Notes WHERE Content LIKE '%{}%'""".format(searchterm)
-            self.cursor.execute(sql)
-            data = self.cursor.fetchall()
-            print(data)
+            data = self.n.search(searchterm)
             count = len(data)
             self.setupmorenotes(count, data)
 
@@ -273,8 +271,7 @@ class NotesScreen(Screen):
         self.manager.current = "notes"
 
     def delete(self, noteid):
-        n = Notes()
-        n.delete(noteid)
+        self.n.delete(noteid)
         self.latestnote()
         self.manager.current = "notes"
         print("Note deleted")
@@ -366,10 +363,10 @@ class RemindersScreen(Screen):
         self.latestreminder()
         self.db = sqlite3.connect("UserData.db")
         self.cursor = self.db.cursor()
+        self.n = Reminders()
 
     def latestreminder(self):
-        r = Reminders()
-        data = r.mostrecent()
+        data = self.r.mostrecent()
         if data is False:
             self.lblLastReminderTitle.text = "No reminders found!"
             self.lblLastReminderContent.text = " "
@@ -394,16 +391,12 @@ class RemindersScreen(Screen):
         self.parent.current = "newreminders"
 
     def remindersbytime(self):
-        sql = """SELECT ReminderID, Title, Content, Date FROM Reminders ORDER BY Date"""
-        self.cursor.execute(sql)
-        data = self.cursor.fetchall()
+        data = self.r.sort("Time")
         count = len(data)
         self.setupmorereminders(count, data)
 
     def remindersbytitle(self):
-        sql = """SELECT ReminderID, Title, Content, Date FROM Reminders ORDER BY Title"""
-        self.cursor.execute(sql)
-        data = self.cursor.fetchall()
+        data = self.r.sort("Title")
         count = len(data)
         self.setupmorereminders(count, data)
 
@@ -413,10 +406,7 @@ class RemindersScreen(Screen):
             pass
         else:
             searchterm = self.c.encrypt(searchterm)
-            sql = """SELECT ReminderID, Title, Content, Date FROM Reminders WHERE Content LIKE '%{}%'""".format(searchterm)
-            self.cursor.execute(sql)
-            data = self.cursor.fetchall()
-            print(data)
+            data = self.r.search(searchterm)
             count = len(data)
             self.setupmorereminders(count, data)
 
@@ -465,8 +455,7 @@ class RemindersScreen(Screen):
         self.manager.current = "reminders"
 
     def delete(self, reminderid):
-        n = Reminders()
-        n.delete(reminderid)
+        self.r.delete(reminderid)
         self.latestreminder()
         self.manager.current = "reminders"
         print("Reminder deleted")
@@ -514,7 +503,6 @@ class EditRemindersScreen(Screen):
         reminderid = self.currentreminderid
         title = self.inputEditReminderTitle.text
         content = self.inputEditReminderContent.text
-
         c = Crypto(False, 0)
         title = c.encrypt(title)
         content = c.encrypt(content)

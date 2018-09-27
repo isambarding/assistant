@@ -39,6 +39,18 @@ class Notes:
         self.cursor.execute(sql)
         self.db.commit()
 
+    def search(self, searchterm):
+        sql = """SELECT NoteID, Title, Content FROM Notes WHERE Content LIKE '%{}%'""".format(searchterm)
+        self.cursor.execute(sql)
+        data = self.cursor.fetchall()
+        return data
+
+    def sort(self, type):
+        sql = """SELECT NoteID, Title, Content FROM Notes ORDER BY {}""".format(type)
+        self.cursor.execute(sql)
+        data = self.cursor.fetchall()
+        return data
+
 
 # Reminders class
 class Reminders:
@@ -76,3 +88,15 @@ class Reminders:
         sql = """UPDATE Reminders SET Title='{}', Content='{}' WHERE ReminderID='{}';""".format(title, content, reminderid)
         self.cursor.execute(sql)
         self.db.commit()
+
+    def search(self, searchterm):
+        sql = """SELECT ReminderID, Title, Content FROM Reminders WHERE Content LIKE '%{}%'""".format(searchterm)
+        self.cursor.execute(sql)
+        data = self.cursor.fetchall()
+        return data
+
+    def sort(self, type):
+        sql = """SELECT ReminderID, Title, Content FROM Reminders ORDER BY {}""".format(type)
+        self.cursor.execute(sql)
+        data = self.cursor.fetchall()
+        return data

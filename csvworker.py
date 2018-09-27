@@ -8,30 +8,34 @@ from email import encoders
 from encryption import Crypto
 
 
-
 class csvworker:
     def __init__(self):
         self.db = sqlite3.connect("UserData.db")
         self.cursor = self.db.cursor()
         self.c = Crypto(False, 0)
 
-    def importcsv(self):
-        pass
-
+    # Method - exportcsv
+    # Parameters - idtype: string
+    # Return - None
+    # Purpose - Creates a csv file from the user's selected database table (notes or reminders)
     def exportcsv(self, idtype):
         file = open("output.csv", "w")
         writer = csv.writer(file)
         sql = """SELECT {}ID, Title, Content, Date FROM {}s ORDER BY Title""".format(idtype, idtype)
         self.cursor.execute(sql)
         data = self.cursor.fetchall()
-        count = len(data)
-
+        print(data)
         writer.writerow(["ID", "Title", "Content", "Date"])
-        for i in range(count):
+        for i in range(len(data)):
             writer.writerow([data[i][0], self.c.decrypt(data[i][1]), self.c.decrypt(data[i][2]), data[i][3]])
+        print("CSV created")
 
+    # Method - email
+    # Parameters - username: string, password: string, target: string
+    # Return - None
+    # Purpose - Sends an email with the exported csv file attached over gmail servers using the user's email and
+    #           password, to a user defined target address
     def email(self, username, password, target):
-
         msg = MIMEMultipart()
         msg['From'] = username
         msg['To'] = target
@@ -45,11 +49,10 @@ class csvworker:
         encoders.encode_base64(file)
         file.add_header('Content-Disposition', "attachment; filename= %s" % filename)
         msg.attach(file)
-        print(msg)
-
         server = smtplib.SMTP('smtp.gmail.com', 587)
         server.starttls()
         server.login(username, password)
         text = msg.as_string()
         server.sendmail(username, target, text)
+        print("Email sent")
         server.quit()
