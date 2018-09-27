@@ -21,10 +21,20 @@ from kivy.uix.button import Button
 from kivy.uix.gridlayout import GridLayout
 from kivy.metrics import dp
 
+# Assistant.txt contains layout, widget and formatting information for all of the screens
 Builder.load_file("assistant.txt")
 
+# Method -
+# Parameters -
+# Return -
+# Purpose -
 
+# Class HomeScreen contains code that will be run from within the "home" screen
 class HomeScreen(Screen):
+    # Method - HomeScreen init
+    # Parameters - username: string
+    # Return - None
+    # Purpose - Retrieves the user's name from the database and displays it in a label when the screen is built by kivy
     def __init__(self, **kwargs):
         super(HomeScreen, self).__init__(**kwargs)
 
@@ -40,10 +50,18 @@ class HomeScreen(Screen):
 
 
 class WeatherScreen(Screen):
+    # Method - WeatherScreen init
+    # Parameters - None
+    # Return - None
+    # Purpose - Calls getweather function when the screen is built by kivy
     def __init__(self, **kwargs):
         super(WeatherScreen, self).__init__(**kwargs)
         self.getweather()
 
+    # Method - getweather
+    # Parameters - city: string, country: string
+    # Return - None
+    # Purpose - Gets the weather forecast for the current day for the user's set location and displays them in labels
     def getweather(self):
         with sqlite3.connect("UserData.db") as db:
             cursor = db.cursor()
@@ -58,10 +76,15 @@ class WeatherScreen(Screen):
         w = Weather4Day(country, city)
 
         self.lblLocation.text = "The weather in {}, {} is".format(city, country)
-        self.lblWeatherText.text = w.forecastTodayText()
-        self.lblWeatherHigh.text = w.forecastTodayHigh() + "C"
-        self.lblWeatherLow.text = w.forecastTodayLow() + "C"
+        self.lblWeatherText.text = w.forecasttodaytext()
+        self.lblWeatherHigh.text = w.forecasttodayhigh() + "C"
+        self.lblWeatherLow.text = w.forecasttodaylow() + "C"
 
+    # Method - getmoreweather
+    # Parameters - city: string, country: string, textdata: string, highdata: string, lowdata: string
+    #              days: list of strings
+    # Return - None
+    # Purpose - Obtains and displays the data on the moreweather screen using the user's chosen location
     def getmoreweather(self):
         city = self.inputCity.text
         country = self.inputCountry.text
@@ -73,10 +96,10 @@ class WeatherScreen(Screen):
             moreweather.layoutMoreWeather.clear_widgets(moreweather.layoutMoreWeather.children)
 
             w = Weather10Day(country, city)
-            textdata = w.forecast10DaysText()
-            highdata = w.forecast10DaysHigh()
-            lowdata = w.forecast10DaysLow()
-            days = w.dayList()
+            textdata = w.forecast10daystext()
+            highdata = w.forecast10dayshigh()
+            lowdata = w.forecast10dayslow()
+            days = w.daylist()
 
             for i in range(9):
                 lblday = Label(text=days[i], size_hint_y=None)
@@ -100,6 +123,10 @@ class WeatherScreen(Screen):
             moreweather.layoutMoreWeather.add_widget(btnback)
             self.manager.current = "moreweather"
 
+    # Method - back
+    # Parameters - None
+    # Return - None
+    # Purpose - Displays the weather screen
     def back(self):
         self.manager.current = "weather"
 
@@ -113,22 +140,35 @@ class MoreWeatherScreen(Screen):
 
 class TwitterScreen(Screen):
 
+    # Method - TwitterScreen init
+    # Parameters - None
+    # Return - None
+    # Purpose - When kivy has built the screen, initialises instances of the Crypto and Twitter classes for this class,
+    #           then calls the latesttweet function
     def __init__(self, **kwargs):
         super(TwitterScreen, self).__init__(**kwargs)
         self.c = Crypto(False, 0)
         self.t = Twitter()
         self.latesttweet()
+        self.db = sqlite3.connect("UserData.db")
+        self.cursor = self.db.cursor()
 
+    # Method - latesttweet
+    # Parameters - username
+    # Return - None
+    # Purpose - Retrieves the username the user last searched for, fetches their latest tweet from the API, then
+    #           displays their username latest tweet in labels
     def latesttweet(self):
-        with sqlite3.connect("UserData.db") as db:
-            cursor = db.cursor()
-            cursor.execute("SELECT LastTwitterSearch FROM userInfo")
-            username = cursor.fetchone()
-
+        self.cursor.execute("SELECT LastTwitterSearch FROM userInfo")
+        username = self.cursor.fetchone()
         username = self.c.decrypt(username[0])
         self.lblRecentTweet.text = self.t.userLatest(username)
         self.lblRecentUsername.text = "Latest tweet from @" + username
 
+    # Method - getmoretweets
+    # Parameters - un:string
+    # Return - None
+    # Purpose - Obtains and displays the data on the moretweets screen using the user's chosen location
     def getmoretweets(self):
         un = self.inputTwitterUsername.text
         if un == "":
@@ -150,17 +190,17 @@ class TwitterScreen(Screen):
             moretwitter.layoutMoreTwitter.add_widget(btnback)
             self.manager.current = "moretwitter"
 
+    # Method - back
+    # Parameters - username: string, secureusername:s tring
+    # Return -
+    # Purpose -
     def back(self):
         username = self.inputTwitterUsername.text
         secureusername = self.c.encrypt(username)
-
-        with sqlite3.connect("UserData.db") as db:
-            cursor = db.cursor()
-            sql = """UPDATE userInfo SET LastTwitterSearch='{}'""".format(secureusername)
-            cursor.execute(sql)
-            db.commit()
+        sql = """UPDATE userInfo SET LastTwitterSearch='{}'""".format(secureusername)
+        self.cursor.execute(sql)
+        self.db.commit()
         print("Last user search updated")
-
         self.lblRecentUsername.text = "Latest tweet from @{}".format(username)
         self.lblRecentTweet.text = self.t.userLatest(username)
         self.manager.current = "twitter"
@@ -178,6 +218,8 @@ class NotesScreen(Screen):
         super(NotesScreen, self).__init__(**kwargs)
         self.c = Crypto(False, 0)
         self.latestnote()
+        self.db = sqlite3.connect("UserData.db")
+        self.cursor = self.db.cursor()
 
     def latestnote(self):
         n = Notes()
@@ -200,136 +242,31 @@ class NotesScreen(Screen):
         self.parent.current = "newnotes"
 
     def notesbytime(self):
-        morenotes = self.manager.get_screen("morenotes")
-        morenotes.layoutMoreNotes.clear_widgets(morenotes.layoutMoreNotes.children)
-
-        with sqlite3.connect("UserData.db") as db:
-            cursor = db.cursor()
-            sql = """SELECT NoteID, Title, Content FROM Notes ORDER BY Date"""
-            cursor.execute(sql)
-            data = cursor.fetchall()
-            count = len(data)
-
-        for i in range(count):
-            noteid = data[i][0]
-            title = data[i][1]
-            title = self.c.decrypt(title)
-            content = data[i][2]
-            content = self.c.decrypt(content)
-
-            lbltitle = Label(text=title, size_hint_y=None)
-            lbltitle.texture_update()
-            morenotes.layoutMoreNotes.add_widget(lbltitle)
-
-            lbltext = Label(text=content, size_hint_y=None)
-            lbltext.texture_update()
-            morenotes.layoutMoreNotes.add_widget(lbltext)
-
-            grid = GridLayout(cols=2, size_hint_y=None)
-            # FIX THIS
-            btnedit = Button(text="Edit", size_hint_y=None, on_press=lambda a: self.edit(noteid))
-            btndelete = Button(text="Delete", size_hint_y=None, on_press=lambda a: self.delete(noteid))
-            btnedit.texture_update()
-            btndelete.texture_update()
-            grid.add_widget(btnedit)
-            grid.add_widget(btndelete)
-            morenotes.layoutMoreNotes.add_widget(grid)
-
-        grid = GridLayout(cols=2, size_hint_y=None)
-        btnback = (Button(text="Back", height=dp(80), on_press=lambda a: self.back()))
-        grid.add_widget(btnback)
-        morenotes.layoutMoreNotes.add_widget(grid)
-        self.manager.current = "morenotes"
+        sql = """SELECT NoteID, Title, Content FROM Notes ORDER BY Date"""
+        self.cursor.execute(sql)
+        data = self.cursor.fetchall()
+        count = len(data)
+        self.setupmorenotes(count, data)
 
     def notesbytitle(self):
-        morenotes = self.manager.get_screen("morenotes")
-        morenotes.layoutMoreNotes.clear_widgets(morenotes.layoutMoreNotes.children)
-
-        with sqlite3.connect("UserData.db") as db:
-            cursor = db.cursor()
-            sql = """SELECT NoteID, Title, Content FROM Notes ORDER BY Title"""
-            cursor.execute(sql)
-            data = cursor.fetchall()
-            count = len(data)
-
-        for i in range(count):
-            noteid = data[i][0]
-            title = data[i][1]
-            title = self.c.decrypt(title)
-            content = data[i][2]
-            content = self.c.decrypt(content)
-
-            lbltitle = Label(text=title, size_hint_y=None)
-            lbltitle.texture_update()
-            morenotes.layoutMoreNotes.add_widget(lbltitle)
-
-            lbltext = Label(text=content, size_hint_y=None)
-            lbltext.texture_update()
-            morenotes.layoutMoreNotes.add_widget(lbltext)
-
-            grid = GridLayout(cols=2, size_hint_y=None)
-            # FIX THIS
-            btnedit = Button(text="Edit", size_hint_y=None, on_press=lambda a: self.edit(noteid))
-            btndelete = Button(text="Delete", size_hint_y=None, on_press=lambda a: self.delete(noteid))
-            btnedit.texture_update()
-            btndelete.texture_update()
-            grid.add_widget(btnedit)
-            grid.add_widget(btndelete)
-            morenotes.layoutMoreNotes.add_widget(grid)
-
-        grid = GridLayout(cols=2, size_hint_y=None)
-        btnback = (Button(text="Back", height=dp(80), on_press=lambda a: self.back()))
-        grid.add_widget(btnback)
-        morenotes.layoutMoreNotes.add_widget(grid)
-        self.manager.current = "morenotes"
+        sql = """SELECT NoteID, Title, Content FROM Notes ORDER BY Title"""
+        self.cursor.execute(sql)
+        data = self.cursor.fetchall()
+        count = len(data)
+        self.setupmorenotes(count, data)
 
     def searchnotes(self):
         searchterm = self.inputSearchNotes.text
         if searchterm == "":
             pass
         else:
-            morenotes = self.manager.get_screen("morenotes")
-            morenotes.layoutMoreNotes.clear_widgets(morenotes.layoutMoreNotes.children)
             searchterm = self.c.encrypt(searchterm)
-
-            with sqlite3.connect("UserData.db") as db:
-                cursor = db.cursor()
-                sql = """SELECT NoteID, Title, Content FROM Notes WHERE Content LIKE '%{}%'""".format(searchterm)
-                cursor.execute(sql)
-                data = cursor.fetchall()
-                print(data)
-                count = len(data)
-
-            for i in range(count):
-                noteid = data[i][0]
-                title = data[i][1]
-                title = self.c.decrypt(title)
-                content = data[i][2]
-                content = self.c.decrypt(content)
-
-                lbltitle = Label(text=title, size_hint_y=None)
-                lbltitle.texture_update()
-                morenotes.layoutMoreNotes.add_widget(lbltitle)
-
-                lbltext = Label(text=content, size_hint_y=None)
-                lbltext.texture_update()
-                morenotes.layoutMoreNotes.add_widget(lbltext)
-
-                grid = GridLayout(cols=2, size_hint_y=None)
-                # FIX THIS
-                btnedit = Button(text="Edit", size_hint_y=None, on_press=lambda a: self.edit(noteid))
-                btndelete = Button(text="Delete", size_hint_y=None, on_press=lambda a: self.delete(noteid))
-                btnedit.texture_update()
-                btndelete.texture_update()
-                grid.add_widget(btnedit)
-                grid.add_widget(btndelete)
-                morenotes.layoutMoreNotes.add_widget(grid)
-
-            grid = GridLayout(cols=2, size_hint_y=None)
-            btnback = (Button(text="Back", height=dp(80), on_press=lambda a: self.back()))
-            grid.add_widget(btnback)
-            morenotes.layoutMoreNotes.add_widget(grid)
-            self.manager.current = "morenotes"
+            sql = """SELECT NoteID, Title, Content FROM Notes WHERE Content LIKE '%{}%'""".format(searchterm)
+            self.cursor.execute(sql)
+            data = self.cursor.fetchall()
+            print(data)
+            count = len(data)
+            self.setupmorenotes(count, data)
 
     def back(self):
         self.latestnote()
@@ -346,6 +283,40 @@ class NotesScreen(Screen):
         editnotes = self.manager.get_screen("editnotes")
         editnotes.currentnoteid = noteid
         self.manager.current = "editnotes"
+
+    def setupmorenotes(self, count, data):
+        morenotes = self.manager.get_screen("morenotes")
+        morenotes.layoutMoreNotes.clear_widgets(morenotes.layoutMoreNotes.children)
+        for i in range(count):
+            noteid = data[i][0]
+            title = data[i][1]
+            title = self.c.decrypt(title)
+            content = data[i][2]
+            content = self.c.decrypt(content)
+
+            lbltitle = Label(text=title, size_hint_y=None)
+            lbltitle.texture_update()
+            morenotes.layoutMoreNotes.add_widget(lbltitle)
+
+            lbltext = Label(text=content, size_hint_y=None)
+            lbltext.texture_update()
+            morenotes.layoutMoreNotes.add_widget(lbltext)
+
+            grid = GridLayout(cols=2, size_hint_y=None)
+
+            btnedit = Button(text="Edit", size_hint_y=None, on_press=lambda a: self.edit(noteid))
+            btndelete = Button(text="Delete", size_hint_y=None, on_press=lambda a: self.delete(noteid))
+            btnedit.texture_update()
+            btndelete.texture_update()
+            grid.add_widget(btnedit)
+            grid.add_widget(btndelete)
+            morenotes.layoutMoreNotes.add_widget(grid)
+
+        grid = GridLayout(cols=2, size_hint_y=None)
+        btnback = (Button(text="Back", height=dp(80), on_press=lambda a: self.back()))
+        grid.add_widget(btnback)
+        morenotes.layoutMoreNotes.add_widget(grid)
+        self.manager.current = "morenotes"
 
 
 class NewNotesScreen(Screen):
@@ -393,6 +364,8 @@ class RemindersScreen(Screen):
         super(RemindersScreen, self).__init__(**kwargs)
         self.c = Crypto(False, 0)
         self.latestreminder()
+        self.db = sqlite3.connect("UserData.db")
+        self.cursor = self.db.cursor()
 
     def latestreminder(self):
         r = Reminders()
@@ -421,151 +394,71 @@ class RemindersScreen(Screen):
         self.parent.current = "newreminders"
 
     def remindersbytime(self):
-        morereminders = self.manager.get_screen("morereminders")
-        morereminders.layoutMoreReminders.clear_widgets(morereminders.layoutMoreReminders.children)
-
-        with sqlite3.connect("UserData.db") as db:
-            cursor = db.cursor()
-            sql = """SELECT ReminderID, Title, Content, Date FROM Reminders ORDER BY Date"""
-            cursor.execute(sql)
-            data = cursor.fetchall()
-            count = len(data)
-
-        for i in range(count):
-            reminderid = data[i][0]
-            title = data[i][1]
-            title = self.c.decrypt(title)
-            content = data[i][2]
-            content = self.c.decrypt(content)
-            date = data[i][3]
-            date = datetime.datetime.fromtimestamp(date)
-
-            lbltitle = Label(text=title, size_hint_y=None)
-            lbltitle.texture_update()
-            morereminders.layoutMoreReminders.add_widget(lbltitle)
-
-            lbltext = Label(text=content, size_hint_y=None)
-            lbltext.texture_update()
-            morereminders.layoutMoreReminders.add_widget(lbltext)
-
-            lbldate = Label(text=str(date), size_hint_y=None)
-            lbldate.texture_update()
-            morereminders.layoutMoreReminders.add_widget(lbldate)
-
-            grid = GridLayout(cols=2, size_hint_y=None)
-            btnedit = Button(text="Edit", size_hint_y=None, on_press=lambda a: self.edit(reminderid))
-            btndelete = Button(text="Delete", size_hint_y=None, on_press=lambda a: self.delete(reminderid))
-            btnedit.texture_update()
-            btndelete.texture_update()
-            grid.add_widget(btnedit)
-            grid.add_widget(btndelete)
-            morereminders.layoutMoreReminders.add_widget(grid)
-
-        grid = GridLayout(cols=2, size_hint_y=None)
-        btnback = (Button(text="Back", height=dp(80), on_press=lambda a: self.back()))
-        grid.add_widget(btnback)
-        morereminders.layoutMoreReminders.add_widget(grid)
-        self.manager.current = "morereminders"
+        sql = """SELECT ReminderID, Title, Content, Date FROM Reminders ORDER BY Date"""
+        self.cursor.execute(sql)
+        data = self.cursor.fetchall()
+        count = len(data)
+        self.setupmorereminders(count, data)
 
     def remindersbytitle(self):
-        morereminders = self.manager.get_screen("morereminders")
-        morereminders.layoutMoreReminders.clear_widgets(morereminders.layoutMoreReminders.children)
-
-        with sqlite3.connect("UserData.db") as db:
-            cursor = db.cursor()
-            sql = """SELECT ReminderID, Title, Content, Date FROM Reminders ORDER BY Title"""
-            cursor.execute(sql)
-            data = cursor.fetchall()
-            count = len(data)
-
-        for i in range(count):
-            reminderid = data[i][0]
-            title = data[i][1]
-            title = self.c.decrypt(title)
-            content = data[i][2]
-            content = self.c.decrypt(content)
-            date = data[i][3]
-            date = datetime.datetime.fromtimestamp(date)
-
-            lbltitle = Label(text=title, size_hint_y=None)
-            lbltitle.texture_update()
-            morereminders.layoutMoreReminders.add_widget(lbltitle)
-
-            lbltext = Label(text=content, size_hint_y=None)
-            lbltext.texture_update()
-            morereminders.layoutMoreReminders.add_widget(lbltext)
-
-            lbldate = Label(text=str(date), size_hint_y=None)
-            lbldate.texture_update()
-            morereminders.layoutMoreReminders.add_widget(lbldate)
-
-            grid = GridLayout(cols=2, size_hint_y=None)
-            btnedit = Button(text="Edit", size_hint_y=None, on_press=lambda a: self.edit(reminderid))
-            btndelete = Button(text="Delete", size_hint_y=None, on_press=lambda a: self.delete(reminderid))
-            btnedit.texture_update()
-            btndelete.texture_update()
-            grid.add_widget(btnedit)
-            grid.add_widget(btndelete)
-            morereminders.layoutMoreReminders.add_widget(grid)
-
-        grid = GridLayout(cols=2, size_hint_y=None)
-        btnback = (Button(text="Back", height=dp(80), on_press=lambda a: self.back()))
-        grid.add_widget(btnback)
-        morereminders.layoutMoreReminders.add_widget(grid)
-        self.manager.current = "morereminders"
+        sql = """SELECT ReminderID, Title, Content, Date FROM Reminders ORDER BY Title"""
+        self.cursor.execute(sql)
+        data = self.cursor.fetchall()
+        count = len(data)
+        self.setupmorereminders(count, data)
 
     def searchreminders(self):
         searchterm = self.inputSearchReminders.text
         if searchterm == "":
             pass
         else:
-            morereminders = self.manager.get_screen("morereminders")
-            morereminders.layoutMoreReminders.clear_widgets(morereminders.layoutMoreReminders.children)
             searchterm = self.c.encrypt(searchterm)
+            sql = """SELECT ReminderID, Title, Content, Date FROM Reminders WHERE Content LIKE '%{}%'""".format(searchterm)
+            self.cursor.execute(sql)
+            data = self.cursor.fetchall()
+            print(data)
+            count = len(data)
+            self.setupmorereminders(count, data)
 
-            with sqlite3.connect("UserData.db") as db:
-                cursor = db.cursor()
-                sql = """SELECT ReminderID, Title, Content, Date FROM Reminders WHERE Content LIKE '%{}%'""".format(searchterm)
-                cursor.execute(sql)
-                data = cursor.fetchall()
-                print(data)
-                count = len(data)
+    def setupmorereminders(self, count, data):
+        morereminders = self.manager.get_screen("morereminders")
+        morereminders.layoutMoreReminders.clear_widgets(morereminders.layoutMoreReminders.children)
 
-            for i in range(count):
-                reminderid = data[i][0]
-                title = data[i][1]
-                title = self.c.decrypt(title)
-                content = data[i][2]
-                content = self.c.decrypt(content)
-                date = data[i][3]
-                date = datetime.datetime.fromtimestamp(date)
+        for i in range(count):
+            reminderid = data[i][0]
+            title = data[i][1]
+            title = self.c.decrypt(title)
+            content = data[i][2]
+            content = self.c.decrypt(content)
+            date = data[i][3]
+            date = datetime.datetime.fromtimestamp(date)
 
-                lbltitle = Label(text=title, size_hint_y=None)
-                lbltitle.texture_update()
-                morereminders.layoutMoreReminders.add_widget(lbltitle)
+            lbltitle = Label(text=title, size_hint_y=None)
+            lbltitle.texture_update()
+            morereminders.layoutMoreReminders.add_widget(lbltitle)
 
-                lbltext = Label(text=content, size_hint_y=None)
-                lbltext.texture_update()
-                morereminders.layoutMoreReminders.add_widget(lbltext)
+            lbltext = Label(text=content, size_hint_y=None)
+            lbltext.texture_update()
+            morereminders.layoutMoreReminders.add_widget(lbltext)
 
-                lbldate = Label(text=str(date), size_hint_y=None)
-                lbldate.texture_update()
-                morereminders.layoutMoreReminders.add_widget(lbldate)
-
-                grid = GridLayout(cols=2, size_hint_y=None)
-                btnedit = Button(text="Edit", size_hint_y=None, on_press=lambda a: self.edit(reminderid))
-                btndelete = Button(text="Delete", size_hint_y=None, on_press=lambda a: self.delete(reminderid))
-                btnedit.texture_update()
-                btndelete.texture_update()
-                grid.add_widget(btnedit)
-                grid.add_widget(btndelete)
-                morereminders.layoutMoreReminders.add_widget(grid)
+            lbldate = Label(text=str(date), size_hint_y=None)
+            lbldate.texture_update()
+            morereminders.layoutMoreReminders.add_widget(lbldate)
 
             grid = GridLayout(cols=2, size_hint_y=None)
-            btnback = (Button(text="Back", height=dp(80), on_press=lambda a: self.back()))
-            grid.add_widget(btnback)
+            btnedit = Button(text="Edit", size_hint_y=None, on_press=lambda a: self.edit(reminderid))
+            btndelete = Button(text="Delete", size_hint_y=None, on_press=lambda a: self.delete(reminderid))
+            btnedit.texture_update()
+            btndelete.texture_update()
+            grid.add_widget(btnedit)
+            grid.add_widget(btndelete)
             morereminders.layoutMoreReminders.add_widget(grid)
-            self.manager.current = "morereminders"
+
+        grid = GridLayout(cols=2, size_hint_y=None)
+        btnback = (Button(text="Back", height=dp(80), on_press=lambda a: self.back()))
+        grid.add_widget(btnback)
+        morereminders.layoutMoreReminders.add_widget(grid)
+        self.manager.current = "morereminders"
 
     def back(self):
         self.latestreminder()

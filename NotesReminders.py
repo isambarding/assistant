@@ -3,45 +3,12 @@ import time
 import datetime
 
 
-class NotesReminders:
+# Notes class
+class Notes:
     def __init__(self):
         self.db = sqlite3.connect("UserData.db")
         self.cursor = self.db.cursor()
 
-    def searchAll(self, ntype, value):
-        sql = """SELECT * FROM {} WHERE Title LIKE '%{}%'""".format(ntype, value)
-        self.cursor.execute(sql)
-        results = self.cursor.fetchall()
-        return results
-
-    def dictate(self):
-        pass
-
-    def createAll(self, ntype, title):
-        pass
-        # sql = """insert into {} (Title) values ('{}');""".format(ntype, title)
-        # self.cursor.execute(sql)
-        # self.db.commit()
-
-    def viewAllChrono(self, ntype):
-        sql = "SELECT Title FROM {} ORDER BY Date desc".format(ntype)
-        self.cursor.execute(sql)
-        results = self.cursor.fetchall()
-        return results
-
-    def viewAllAlpha(self, ntype):
-        pass
-
-    def editAll(self):
-        pass
-
-    def deleteAll(self, ntype, idno):
-        pass
-
-# Notes class
-
-
-class Notes(NotesReminders):
     def create(self, title, content):
         date = time.time()
         sql = """insert into Notes (Title, Content, Date) values ('{}', '{}', {});""".format(title, content, date)
@@ -72,10 +39,13 @@ class Notes(NotesReminders):
         self.cursor.execute(sql)
         self.db.commit()
 
+
 # Reminders class
+class Reminders:
+    def __init__(self):
+        self.db = sqlite3.connect("UserData.db")
+        self.cursor = self.db.cursor()
 
-
-class Reminders(NotesReminders):
     def create(self, title, content, year, month, day, hour, minute, second):
         date = datetime.datetime(year, month, day, hour, minute, second)
         date = date.timestamp()

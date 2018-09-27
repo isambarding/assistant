@@ -6,7 +6,7 @@ class Settings:
     def __init__(self):
         self.db = sqlite3.connect("UserData.db")
         self.cursor = self.db.cursor()
-        self.c = Crypto()
+        self.c = Crypto(None, 0)
 
     def changeName(self, name):
         name = self.c.encrypt(name)

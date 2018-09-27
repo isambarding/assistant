@@ -1,24 +1,18 @@
 import requests
 
-# WEATHER.PY
-# Contains classes for retrieving a 4-day or 10-day forecast.
-# USAGE: Country can be full name ("France") or as 2 letter country code ("FR")
-# Note that the 2 letter country code is NOT the ISO code- Wunderground uses its own system
-# City must be full name ("Paris")
-# 21/05/18: tested working
-
-
-# WEATHER4DAY
-# Retrieves a 4-day forecast, using Wunderground's 4-day request API
+# Weather4Day class uses wunderground's 4 day weather API request format, to retrieve the upcoming 4 days of weather
+# forecasts.
 class Weather4Day:
-    # Uses 4 day request
+    # Init method makes the api call using the country and city names passed to the class, then parses the data as json
+    # format.
     def __init__(self, country, city):
         url = "http://api.wunderground.com/api/034fa2c65c35e441/forecast/q/{}/{}.json".format(country, city)
         response = requests.get(url)
         self.data = response.json()
 
-    # Today's forecast, in text
-    def forecastTodayText(self):
+    # forecastTodayText gets the text of the current day's forecast by looping through the data given by the API until
+    # the current day is found
+    def forecasttodaytext(self):
         s = ""
         for day in self.data["forecast"]["txt_forecast"]["forecastday"]:
             if day["period"] == 0:
@@ -26,7 +20,7 @@ class Weather4Day:
         return s
 
     # Today's highest forecast temperature, in celsius
-    def forecastTodayHigh(self):
+    def forecasttodayhigh(self):
         s = ""
         for day in self.data["forecast"]["simpleforecast"]["forecastday"]:
             if day["period"] == 1:
@@ -34,7 +28,7 @@ class Weather4Day:
         return s
 
     # Today's lowest forecast temperature, in celsius
-    def forecastTodayLow(self):
+    def forecasttodaylow(self):
         s = ""
         for day in self.data["forecast"]["simpleforecast"]["forecastday"]:
             if day["period"] == 1:
@@ -42,7 +36,7 @@ class Weather4Day:
         return s
 
     # Tomorrow's forecast, text form
-    def forecastTomorrowText(self):
+    def forecasttomorrowtext(self):
         s = ""
         for day in self.data["forecast"]["txt_forecast"]["forecastday"]:
             if day["period"] == 2:
@@ -50,7 +44,7 @@ class Weather4Day:
         return s
 
     # Tomorrow's highest forecast temperature, in celsius
-    def forecastTomorrowHigh(self):
+    def forecasttomorrowhigh(self):
         s = ""
         for day in self.data["forecast"]["simpleforecast"]["forecastday"]:
             if day["period"] == 2:
@@ -58,7 +52,7 @@ class Weather4Day:
         return s
 
     # Tomorrow's lowest forecast temperature, in celsius
-    def forecastTomorrowLow(self):
+    def forecasttomorrowlow(self):
         s = ""
         for day in self.data["forecast"]["simpleforecast"]["forecastday"]:
             if day["period"] == 2:
@@ -76,7 +70,7 @@ class Weather10Day:
         self.data = response.json()
 
     # 10 day forecast, text version
-    def forecast10DaysText(self):
+    def forecast10daystext(self):
         s = []
         for day in self.data["forecast"]["txt_forecast"]["forecastday"]:
             # Only days, not nights
@@ -85,20 +79,20 @@ class Weather10Day:
         return s
 
     # Highest forecast temperature of next 10 days, in celsius
-    def forecast10DaysHigh(self):
+    def forecast10dayshigh(self):
         s = []
         for day in self.data["forecast"]["simpleforecast"]["forecastday"]:
             s.append(day["high"]["celsius"])
         return s
 
     # Lowest forecast temperature of next 10 days, in celsius
-    def forecast10DaysLow(self):
+    def forecast10dayslow(self):
         s = []
         for day in self.data["forecast"]["simpleforecast"]["forecastday"]:
             s.append(day["low"]["celsius"])
         return s
 
-    def dayList(self):
+    def daylist(self):
         s = []
         for day in self.data["forecast"]["txt_forecast"]["forecastday"]:
             # only days, no nights
