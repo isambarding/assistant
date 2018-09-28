@@ -201,7 +201,6 @@ class TwitterScreen(Screen):
         sql = """UPDATE userInfo SET LastTwitterSearch='{}'""".format(secureusername)
         self.cursor.execute(sql)
         self.db.commit()
-        print("Last user search updated")
         self.lblRecentUsername.text = "Latest tweet from @{}".format(username)
         self.lblRecentTweet.text = self.t.userlatest(username)
         self.manager.current = "twitter"
@@ -218,7 +217,8 @@ class NotesScreen(Screen):
     # Method - NoteScreen init
     # Parameters - None
     # Return - None
-    # Purpose -
+    # Purpose -  Initialises instances of the notes and crypto classes, connects to the database, and runs the
+    #            latestnote method
     def __init__(self, **kwargs):
         super(NotesScreen, self).__init__(**kwargs)
         self.c = Crypto(False, 0)
@@ -227,6 +227,10 @@ class NotesScreen(Screen):
         self.cursor = self.db.cursor()
         self.n = Notes()
 
+    # Method - latestnote
+    # Parameters - data: list of strings
+    # Return - None
+    # Purpose - If the user has any notes, display the most recent one in labels
     def latestnote(self):
         data = self.n.mostrecent()
         if data is False:
@@ -240,22 +244,40 @@ class NotesScreen(Screen):
             self.lblLastNoteTitle.text = recenttitle
             self.lblLastNoteContent.text = recentcontent
 
+    # Method - newnote
+    # Parameters - None
+    # Return - None
+    # Purpose - Clears the content of the text inputs of the newnotes screen, then displays it
     def newnote(self):
         newnotes = self.manager.get_screen("newnotes")
         newnotes.inputNewNoteTitle.text = ""
         newnotes.inputNewNoteContent.text = ""
         self.parent.current = "newnotes"
 
+    # Method - notesbytime
+    # Parameters - data: list of strings
+    # Return - None
+    # Purpose - Retrieves a list of the user's notes sorted by time, then passes it to the setupmorenotes function
     def notesbytime(self):
         data = self.n.sort("Title")
         count = len(data)
         self.setupmorenotes(count, data)
 
+    # Method - notesbytime
+    # Parameters - data: list of strings
+    # Return - None
+    # Purpose - Retrieves a list of the user's notes sorted by title alphabetically, then passes it to the
+    #           setupmorenotes function
     def notesbytitle(self):
         data = self.n.sort("Title")
         count = len(data)
         self.setupmorenotes(count, data)
 
+    # Method - searchnotes
+    # Parameters - searchterm: string, data: list of strings
+    # Return - None
+    # Purpose - Gets a list of the user's notes containing a given search term, then passes it to the setupmorenotes
+    #           function
     def searchnotes(self):
         searchterm = self.inputSearchNotes.text
         if searchterm == "":
@@ -266,21 +288,39 @@ class NotesScreen(Screen):
             count = len(data)
             self.setupmorenotes(count, data)
 
+    # Method - back
+    # Parameters - None
+    # Return - None
+    # Purpose - Runs the latestnote method, then displays the notes screen
     def back(self):
         self.latestnote()
         self.manager.current = "notes"
 
+    # Method - delete
+    # Parameters - noteid: string
+    # Return - None
+    # Purpose - Deletes the note corresponding to the given noteid, then calls the latestnote method and displays the
+    #           notes screen
     def delete(self, noteid):
         self.n.delete(noteid)
         self.latestnote()
         self.manager.current = "notes"
-        print("Note deleted")
 
+    # Method - edit
+    # Parameters - noteid: string
+    # Return - None
+    # Purpose - Displays the editnotes screen, and passes noteid to it
     def edit(self, noteid):
         editnotes = self.manager.get_screen("editnotes")
         editnotes.currentnoteid = noteid
         self.manager.current = "editnotes"
 
+    # Method - setupmorenotes
+    # Parameters - count: integer , data: list of strings
+    # Return - None
+    # Purpose - Adds widgets displaying the title and content of each note within the given list, as well as their
+    # corresponding edit and delete buttons to the morenotes screen. A "back" button is then added and the screen is
+    # displayed.
     def setupmorenotes(self, count, data):
         morenotes = self.manager.get_screen("morenotes")
         morenotes.layoutMoreNotes.clear_widgets(morenotes.layoutMoreNotes.children)
@@ -320,6 +360,10 @@ class NewNotesScreen(Screen):
     def __init__(self, **kwargs):
         super(NewNotesScreen, self).__init__(**kwargs)
 
+    # Method - createnote
+    # Parameters - title: string, content: string
+    # Return - None
+    # Purpose - Encrypts the title and content and passes them to the create method, then displays the notes screen
     def createnote(self):
         title = self.inputNewNoteTitle.text
         content = self.inputNewNoteContent.text
@@ -332,6 +376,8 @@ class NewNotesScreen(Screen):
             content = c.encrypt(content)
             n = Notes()
             n.create(title, content)
+            notes = self.manager.get_screen("notes")
+            notes.latestnote()
             self.manager.current = "notes"
 
 
@@ -340,6 +386,10 @@ class MoreNotesScreen(Screen):
 
 
 class EditNotesScreen(Screen):
+    # Method - editnote
+    # Parameters - noteid: string, title: string, content: string
+    # Return - None
+    # Purpose - Encrypts the title and content and passes them to the edit method, then displays the notes screen
     def editnote(self):
         noteid = self.currentnoteid
         title = self.inputEditNoteTitle.text
@@ -352,11 +402,17 @@ class EditNotesScreen(Screen):
         n.edit(noteid, title, content)
         notes = self.manager.get_screen("notes")
         notes.latestnote()
+        self.manager.current = "notes"
 
 ########################################################################################################################
 
 
 class RemindersScreen(Screen):
+    # Method - RemindersScreen init
+    # Parameters - None
+    # Return - None
+    # Purpose -  Initialises instances of the reminders and crypto classes, connects to the database, and runs the
+    #            latestreminder method
     def __init__(self, **kwargs):
         super(RemindersScreen, self).__init__(**kwargs)
         self.c = Crypto(False, 0)
@@ -365,6 +421,10 @@ class RemindersScreen(Screen):
         self.cursor = self.db.cursor()
         self.n = Reminders()
 
+    # Method - latestreminder
+    # Parameters - data: list of strings
+    # Return - None
+    # Purpose - If the user has any reminders, display the most recent one in labels
     def latestreminder(self):
         data = self.r.mostrecent()
         if data is False:
@@ -378,6 +438,10 @@ class RemindersScreen(Screen):
             self.lblLastReminderTitle.text = recenttitle
             self.lblLastReminderContent.text = recentcontent
 
+    # Method - newreminder
+    # Parameters - None
+    # Return - None
+    # Purpose - Clears the content of the text inputs of the newreminder screen, then displays it
     def newreminder(self):
         newreminders = self.manager.get_screen("newreminders")
         newreminders.inputNewReminderTitle.text = ""
@@ -390,16 +454,31 @@ class RemindersScreen(Screen):
         newreminders.inputNewReminderSecond.text = ""
         self.parent.current = "newreminders"
 
+    # Method - remindersbytime
+    # Parameters - data: list of strings
+    # Return - None
+    # Purpose - Retrieves a list of the user's reminders sorted by time, then passes it to the setupmorereminders 
+    # function
     def remindersbytime(self):
         data = self.r.sort("Time")
         count = len(data)
         self.setupmorereminders(count, data)
 
+    # Method - remindersbytime
+    # Parameters - data: list of strings
+    # Return - None
+    # Purpose - Retrieves a list of the user's reminders sorted by title alphabetically, then passes it to the
+    #           setupmorereminders function
     def remindersbytitle(self):
         data = self.r.sort("Title")
         count = len(data)
         self.setupmorereminders(count, data)
 
+    # Method - searchreminders
+    # Parameters - searchterm: string, data: list of strings
+    # Return - None
+    # Purpose - Gets a list of the user's reminders containing a given search term, then passes it to the 
+    # setupmorereminders function
     def searchreminders(self):
         searchterm = self.inputSearchReminders.text
         if searchterm == "":
@@ -410,6 +489,12 @@ class RemindersScreen(Screen):
             count = len(data)
             self.setupmorereminders(count, data)
 
+    # Method - setupmorereminders
+    # Parameters - count: integer , data: list of strings
+    # Return - None
+    # Purpose - Adds widgets displaying the title and content of each reminder within the given list, as well as their
+    # corresponding edit and delete buttons to the morereminders screen. A "back" button is then added and the screen is
+    # displayed.
     def setupmorereminders(self, count, data):
         morereminders = self.manager.get_screen("morereminders")
         morereminders.layoutMoreReminders.clear_widgets(morereminders.layoutMoreReminders.children)
@@ -450,16 +535,28 @@ class RemindersScreen(Screen):
         morereminders.layoutMoreReminders.add_widget(grid)
         self.manager.current = "morereminders"
 
+    # Method - back
+    # Parameters - None
+    # Return - None
+    # Purpose - Runs the latestreminder method, then displays the reminders screen
     def back(self):
         self.latestreminder()
         self.manager.current = "reminders"
 
+    # Method - delete
+    # Parameters - reminderid: string
+    # Return - None
+    # Purpose - Deletes the reminder corresponding to the given reminderid, then calls the latestreminder method and 
+    # displays the reminders screen
     def delete(self, reminderid):
         self.r.delete(reminderid)
         self.latestreminder()
         self.manager.current = "reminders"
-        print("Reminder deleted")
 
+    # Method - edit
+    # Parameters - reminderid: string
+    # Return - None
+    # Purpose - Displays the editreminders screen, and passes reminderid to it
     def edit(self, reminderid):
         editreminders = self.manager.get_screen("editreminders")
         editreminders.currentreminderid = reminderid
@@ -470,6 +567,11 @@ class NewRemindersScreen(Screen):
     def __init__(self, **kwargs):
         super(NewRemindersScreen, self).__init__(**kwargs)
 
+    # Method - createreminder
+    # Parameters - title: string, content: string
+    # Return - None
+    # Purpose - Encrypts the title and content and passes them and the given times to the create method, then displays 
+    # the reminders screen
     def createreminder(self):
         title = self.inputNewReminderTitle.text
         content = self.inputNewReminderContent.text
@@ -481,10 +583,10 @@ class NewRemindersScreen(Screen):
         second = self.inputNewReminderSecond.text
 
         if title == "" or content == "" or year == "" or month == "" or day == "" or hour == "" or minute == "" or second == "":
-            print("Missing values")
+            pass
         else:
             if year.isnumeric is False or month.isnumeric is False or day.isnumeric is False or hour.isnumeric is False or minute.isnumeric is False or second.isnumeric is False:
-                print("Non-numeric values")
+                pass
             else:
                 c = Crypto(False, 0)
                 title = c.encrypt(title)
@@ -499,6 +601,10 @@ class MoreRemindersScreen(Screen):
 
 
 class EditRemindersScreen(Screen):
+    # Method - editreminder
+    # Parameters - reminderid: string, title: string, content: string
+    # Return - None
+    # Purpose - Encrypts the title and content and passes them to the edit method, then displays the reminders screen
     def editreminder(self):
         reminderid = self.currentreminderid
         title = self.inputEditReminderTitle.text
@@ -525,7 +631,6 @@ class SettingsScreen(Screen):
         else:
             s = Settings()
             s.changename(name)
-            print("Name changed successfully")
 
     def changelocation(self):
         city = self.inputNewCity.text
@@ -535,7 +640,6 @@ class SettingsScreen(Screen):
         else:
             s = Settings()
             s.changelocation(country, city)
-            print("Location changed successfully")
 
     def restartsetup(self):
         pass
@@ -555,7 +659,6 @@ class SetupScreen(Screen):
         else:
             setup = Setup()
             setup.completesetup(name, country, city)
-            print("Setup complete")
             sm.add_widget(HomeScreen(name="home"))
             sm.add_widget(WeatherScreen(name="weather"))
             sm.add_widget(TwitterScreen(name="twitter"))
@@ -618,7 +721,6 @@ class AssistantApp(App):
         
     def on_start(self):
         if os.path.exists("UserData.db") is True:
-            print("Userdata.db found")
             sm.add_widget(HomeScreen(name="home"))
             sm.add_widget(WeatherScreen(name="weather"))
             sm.add_widget(TwitterScreen(name="twitter"))
@@ -628,7 +730,6 @@ class AssistantApp(App):
             self.addscreens()
             self.root.current = "home"
         else:
-            print("Userdata.db not found")
             sm.add_widget(SetupScreen(name="setup"))
             self.addscreens()
             self.root.current = "setup"

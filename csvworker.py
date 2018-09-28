@@ -24,11 +24,9 @@ class csvworker:
         sql = """SELECT {}ID, Title, Content, Date FROM {}s ORDER BY Title""".format(idtype, idtype)
         self.cursor.execute(sql)
         data = self.cursor.fetchall()
-        print(data)
         writer.writerow(["ID", "Title", "Content", "Date"])
         for i in range(len(data)):
             writer.writerow([data[i][0], self.c.decrypt(data[i][1]), self.c.decrypt(data[i][2]), data[i][3]])
-        print("CSV created")
 
     # Method - email
     # Parameters - username: string, password: string, target: string
@@ -54,5 +52,4 @@ class csvworker:
         server.login(username, password)
         text = msg.as_string()
         server.sendmail(username, target, text)
-        print("Email sent")
         server.quit()

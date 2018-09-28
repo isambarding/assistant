@@ -14,7 +14,6 @@ class Notes:
         sql = """insert into Notes (Title, Content, Date) values ('{}', '{}', {});""".format(title, content, date)
         self.cursor.execute(sql)
         self.db.commit()
-        print("Note created")
 
     def mostrecent(self):
         sql = """SELECT Max(Date) FROM Notes"""
@@ -64,7 +63,6 @@ class Reminders:
         sql = """insert into Reminders (Title, Content, Date) values ('{}', '{}', {});""".format(title, content, date)
         self.cursor.execute(sql)
         self.db.commit()
-        print("Reminder created")
 
     def mostrecent(self):
         sql = """SELECT Max(Date) FROM Reminders"""
