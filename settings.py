@@ -15,7 +15,7 @@ class Settings:
     # Method - changename
     # Parameters - name: string
     # Return - None
-    # Purpose - Sets the user's name in the database to the name argument
+    # Purpose - Encrypts the user's chosen name then sets the user's name in the database
     def changename(self, name):
         name = self.c.encrypt(name)
         self.cursor.execute("""UPDATE userInfo SET Name='{}'""".format(name))

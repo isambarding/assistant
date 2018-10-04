@@ -624,6 +624,10 @@ class SettingsScreen(Screen):
     def __init__(self, **kwargs):
         super(SettingsScreen, self).__init__(**kwargs)
 
+    # Method - changename
+    # Parameters - name: string
+    # Return - None
+    # Purpose - Passes the user's given name to the changename method in settings.py, if a name has been given
     def changename(self):
         name = self.inputNewName.text
         if name == "":
@@ -632,6 +636,10 @@ class SettingsScreen(Screen):
             s = Settings()
             s.changename(name)
 
+    # Method - changelocation
+    # Parameters - city: string, country: string
+    # Return - None
+    # Purpose - If a city or country has been given, pass them to the changelocation method in settings.py
     def changelocation(self):
         city = self.inputNewCity.text
         country = self.inputNewCountry.text
@@ -641,14 +649,16 @@ class SettingsScreen(Screen):
             s = Settings()
             s.changelocation(country, city)
 
-    def restartsetup(self):
-        pass
-
 
 class SetupScreen(Screen):
     def __init__(self, **kwargs):
         super(SetupScreen, self).__init__(**kwargs)
 
+    # Method - completesetup
+    # Parameters - name: string, city: string, country: string
+    # Return - None
+    # Purpose - If a name, city, and country have been given, pass them to the completesetup method in settings.py, then
+    #           add the screens that require completesetup to have run, then show the home screen
     def completesetup(self):
         name = self.inputName.text
         city = self.inputCity.text
@@ -669,14 +679,26 @@ class SetupScreen(Screen):
 
 
 class ExportScreen(Screen):
+    # Method - ExportScreen init
+    # Parameters - None
+    # Return - None
+    # Purpose - Initialises an instance of csvworker for this screen
     def __init__(self, **kwargs):
         super(ExportScreen, self).__init__(**kwargs)
         self.c = csvworker()
 
+    # Method - exportnotes
+    # Parameters - None
+    # Return - None
+    # Purpose - Pass "Note" to the exportcsv method, then display the email screen
     def exportnotes(self):
         self.c.exportcsv("Note")
         self.parent.current = "email"
 
+    # Method - exportreminders
+    # Parameters - None
+    # Return - None
+    # Purpose - Pass "Reminder" to the exportcsv method, then display the email screen
     def exportreminders(self):
         self.c.exportcsv("Reminder")
         self.parent.current = "email"
@@ -685,8 +707,12 @@ class ExportScreen(Screen):
 class EmailScreen(Screen):
     def __init__(self, **kwargs):
         super(EmailScreen, self).__init__(**kwargs)
-        # work in toggle buttons for different services???
 
+    # Method - sendemail
+    # Parameters - username: string, password: string, target: string
+    # Return - None
+    # Purpose - Initialises csvworker, fetches the user's username, password, and target email, then passes them to the
+    #           email method
     def sendemail(self):
         c = csvworker()
         username = self.inputEmailUsername.text
@@ -696,13 +722,18 @@ class EmailScreen(Screen):
 
 ########################################################################################################################
 
-
+# Initialise a screenmanager
 sm = ScreenManager()
 
 
 class AssistantApp(App):
-    title = 'Assistant'
+    # Sets the app title to "Assistant"
+    title = "Assistant"
 
+    # Method - addscreens
+    # Parameters - None
+    # Return - None
+    # Purpose - Adds screens that do not require setup to be completed
     def addscreens(self):
         sm.add_widget(MoreWeatherScreen(name="moreweather"))
         sm.add_widget(MoreTwitterScreen(name="moretwitter"))
@@ -715,10 +746,21 @@ class AssistantApp(App):
         sm.add_widget(SettingsScreen(name="settings"))
         sm.add_widget(EmailScreen(name="email"))
 
+    # Method - build
+    # Parameters - None
+    # Return - sm (screen manager)
+    # Purpose - Kivy method. Adds the screen manager which contains all the screens to be displayed. Also used to
+    #           set the app icon.
     def build(self):
         self.icon = "icon.png"
         return sm
-        
+
+    # Method - on_start
+    # Parameters - None
+    # Return - None
+    # Purpose - Kivy method. Checks if the database exists- if yes, all screens are added and the home screen is
+    #           displayed. If no, the setup screen and the screens in addscreens are added, then the setup screen is
+    #           displayed.
     def on_start(self):
         if os.path.exists("UserData.db") is True:
             sm.add_widget(HomeScreen(name="home"))
@@ -734,7 +776,7 @@ class AssistantApp(App):
             self.addscreens()
             self.root.current = "setup"
 
-
+# Create the app, set the window size, then run the app.
 if __name__ == "__main__":
     app = AssistantApp()
     Window.size = (360, 640)
