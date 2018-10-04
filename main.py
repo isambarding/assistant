@@ -222,10 +222,10 @@ class NotesScreen(Screen):
     def __init__(self, **kwargs):
         super(NotesScreen, self).__init__(**kwargs)
         self.c = Crypto(False, 0)
+        self.n = Notes()
         self.latestnote()
         self.db = sqlite3.connect("UserData.db")
         self.cursor = self.db.cursor()
-        self.n = Notes()
 
     # Method - latestnote
     # Parameters - data: list of strings
@@ -416,10 +416,10 @@ class RemindersScreen(Screen):
     def __init__(self, **kwargs):
         super(RemindersScreen, self).__init__(**kwargs)
         self.c = Crypto(False, 0)
+        self.r = Reminders()
         self.latestreminder()
         self.db = sqlite3.connect("UserData.db")
         self.cursor = self.db.cursor()
-        self.n = Reminders()
 
     # Method - latestreminder
     # Parameters - data: list of strings

@@ -5,7 +5,7 @@ class Weather4Day:
     # Method - Weather4Day init
     # Parameters - country: string, city: string
     # Return - None
-    # Purpose - Makes an api call  for the next 4 days of weather using the country and city arguments, then parses the
+    # Purpose - Makes an api call for the next 4 days of weather using the country and city arguments, then parses the
     #           data as json format.
     def __init__(self, country, city):
         url = "http://api.wunderground.com/api/034fa2c65c35e441/forecast/q/{}/{}.json".format(country, city)
@@ -24,7 +24,7 @@ class Weather4Day:
 
     # Method - forecasttodayhigh
     # Parameters - None
-    # Return - s: string
+    # Return - s: integer
     # Purpose - Gets the highest forecast temperature for the current day
     def forecasttodayhigh(self):
         for day in self.data["forecast"]["simpleforecast"]["forecastday"]:
@@ -34,41 +34,11 @@ class Weather4Day:
 
     # Method - forecasttodaylow
     # Parameters - None
-    # Return - s: string
+    # Return - s: integer
     # Purpose - Gets the highest forecast temperature for the current day
     def forecasttodaylow(self):
         for day in self.data["forecast"]["simpleforecast"]["forecastday"]:
             if day["period"] == 1:
-                s = day["low"]["celsius"]
-        return s
-
-    # Method - forecasttomorrowtext
-    # Parameters - None
-    # Return - s: string
-    # Purpose - Gets the text forecast for the following day
-    def forecasttomorrowtext(self):
-        for day in self.data["forecast"]["txt_forecast"]["forecastday"]:
-            if day["period"] == 2:
-                s = day["fcttext_metric"]
-        return s
-
-    # Method - forecasttomorrowhigh
-    # Parameters - None
-    # Return - s: string
-    # Purpose - Gets the highest forecast temperature for the following day
-    def forecasttomorrowhigh(self):
-        for day in self.data["forecast"]["simpleforecast"]["forecastday"]:
-            if day["period"] == 2:
-                s = day["high"]["celsius"]
-        return s
-
-    # Method - forecasttomorrowlow
-    # Parameters - None
-    # Return - s: string
-    # Purpose - Gets the lowest forecast temperature for the following day
-    def forecasttomorrowlow(self):
-        for day in self.data["forecast"]["simpleforecast"]["forecastday"]:
-            if day["period"] == 2:
                 s = day["low"]["celsius"]
         return s
 
@@ -77,7 +47,7 @@ class Weather10Day:
     # Method - Weather10Day init
     # Parameters - country: string, city: string
     # Return - None
-    # Purpose - Makes an api call  for the next 10 days of weather using the country and city arguments, then parses the
+    # Purpose - Makes an api call for the next 10 days of weather using the country and city arguments, then parses the
     #           data as json format.
     def __init__(self, country, city):
         url = "http://api.wunderground.com/api/034fa2c65c35e441/forecast10day/q/{}/{}.json".format(country, city)
