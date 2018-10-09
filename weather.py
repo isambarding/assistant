@@ -91,11 +91,11 @@ class Weather10Day:
     # Return - s: list of strings
     # Purpose - Gets the names of the 10 days included in the forecast
     def daylist(self):
-        s = []
+        days = []
         for day in self.data["forecast"]["txt_forecast"]["forecastday"]:
             # only days, no nights
             if day["period"] % 2 == 0:
-                s.append(day["title"])
-        return s
+                days.append(day["title"])
+        return days
 
 
