@@ -17,30 +17,39 @@ class Weather4Day:
     # Return - s: string
     # Purpose - Gets the text forecast for the current day
     def forecasttodaytext(self):
-        for day in self.data["forecast"]["txt_forecast"]["forecastday"]:
-            if day["period"] == 0:
-                s = day["fcttext_metric"]
-        return s
+        try:
+            for day in self.data["forecast"]["txt_forecast"]["forecastday"]:
+                if day["period"] == 0:
+                    s = day["fcttext_metric"]
+            return s
+        except:
+            return "No forecast found!"
 
     # Method - forecasttodayhigh
     # Parameters - None
     # Return - s: integer
     # Purpose - Gets the highest forecast temperature for the current day
     def forecasttodayhigh(self):
-        for day in self.data["forecast"]["simpleforecast"]["forecastday"]:
-            if day["period"] == 1:
-                s = day["high"]["celsius"]
-        return s
+        try:
+            for day in self.data["forecast"]["simpleforecast"]["forecastday"]:
+                if day["period"] == 1:
+                    s = day["high"]["celsius"]
+            return s
+        except:
+            return ""
 
     # Method - forecasttodaylow
     # Parameters - None
     # Return - s: integer
     # Purpose - Gets the highest forecast temperature for the current day
     def forecasttodaylow(self):
-        for day in self.data["forecast"]["simpleforecast"]["forecastday"]:
-            if day["period"] == 1:
-                s = day["low"]["celsius"]
-        return s
+        try:
+            for day in self.data["forecast"]["simpleforecast"]["forecastday"]:
+                if day["period"] == 1:
+                   s = day["low"]["celsius"]
+            return s
+        except:
+            return ""
 
 
 class Weather10Day:
@@ -60,11 +69,14 @@ class Weather10Day:
     # Purpose - Gets the next 10 days of text forecasts
     def forecast10daystext(self):
         s = []
-        for day in self.data["forecast"]["txt_forecast"]["forecastday"]:
-            # Only days, not nights
-            if day["period"] % 2 == 0:
-                s.append(day["fcttext_metric"])
-        return s
+        try:
+            for day in self.data["forecast"]["txt_forecast"]["forecastday"]:
+                # Only days, not nights
+                if day["period"] % 2 == 0:
+                    s.append(day["fcttext_metric"])
+            return s
+        except:
+            return ["No forecast found!"]
 
     # Method - forecast10dayshigh
     # Parameters - None
@@ -72,9 +84,12 @@ class Weather10Day:
     # Purpose - Gets the next 10 days of highest forecast temperatures
     def forecast10dayshigh(self):
         s = []
-        for day in self.data["forecast"]["simpleforecast"]["forecastday"]:
-            s.append(day["high"]["celsius"])
-        return s
+        try:
+            for day in self.data["forecast"]["simpleforecast"]["forecastday"]:
+                s.append(day["high"]["celsius"])
+            return s
+        except:
+            return [""]
 
     # Method - forecast10dayslow
     # Parameters - None
@@ -82,9 +97,12 @@ class Weather10Day:
     # Purpose - Gets the next 10 days of lowest forecast temperatures
     def forecast10dayslow(self):
         s = []
-        for day in self.data["forecast"]["simpleforecast"]["forecastday"]:
-            s.append(day["low"]["celsius"])
-        return s
+        try:
+            for day in self.data["forecast"]["simpleforecast"]["forecastday"]:
+                s.append(day["low"]["celsius"])
+            return s
+        except:
+            return [""]
 
     # Method - daylist
     # Parameters - None
@@ -92,10 +110,13 @@ class Weather10Day:
     # Purpose - Gets the names of the 10 days included in the forecast
     def daylist(self):
         days = []
-        for day in self.data["forecast"]["txt_forecast"]["forecastday"]:
-            # only days, no nights
-            if day["period"] % 2 == 0:
-                days.append(day["title"])
-        return days
+        try:
+            for day in self.data["forecast"]["txt_forecast"]["forecastday"]:
+                # only days, no nights
+                if day["period"] % 2 == 0:
+                    days.append(day["title"])
+            return days
+        except:
+            return [""]
 
 

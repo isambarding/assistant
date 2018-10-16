@@ -34,22 +34,26 @@ class csvworker:
     # Purpose - Sends an email with the exported csv file attached over gmail servers using the user's email and
     #           password, to a user defined target address
     def email(self, username, password, target):
-        msg = MIMEMultipart()
-        msg['From'] = username
-        msg['To'] = target
-        msg['Subject'] = "Assistant - Data output"
-        body = "Attached is the output data in csv format, as created by Assistant"
-        msg.attach(MIMEText(body, 'plain'))
-        filename = "output.csv"
-        attachment = open("output.csv", "rb")
-        file = MIMEBase('application', 'octet-stream')
-        file.set_payload(attachment.read())
-        encoders.encode_base64(file)
-        file.add_header('Content-Disposition', "attachment; filename= %s" % filename)
-        msg.attach(file)
-        server = smtplib.SMTP('smtp.gmail.com', 587)
-        server.starttls()
-        server.login(username, password)
-        text = msg.as_string()
-        server.sendmail(username, target, text)
-        server.quit()
+        try:
+            msg = MIMEMultipart()
+            msg['From'] = username
+            msg['To'] = target
+            msg['Subject'] = "Assistant - Data output"
+            body = "Attached is the output data in csv format, as created by Assistant"
+            msg.attach(MIMEText(body, 'plain'))
+            filename = "output.csv"
+            attachment = open("output.csv", "rb")
+            file = MIMEBase('application', 'octet-stream')
+            file.set_payload(attachment.read())
+            encoders.encode_base64(file)
+            file.add_header('Content-Disposition', "attachment; filename= %s" % filename)
+            msg.attach(file)
+            server = smtplib.SMTP('smtp.gmail.com', 587)
+            server.starttls()
+            server.login(username, password)
+            text = msg.as_string()
+            server.sendmail(username, target, text)
+            server.quit()
+            return True
+        except:
+            return False

@@ -135,7 +135,7 @@ class Reminders:
     # Return - data: list of strings
     # Purpose - Returns the reminders that have the search term in their title
     def search(self, searchterm):
-        sql = """SELECT ReminderID, Title, Content FROM Reminders WHERE Content LIKE '%{}%'""".format(searchterm)
+        sql = """SELECT ReminderID, Title, Content, Date FROM Reminders WHERE Content LIKE '%{}%'""".format(searchterm)
         self.cursor.execute(sql)
         data = self.cursor.fetchall()
         return data
@@ -145,7 +145,7 @@ class Reminders:
     # Return - data: list of strings
     # Purpose - Returns the user's reminders, sorted by the given sort type (alphabetical or by date)
     def sort(self, type):
-        sql = """SELECT ReminderID, Title, Content FROM Reminders ORDER BY {}""".format(type)
+        sql = """SELECT ReminderID, Title, Content, Date FROM Reminders ORDER BY {}""".format(type)
         self.cursor.execute(sql)
         data = self.cursor.fetchall()
         return data

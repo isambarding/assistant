@@ -23,8 +23,11 @@ class Twitter:
         url = self.twurl + username + "&count=1"
         response = requests.get(url, auth=self.auth)
         f = response.json()
-        q = f[0]
-        return q["text"]
+        try:
+            q = f[0]
+            return q["text"]
+        except:
+            return "No tweets found!"
 
     # Method - user10
     # Parameters - username: string
@@ -36,6 +39,9 @@ class Twitter:
         f = response.json()
         s = []
         for tweet in f:
-            s.append(tweet["text"])
+            try:
+                s.append(tweet["text"])
+            except:
+                s = ["No tweets found!"]
         return s
 

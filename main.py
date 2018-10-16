@@ -101,7 +101,7 @@ class WeatherScreen(Screen):
             lowdata = w.forecast10dayslow()
             days = w.daylist()
 
-            for i in range(9):
+            for i in range(len(days)):
                 lblday = Label(text=days[i], size_hint_y=None)
                 lblday.texture_update()
                 moreweather.layoutMoreWeather.add_widget(lblday)
@@ -181,7 +181,7 @@ class TwitterScreen(Screen):
             lblun = Label(text=("Latest tweets from @" + un), size_hint_y=None)
             moretwitter.layoutMoreTwitter.add_widget(lblun)
 
-            for i in range(9):
+            for i in range(len(tweets)):
                 lbltweet = Label(text=tweets[i], size_hint_y=None)
                 lbltweet.texture_update()
                 moretwitter.layoutMoreTwitter.add_widget(lbltweet)
@@ -718,7 +718,8 @@ class EmailScreen(Screen):
         username = self.inputEmailUsername.text
         password = self.inputEmailPassword.text
         target = self.inputEmailTarget.text
-        c.email(username, password, target)
+        if c.email(username, password, target) == False:
+            self.parent.current = "home"
 
 ########################################################################################################################
 
