@@ -45,6 +45,6 @@ class Setup:
         self.cursor.execute(sql)
 
         # Reminders table
-        sql = """CREATE TABLE Reminders (ReminderID integer, Title text, Content text, Days text, Time time, Date float, Repeats boolean, primary key(ReminderID))"""
+        sql = """CREATE TABLE Reminders (ReminderID integer, Title text, Content text, Date float primary key(ReminderID))"""
         self.cursor.execute(sql)
         self.db.commit()
