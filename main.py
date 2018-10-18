@@ -460,7 +460,7 @@ class RemindersScreen(Screen):
     # Purpose - Retrieves a list of the user's reminders sorted by time, then passes it to the setupmorereminders 
     # function
     def remindersbytime(self):
-        data = self.r.sort("Time")
+        data = self.r.sort("Date")
         count = len(data)
         self.setupmorereminders(count, data)
 
