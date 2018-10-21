@@ -99,7 +99,7 @@ class Reminders:
     # Return - data: list of strings
     # Purpose - Fetches the next reminder from the database
     def mostrecent(self):
-        sql = """SELECT Max(Date) FROM Reminders"""
+        sql = """SELECT Min(Date) FROM Reminders"""
         self.cursor.execute(sql)
         data = self.cursor.fetchall()
         data = data[0][0]
