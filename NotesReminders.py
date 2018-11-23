@@ -6,7 +6,7 @@ import datetime
 # Notes class
 class Notes:
     def __init__(self):
-        self.db = sqlite3.connect("UserData.db")
+        self.db = sqlite3.connect("resources/UserData.db")
         self.cursor = self.db.cursor()
 
     # Method - create
@@ -79,7 +79,7 @@ class Notes:
 # Reminders class
 class Reminders:
     def __init__(self):
-        self.db = sqlite3.connect("UserData.db")
+        self.db = sqlite3.connect("resources/UserData.db")
         self.cursor = self.db.cursor()
 
     # Method - create

@@ -8,7 +8,7 @@ class Settings:
     # Return - None
     # Purpose - Initialises an instance of the crypto class for this class and sets up the database for editing
     def __init__(self):
-        self.db = sqlite3.connect("UserData.db")
+        self.db = sqlite3.connect("resources/UserData.db")
         self.cursor = self.db.cursor()
         self.c = Crypto(None, 0)
 
@@ -44,7 +44,7 @@ class Setup:
         country = c.encrypt(country)
         city = c.encrypt(city)
         un = c.encrypt("kedst")
-        db = sqlite3.connect("UserData.db")
+        db = sqlite3.connect("resources/UserData.db")
         cursor = db.cursor()
 
         sql = "CREATE TABLE userInfo (Name text, Country text, City text, LastTwitterSearch text, primary key(Name))"

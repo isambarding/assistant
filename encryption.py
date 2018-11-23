@@ -13,7 +13,7 @@ class Crypto:
             self.key = length
 
         else:
-            with sqlite3.connect("UserData.db") as db:
+            with sqlite3.connect("resources/UserData.db") as db:
                 cursor = db.cursor()
                 cursor.execute("SELECT Name FROM userInfo")
                 name = cursor.fetchone()

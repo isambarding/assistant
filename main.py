@@ -22,12 +22,7 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.metrics import dp
 
 # Assistant.txt contains layout, widget and formatting information for all of the screens
-Builder.load_file("assistant.txt")
-
-# Method -
-# Parameters -
-# Return -
-# Purpose -
+Builder.load_file("resources/assistant.txt")
 
 
 class HomeScreen(Screen):
@@ -38,7 +33,7 @@ class HomeScreen(Screen):
     def __init__(self, **kwargs):
         super(HomeScreen, self).__init__(**kwargs)
 
-        with sqlite3.connect("UserData.db") as db:
+        with sqlite3.connect("resources/UserData.db") as db:
             cursor = db.cursor()
             cursor.execute("SELECT Name FROM userInfo")
             username = cursor.fetchone()
@@ -63,7 +58,7 @@ class WeatherScreen(Screen):
     # Return - None
     # Purpose - Gets the weather forecast for the current day for the user's set location and displays them in labels
     def getweather(self):
-        with sqlite3.connect("UserData.db") as db:
+        with sqlite3.connect("resources/UserData.db") as db:
             cursor = db.cursor()
             cursor.execute("SELECT city FROM userInfo")
             city = cursor.fetchone()
@@ -147,7 +142,7 @@ class TwitterScreen(Screen):
     #           then calls the latesttweet function
     def __init__(self, **kwargs):
         super(TwitterScreen, self).__init__(**kwargs)
-        self.db = sqlite3.connect("UserData.db")
+        self.db = sqlite3.connect("resources/UserData.db")
         self.cursor = self.db.cursor()
         self.c = Crypto(False, 0)
         self.t = Twitter()
@@ -224,7 +219,7 @@ class NotesScreen(Screen):
         self.c = Crypto(False, 0)
         self.n = Notes()
         self.latestnote()
-        self.db = sqlite3.connect("UserData.db")
+        self.db = sqlite3.connect("resources/UserData.db")
         self.cursor = self.db.cursor()
 
     # Method - latestnote
@@ -418,7 +413,7 @@ class RemindersScreen(Screen):
         self.c = Crypto(False, 0)
         self.r = Reminders()
         self.latestreminder()
-        self.db = sqlite3.connect("UserData.db")
+        self.db = sqlite3.connect("resources/UserData.db")
         self.cursor = self.db.cursor()
 
     # Method - latestreminder
@@ -753,7 +748,7 @@ class AssistantApp(App):
     # Purpose - Kivy method. Adds the screen manager which contains all the screens to be displayed. Also used to
     #           set the app icon.
     def build(self):
-        self.icon = "icon.png"
+        self.icon = "resources/icon.png"
         return sm
 
     # Method - on_start
@@ -763,7 +758,7 @@ class AssistantApp(App):
     #           displayed. If no, the setup screen and the screens in addscreens are added, then the setup screen is
     #           displayed.
     def on_start(self):
-        if os.path.exists("UserData.db") is True:
+        if os.path.exists("resources/UserData.db") is True:
             sm.add_widget(HomeScreen(name="home"))
             sm.add_widget(WeatherScreen(name="weather"))
             sm.add_widget(TwitterScreen(name="twitter"))

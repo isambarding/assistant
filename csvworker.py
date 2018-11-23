@@ -10,7 +10,7 @@ from encryption import Crypto
 
 class csvworker:
     def __init__(self):
-        self.db = sqlite3.connect("UserData.db")
+        self.db = sqlite3.connect("resources/UserData.db")
         self.cursor = self.db.cursor()
         self.c = Crypto(False, 0)
 
@@ -19,7 +19,7 @@ class csvworker:
     # Return - None
     # Purpose - Creates a csv file from the user's selected database table (notes or reminders)
     def exportcsv(self, idtype):
-        file = open("output.csv", "w")
+        file = open("resources/output.csv", "w")
         writer = csv.writer(file)
         sql = """SELECT {}ID, Title, Content, Date FROM {}s ORDER BY Title""".format(idtype, idtype)
         self.cursor.execute(sql)
@@ -41,8 +41,8 @@ class csvworker:
             msg['Subject'] = "Assistant - Data output"
             body = "Attached is the output data in csv format, as created by Assistant"
             msg.attach(MIMEText(body, 'plain'))
-            filename = "output.csv"
-            attachment = open("output.csv", "rb")
+            filename = "resources/output.csv"
+            attachment = open("resources/output.csv", "rb")
             file = MIMEBase('application', 'octet-stream')
             file.set_payload(attachment.read())
             encoders.encode_base64(file)
