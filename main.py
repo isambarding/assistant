@@ -389,15 +389,17 @@ class EditNotesScreen(Screen):
         noteid = self.currentnoteid
         title = self.inputEditNoteTitle.text
         content = self.inputEditNoteContent.text
-
-        c = Crypto(False, 0)
-        title = c.encrypt(title)
-        content = c.encrypt(content)
-        n = Notes()
-        n.edit(noteid, title, content)
-        notes = self.manager.get_screen("notes")
-        notes.latestnote()
-        self.manager.current = "notes"
+        if title == "" or content == "":
+            pass
+        else:
+            c = Crypto(False, 0)
+            title = c.encrypt(title)
+            content = c.encrypt(content)
+            n = Notes()
+            n.edit(noteid, title, content)
+            notes = self.manager.get_screen("notes")
+            notes.latestnote()
+            self.manager.current = "notes"
 
 ########################################################################################################################
 
@@ -606,13 +608,17 @@ class EditRemindersScreen(Screen):
         reminderid = self.currentreminderid
         title = self.inputEditReminderTitle.text
         content = self.inputEditReminderContent.text
-        c = Crypto(False, 0)
-        title = c.encrypt(title)
-        content = c.encrypt(content)
-        n = Reminders()
-        n.edit(reminderid, title, content)
-        reminders = self.manager.get_screen("reminders")
-        reminders.latestreminder()
+        if title == "" or content == "":
+            pass
+        else:
+            c = Crypto(False, 0)
+            title = c.encrypt(title)
+            content = c.encrypt(content)
+            n = Reminders()
+            n.edit(reminderid, title, content)
+            reminders = self.manager.get_screen("reminders")
+            reminders.latestreminder()
+            self.manager.current = "reminders"
 
 ########################################################################################################################
 
@@ -715,8 +721,11 @@ class EmailScreen(Screen):
         username = self.inputEmailUsername.text
         password = self.inputEmailPassword.text
         target = self.inputEmailTarget.text
-        if c.email(username, password, target) == False:
-            self.parent.current = "home"
+        if username == "" or password == "" or target == "":
+            pass
+        else:
+            if c.email(username, password, target) == False:
+                self.parent.current = "home"
 
 ########################################################################################################################
 
