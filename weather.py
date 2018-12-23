@@ -8,9 +8,13 @@ class Weather4Day:
     # Purpose - Makes an api call for the next 4 days of weather using the country and city arguments, then parses the
     #           data as json format.
     def __init__(self, country, city):
-        url = "http://api.wunderground.com/api/034fa2c65c35e441/forecast/q/{}/{}.json".format(country, city)
-        response = requests.get(url)
-        self.data = response.json()
+        try:
+            url = "http://api.wunderground.com/api/034fa2c65c35e441/forecast/q/{}/{}.json".format(country, city)
+            response = requests.get(url)
+            self.data = response.json()
+            print(self.data)
+        except:
+            self.data = "Can't connect"
 
     # Method - forecasttodaytext
     # Parameters - None
@@ -59,9 +63,12 @@ class Weather10Day:
     # Purpose - Makes an api call for the next 10 days of weather using the country and city arguments, then parses the
     #           data as json format.
     def __init__(self, country, city):
-        url = "http://api.wunderground.com/api/034fa2c65c35e441/forecast10day/q/{}/{}.json".format(country, city)
-        response = requests.get(url)
-        self.data = response.json()
+        try:
+            url = "http://api.wunderground.com/api/034fa2c65c35e441/forecast10day/q/{}/{}.json".format(country, city)
+            response = requests.get(url)
+            self.data = response.json()
+        except:
+            self.data = "Can't connect"
 
     # Method - forecast10daystext
     # Parameters - None

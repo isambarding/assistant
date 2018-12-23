@@ -369,10 +369,10 @@
             size_hint_y: None
             height: self.minimum_height
 
-<EditReminderScreen>
-    name: "editreminder"
-    inputEditNoteTitle: inputEditNoteTitle
-    inputEditNoteContent: inputEditNoteContent
+<EditRemindersScreen>
+    name: "editreminders"
+    inputEditReminderTitle: inputEditReminderTitle
+    inputEditReminderContent: inputEditReminderContent
     layoutEditReminder: layoutEditReminder
 
     BoxLayout:
@@ -380,25 +380,25 @@
         GridLayout:
             cols: 2
             Label:
-                id: lblEditNoteTitle
+                id: lblEditReminderTitle
                 text: "Title:"
             TextInput:
-                id: inputEditNoteTitle
+                id: inputEditReminderTitle
 
         Label:
-            id: lblEditNoteTitle
+            id: lblEditReminderTitle
             text: "Content:"
         TextInput:
-            id: inputEditNoteContent
+            id: inputEditReminderContent
             multiline: True
         Button:
-            id: btnEditNote
+            id: btnEditReminder
             text: "Save"
-            on_press: root.editNote()
+            on_press: root.editreminder()
         Button:
             id: btnBack
             text: "Discard"
-            on_press: app.root.current = "morereminder"
+            on_press: app.root.current = "morereminders"
 
 ########################################################################################################################
 

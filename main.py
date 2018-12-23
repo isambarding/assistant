@@ -254,7 +254,8 @@ class NotesScreen(Screen):
     # Return - None
     # Purpose - Retrieves a list of the user's notes sorted by time, then passes it to the setupmorenotes function
     def notesbytime(self):
-        data = self.n.sort("Title")
+        data = self.n.sort("Date")
+        print(data)
         count = len(data)
         self.setupmorenotes(count, data)
 
@@ -265,6 +266,7 @@ class NotesScreen(Screen):
     #           setupmorenotes function
     def notesbytitle(self):
         data = self.n.sort("Title")
+        print(data)
         count = len(data)
         self.setupmorenotes(count, data)
 
@@ -588,6 +590,8 @@ class NewRemindersScreen(Screen):
                 content = c.encrypt(content)
                 r = Reminders()
                 r.create(title, content, int(year), int(month), int(day), int(hour), int(minute), int(second))
+                reminders = self.manager.get_screen("reminders")
+                reminders.latestreminder()
                 self.manager.current = "reminders"
 
 

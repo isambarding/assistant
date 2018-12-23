@@ -20,10 +20,10 @@ class Twitter:
     # Return - text: string
     # Purpose - Gets the latest tweet from a given username from the Twitter API
     def userlatest(self, username):
-        url = self.twurl + username + "&count=1"
-        response = requests.get(url, auth=self.auth)
-        f = response.json()
         try:
+            url = self.twurl + username + "&count=1"
+            response = requests.get(url, auth=self.auth)
+            f = response.json()
             q = f[0]
             return q["text"]
         except:
@@ -34,14 +34,14 @@ class Twitter:
     # Return - s: string
     # Purpose - Gets the previous 10 tweets from a given username from the Twitter API
     def user10(self, username):
-        url = self.twurl + username + "&count=10"
-        response = requests.get(url, auth=self.auth)
-        f = response.json()
-        s = []
-        for tweet in f:
-            try:
+        try:
+            url = self.twurl + username + "&count=10"
+            response = requests.get(url, auth=self.auth)
+            f = response.json()
+            s = []
+            for tweet in f:
                 s.append(tweet["text"])
-            except:
-                s = ["No tweets found!"]
-        return s
+            return s
+        except:
+            return ["No tweets found!"]
 
