@@ -255,7 +255,6 @@ class NotesScreen(Screen):
     # Purpose - Retrieves a list of the user's notes sorted by time, then passes it to the setupmorenotes function
     def notesbytime(self):
         data = self.n.sort("Date")
-        print(data)
         count = len(data)
         self.setupmorenotes(count, data)
 
@@ -266,7 +265,6 @@ class NotesScreen(Screen):
     #           setupmorenotes function
     def notesbytitle(self):
         data = self.n.sort("Title")
-        print(data)
         count = len(data)
         self.setupmorenotes(count, data)
 
